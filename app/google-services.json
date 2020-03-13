@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "936466283506",
+    "firebase_url": "https://sakura-dbms.firebaseio.com",
+    "project_id": "sakura-dbms",
+    "storage_bucket": "sakura-dbms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936466283506:android:23744554d7c6dc03f2496b",
+        "android_client_info": {
+          "package_name": "com.ortech.shopapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936466283506-k77gm74n7cu2a480ajqpsid4bqfig0bq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ortech.shopapp",
+            "certificate_hash": "e10d88409be13b6a994adddf8268f93c9e6f533d"
+          }
+        },
+        {
+          "client_id": "936466283506-3j9stdff1319uhbt2appl993ce9o5k3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuibo1ch85oNDZJyhyi-8K2Nq9CXCtJsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936466283506-3j9stdff1319uhbt2appl993ce9o5k3n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "936466283506-qaeqclm2n6kahoi2ivvj75qu9nmuvvc0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "or.global.sakura"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
