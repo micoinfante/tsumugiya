@@ -3,7 +3,11 @@ package com.ortech.shopapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,5 +25,21 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, HomeScreen::class.java)
         startActivity(intent)
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("Fir Instance", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+//                val msg = getString("Got Firebase token: ", token)
+                Log.d("Firebase Token", token!!)
+                Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
+            })
     }
 }
