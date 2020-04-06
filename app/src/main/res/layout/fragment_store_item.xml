@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
       <ImageView
-          android:id="@+id/imageView8"
+          android:id="@+id/imageViewStore"
           android:layout_width="50dp"
           android:layout_height="50dp"
           android:layout_marginStart="16dp"
@@ -36,7 +36,7 @@
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="0.5"
-          app:layout_constraintStart_toEndOf="@+id/imageView8"
+          app:layout_constraintStart_toEndOf="@+id/imageViewStore"
           app:layout_constraintTop_toTopOf="parent">
 
         <TextView
