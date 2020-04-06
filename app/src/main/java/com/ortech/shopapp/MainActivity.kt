@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
             .setContentText("This is a test content")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-        val intent = Intent(this, HomeScreen::class.java)
+//        val intent = Intent(this, HomeScreen::class.java)
+        val intent = Intent(this, StoreTabListActivity::class.java)
         startActivity(intent)
 
         FirebaseInstanceId.getInstance().instanceId
