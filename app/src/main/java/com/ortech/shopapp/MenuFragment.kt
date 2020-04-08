@@ -1,10 +1,19 @@
 package com.ortech.shopapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.ortech.shopapp.Models.MenuCategory
+import com.ortech.shopapp.Models.Store
+import kotlinx.android.synthetic.main.fragment_menu.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,12 +30,43 @@ class MenuFragment : Fragment() {
   private var param1: String? = null
   private var param2: String? = null
 
+  private var db = Firebase.firestore
+  private var menuCategories: ArrayList<MenuCategory> = ArrayList()
+//  private var menuCategoryAdapter: MenuCategoryAdapter
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.let {
       param1 = it.getString(ARG_PARAM1)
       param2 = it.getString(ARG_PARAM2)
     }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+  }
+
+  private fun setup() {
+    val recyclerView = menuCategoryRecyclerView
+    recyclerView.apply {
+      layoutManager = LinearLayoutManager(this@MenuFragment.context)
+
+    }
+  }
+
+  private fun getMenuCategory() {
+    db.collection("CMSBranches").get()
+      .addOnSuccessListener { result ->
+        for (document in result) {
+          val newMenuCategory = document.toObject(MenuCategory::class.java)
+          this.menuCategories.add(newMenuCategory)
+//          menuCategoryAdapter.updateData(this.menuCategories)
+        }
+      }
+      .addOnFailureListener {exception ->
+        Log.w(TAG, "Error getting documents.", exception)
+      }
   }
 
   override fun onCreateView(
@@ -38,6 +78,7 @@ class MenuFragment : Fragment() {
   }
 
   companion object {
+    const val TAG = "MenuFragment"
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
