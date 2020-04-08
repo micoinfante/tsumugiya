@@ -3,6 +3,10 @@ package com.ortech.shopapp.Models
 import com.google.gson.annotations.SerializedName
 
 data class Banner (
-  val categoryID: String = ""
-
+  val banner: Boolean = false,
+  @SerializedName("bannerID")
+  val id: String = "",
+  val imageURL: String = "",
+  val mainID: String = "",
+  val status: String = ""
 )
