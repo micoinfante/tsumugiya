@@ -7,11 +7,15 @@ data class User(
   val restoID: String = "",
   val restoName: String = "",
   val userID: String = ""
-)
+) {
+    constructor():this("default", "default", "","","" )
+}
 
 // TODO("Create GlobalUser Data type - Inherit User type data to customize ")
 data class GlobalUser(
   val user: User?,
   val deviceUUID: String,
   val userID: String
-)
+) {
+    constructor():this(null, "", "")
+}

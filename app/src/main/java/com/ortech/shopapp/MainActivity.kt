@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
 //        val intent = Intent(this, HomeScreen::class.java)
-        val intent = Intent(this, StoreTabListActivity::class.java)
+        val intent = Intent(this, BottomNavigationActivity::class.java)
+//        val intent = Intent(this, StoreTabListActivity::class.java)
         startActivity(intent)
 
         FirebaseInstanceId.getInstance().instanceId
