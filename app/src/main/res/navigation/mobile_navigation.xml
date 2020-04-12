@@ -36,4 +36,9 @@
         android:name="com.ortech.shopapp.StoreTabListActivity"
         android:label="activity_store_tab_list"
         tools:layout="@layout/activity_store_tab_list" />
+    <fragment
+        android:id="@+id/navigation_menu_category"
+        android:name="com.ortech.shopapp.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" />
 </navigation>

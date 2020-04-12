@@ -39,8 +39,9 @@ class MenuCategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     when(holder) {
       is MenuCategoryViewHolder -> {
         holder.apply {
-          Log.d(TAG, "New Store: $position")
+
           val category = categories[position]
+          Log.d(TAG, "New Menu: $position ${category.categoryLabel}")
           holder.bind(category)
         }
       }
@@ -59,7 +60,7 @@ class MenuCategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun bind(category: MenuCategory){
-      categoryLabel.text = category.name
+      categoryLabel.text = category.categoryLabel
       categoryIcon.clipToOutline = true
       Picasso.get()
         .load(Uri.parse(category.imageURL))

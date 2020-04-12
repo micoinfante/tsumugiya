@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.MenuCategoryAdapter
 import com.ortech.shopapp.Models.MenuCategory
 import com.ortech.shopapp.Models.Store
+import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.fragment_menu.*
 
 
@@ -55,12 +56,13 @@ class MenuFragment : Fragment() {
     val recyclerView = menuCategoryRecyclerView
     recyclerView.apply {
       layoutManager = LinearLayoutManager(this@MenuFragment.context)
+      addItemDecoration(TopSpacingDecoration(6))
       recyclerView.adapter = menuCategoryAdapter
     }
   }
 
   private fun getMenuCategory() {
-    db.collection("CMSBranches").get()
+    db.collection("CMSMenuCategory").get()
       .addOnSuccessListener { result ->
         for (document in result) {
           val newMenuCategory = document.toObject(MenuCategory::class.java)

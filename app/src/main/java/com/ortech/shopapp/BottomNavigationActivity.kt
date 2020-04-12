@@ -46,6 +46,10 @@ class BottomNavigationActivity : AppCompatActivity() {
 //          startActivity(intent)
           return@setOnNavigationItemSelectedListener true
         }
+        R.id.navigation_menu_category-> {
+          loadFragment(MenuFragment())
+          return@setOnNavigationItemSelectedListener true
+        }
 
       }
       false
