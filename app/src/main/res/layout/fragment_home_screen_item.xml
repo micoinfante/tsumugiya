@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#474444">
+        app:cardBackgroundColor="@color/primary_black">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="home_screen_card_background">#555353</color>
     <color name="placeholder_gray">#2d3748</color>
+    <color name="primary_black">#191919</color>
+    <color name="accent_white">#FFFFFF</color>
 </resources>

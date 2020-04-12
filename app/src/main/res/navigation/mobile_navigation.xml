@@ -26,4 +26,14 @@
         android:id="@+id/navigation_store_list"
         android:name="com.ortech.shopapp.StoreListFragment"
         android:label="list" />
+    <activity
+        android:id="@+id/navigation_customer_qr"
+        android:name="com.ortech.shopapp.CustomerQRCodeActivity"
+        android:label="activity_customer_qr_code"
+        tools:layout="@layout/activity_customer_qr_code" />
+    <activity
+        android:id="@+id/navigation_store_tabs"
+        android:name="com.ortech.shopapp.StoreTabListActivity"
+        android:label="activity_store_tab_list"
+        tools:layout="@layout/activity_store_tab_list" />
 </navigation>

@@ -1,71 +1,86 @@
 package com.ortech.shopapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.lang.Exception
 
-//import kotlinx.android.synthetic.main.fragment_store_map_tab.*
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [StoreMapTabFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class StoreMapTabFragment : Fragment() {
+class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   // TODO: Rename and change types of parameters
   private var param1: String? = null
   private var param2: String? = null
 
+  private lateinit var mMap: GoogleMap
+  lateinit var mapView: MapView
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    arguments?.let {
-      param1 = it.getString(ARG_PARAM1)
-      param2 = it.getString(ARG_PARAM2)
-    }
+  override fun onResume() {
+    super.onResume()
+    setupMapIfNeeded()
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-
-  }
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
     // Inflate the layout for this fragment
+
+
     return inflater.inflate(R.layout.fragment_store_map_tab, container, false)
   }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    Log.d(TAG, "OnViewCreated")
+    val fm = activity?.supportFragmentManager
+    var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+    if (supportMapFragment == null) {
+      supportMapFragment = SupportMapFragment.newInstance()
+      fm?.beginTransaction()?.replace(R.id.mapView, supportMapFragment)?.commit()
+    }
+    supportMapFragment?.getMapAsync(this)
+
+  }
+
+  override fun onMapReady(p0: GoogleMap?) {
+    // Add a marker in Sydney and move the camera
+    Log.d(TAG, "MapReady")
+    if (p0 != null) {
+
+      mMap = p0
+      setupMap()
+//      val sydney = LatLng(-34.0, 151.0)
+//      mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+//      mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+  }
+
+  private fun setupMap() {
+    mMap.isMyLocationEnabled = true
+
+  }
+
+  private fun setupMapIfNeeded() {
+//    if (mMap == null) {
+//
+//    }
+  }
+
   companion object {
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StoreMapTabFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    @JvmStatic
-    fun newInstance(param1: String, param2: String) =
-      StoreMapTabFragment().apply {
-        arguments = Bundle().apply {
-          putString(ARG_PARAM1, param1)
-          putString(ARG_PARAM2, param2)
-        }
-      }
+   const val TAG = "StoreMapTabFragment"
   }
 }

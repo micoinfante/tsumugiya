@@ -1,9 +1,11 @@
 package com.ortech.shopapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -22,35 +24,26 @@ class BottomNavigationActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_bottom_navigation)
     val navView: BottomNavigationView = findViewById(R.id.nav_view)
-//
-////        val navController: NavController = findNavController(R.id.nav_host_fragment)
-//    val navControllerFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-//    val navController = navControllerFragment?.findNavController()
-//    Log.d("HomeScreen", "Fragment: $navControllerFragment Controller: $navController")
-//    // Passing each menu ID as a set of Ids because each
-//    // menu should be considered as top level destinations.
-//    val appBarConfiguration = AppBarConfiguration(
-//      setOf(
-//        R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_home
-//      )
-//    )
-////        supportActionBar?.hide()
-//    setupActionBarWithNavController(navController!!, appBarConfiguration)
-//    navView.setupWithNavController(navController)
-    loadFragment(HomeFragment())
+
+    val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    ActivityCompat.requestPermissions(this, permissions,0)
+
+    loadFragment(HomeScreen())
     navView.setOnNavigationItemSelectedListener {
       when(it.itemId){
         R.id.navigation_home-> {
-          loadFragment(HomeFragment())
+          loadFragment(HomeScreen())
           return@setOnNavigationItemSelectedListener true
         }
 
-        R.id.navigation_dashboard-> {
-          loadFragment(DashboardFragment())
+        R.id.navigation_customer_qr-> {
+          loadFragment(CustomerQRCodeActivity())
           return@setOnNavigationItemSelectedListener true
         }
-        R.id.navigation_notifications-> {
-          loadFragment(StoreListFragment())
+        R.id.navigation_store_tabs-> {
+          loadFragment(StoreTabListActivity())
+//          val intent = Intent(this, StoreTabListActivity::class.java)
+//          startActivity(intent)
           return@setOnNavigationItemSelectedListener true
         }
 

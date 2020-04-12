@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ortech.shopapp.Adapters.MenuCategoryAdapter
 import com.ortech.shopapp.Models.MenuCategory
 import com.ortech.shopapp.Models.Store
 import kotlinx.android.synthetic.main.fragment_menu.*
@@ -32,7 +33,7 @@ class MenuFragment : Fragment() {
 
   private var db = Firebase.firestore
   private var menuCategories: ArrayList<MenuCategory> = ArrayList()
-//  private var menuCategoryAdapter: MenuCategoryAdapter
+  private lateinit var menuCategoryAdapter: MenuCategoryAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -44,14 +45,17 @@ class MenuFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setup()
+    getMenuCategory()
 
   }
 
   private fun setup() {
+    menuCategoryAdapter = MenuCategoryAdapter()
     val recyclerView = menuCategoryRecyclerView
     recyclerView.apply {
       layoutManager = LinearLayoutManager(this@MenuFragment.context)
-
+      recyclerView.adapter = menuCategoryAdapter
     }
   }
 
@@ -61,7 +65,7 @@ class MenuFragment : Fragment() {
         for (document in result) {
           val newMenuCategory = document.toObject(MenuCategory::class.java)
           this.menuCategories.add(newMenuCategory)
-//          menuCategoryAdapter.updateData(this.menuCategories)
+          menuCategoryAdapter.updateData(this.menuCategories)
         }
       }
       .addOnFailureListener {exception ->
