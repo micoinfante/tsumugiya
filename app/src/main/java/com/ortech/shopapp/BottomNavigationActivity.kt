@@ -31,23 +31,27 @@ class BottomNavigationActivity : AppCompatActivity() {
     loadFragment(HomeScreen())
     navView.setOnNavigationItemSelectedListener {
       when(it.itemId){
-        R.id.navigation_home-> {
+        R.id.navigation_home -> {
           loadFragment(HomeScreen())
           return@setOnNavigationItemSelectedListener true
         }
 
-        R.id.navigation_customer_qr-> {
+        R.id.navigation_customer_qr -> {
           loadFragment(CustomerQRCodeActivity())
           return@setOnNavigationItemSelectedListener true
         }
-        R.id.navigation_store_tabs-> {
+        R.id.navigation_store_tabs -> {
           loadFragment(StoreTabListActivity())
 //          val intent = Intent(this, StoreTabListActivity::class.java)
 //          startActivity(intent)
           return@setOnNavigationItemSelectedListener true
         }
-        R.id.navigation_menu_category-> {
+        R.id.navigation_menu_category -> {
           loadFragment(MenuFragment())
+          return@setOnNavigationItemSelectedListener true
+        }
+        R.id.navigation_instagram -> {
+          loadFragment(InstagramFragment())
           return@setOnNavigationItemSelectedListener true
         }
 

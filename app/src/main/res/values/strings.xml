@@ -18,4 +18,9 @@
     <string name="home_second">Home Second</string>
     <string name="title_activity_store_tab_list">StoreTabListActivity</string>
     <string name="title_activity_store_map_view">Map</string>
+    <string name="navigation_title_menu">Menu</string>
+    <string name="navigation_title_instagram">Instagram</string>
+
+    <string name="instagram_domain">instagram.com</string>
+    <string name="instagram_url">https://www.instagram.com/explore/tags/ramensekai</string>
 </resources>
