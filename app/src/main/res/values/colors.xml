@@ -7,4 +7,7 @@
     <color name="placeholder_gray">#2d3748</color>
     <color name="primary_black">#191919</color>
     <color name="accent_white">#FFFFFF</color>
+
+    <color name="primary_background">#191919</color>
+    <color name="primary_text">#FFFFFF</color>
 </resources>

@@ -23,4 +23,6 @@
 
     <string name="instagram_domain">instagram.com</string>
     <string name="instagram_url">https://www.instagram.com/explore/tags/ramensekai</string>
+
+    <string name="homescreen_weblink">https://www.google.com</string>
 </resources>

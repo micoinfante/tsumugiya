@@ -19,49 +19,50 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:lines="2"
                 android:minWidth="150dp"
                 android:minHeight="25dp"
+                android:text="Welcome Customer \n Lorem ipsum"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Welcome Customer \n Lorem ipsum" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="41dp"
-                android:layout_marginLeft="41dp"
-                android:gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:gravity="center|center_horizontal|center_vertical"
                 android:minHeight="50dp"
-                android:text="TextView"
+                android:text="6000"
                 android:textColor="#FFFFFF"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 app:autoSizeMinTextSize="50sp"
-                app:layout_constraintStart_toStartOf="@+id/textView3"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
-                tools:text="6000"
+                tools:text="Textview"
                 tools:textSize="50sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="16dp"
                 android:gravity="bottom|center_horizontal"
+                android:minWidth="150dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -77,8 +78,8 @@
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@android:drawable/btn_star_big_on" />
 
                 <TextView
@@ -88,7 +89,7 @@
                     android:gravity="center"
                     android:text="TextView"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="lorem ipsum 1940pt" />
             </LinearLayout>
