@@ -48,12 +48,12 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
-                        android:src="@drawable/test_qrcode"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/test_qrcode"
+                        android:contentDescription="Customer QRCode to earn points" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -98,10 +98,11 @@
                         android:layout_height="50dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
-                        android:src="@drawable/ic_home_black_24dp"
+                        android:contentDescription="Point logo"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_home_black_24dp" />
 
                     <TextView
                         android:id="@+id/textView22"
@@ -189,7 +190,7 @@
                                     app:layout_constraintGuide_begin="162dp" />
 
                                 <TextView
-                                    android:id="@+id/textViewCD8"
+                                    android:id="@+id/textViewCouponDetailsName"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
@@ -202,7 +203,7 @@
                                     app:layout_constraintTop_toTopOf="parent" />
 
                                 <TextView
-                                    android:id="@+id/textViewCD11"
+                                    android:id="@+id/textViewCouponDetailsPoints"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
@@ -216,7 +217,7 @@
                                     app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
                                 <TextView
-                                    android:id="@+id/textViewCD15"
+                                    android:id="@+id/textViewCouponDetailsTimestamp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
@@ -225,7 +226,7 @@
                                     android:text="TextView"
                                     android:textColor="#757575"
                                     android:textSize="14sp"
-                                    app:layout_constraintBottom_toTopOf="@+id/textViewCD11"
+                                    app:layout_constraintBottom_toTopOf="@+id/textViewCouponDetailsPoints"
                                     app:layout_constraintStart_toStartOf="@+id/guideline2" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
