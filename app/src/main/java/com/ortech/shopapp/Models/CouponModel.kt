@@ -2,21 +2,22 @@ package com.ortech.shopapp.Models
 
 import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Coupon (
-  @SerializedName("couponDetails")
-  val details: String = "",
-  @SerializedName("couponID")
-  val id: String = "",
-  @SerializedName("couponLabel")
-  val label: String = "",
+  val couponStore: String = "",
+  val storeID: String = "",
+  val couponDetails: String = "",
+  val couponId: String = "",
+  val couponLabel: String = "",
   val fromDate: Timestamp? = null,
   val imageURL: String = "",
   val isEnabled: String = "",
   val mainID: String = "",
-  @SerializedName("orderBy")
-  val order: String = "",
+  val orderBy: String = "",
   val points: String = "",
   val selectedBranches: List<String> = ArrayList(),
   val untilDate: Timestamp? = null
-)
+): Serializable{
+  constructor() : this("")
+}

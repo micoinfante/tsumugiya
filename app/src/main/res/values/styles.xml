@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/primary_lightgray</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_black</item>
         <item name="actionMenuTextColor">@color/primary_black</item>
@@ -35,10 +35,12 @@
         <item name="android:textColor">@color/primary_black</item>
     </style>
 
-    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:titleTextStyle">@color/primary_black</item>
         <item name="android:textColorPrimary">@color/primary_black</item>
         <item name="titleTextStyle">@color/primary_black</item>
+        <item name="backgroundColor">@color/primary_lightgray</item>
+        <item name="android:background">@color/primary_lightgray</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

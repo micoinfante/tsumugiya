@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name">Shop App</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name" translatable="false">ラーメン世界</string>
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_tab" translatable="false">TabActivity</string>
     <string name="tab_text_1" translatable="false">Store List</string>
     <string name="tab_text_2" translatable="false">Map</string>
-    <string name="title_activity_bottom_navigation" translatable="false">BottomNavigationActivity</string>
-    <string name="next" translatable="false">Next</string>
-    <string name="previous" translatable="false">Previous</string>
-    <string name="hello_home_second" translatable="false">Hello HomeSecondFragment. Arg: %1$s</string>
-    <string name="hello_dashboard_second" translatable="false">Hello DashboardSecondFragment. Arg: %1$s</string>
-    <string name="hello_notifications_second" translatable="false">Hello NotificationsSecondFragment. Arg: %1$s</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="hello_home_second">Hello HomeSecondFragment. Arg: %1$s</string>
+    <string name="hello_dashboard_second">Hello DashboardSecondFragment. Arg: %1$s</string>
+    <string name="hello_notifications_second">Hello NotificationsSecondFragment. Arg: %1$s</string>
     <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
@@ -27,5 +27,5 @@
     <string name="homescreen_weblink" translatable="false">https://www.google.com</string>
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
-    <string name="text_label_point" translatable="false">%s ポイント</string>
+    <string name="text_label_point" translatable="false">%s$1 ポイント</string>
 </resources>

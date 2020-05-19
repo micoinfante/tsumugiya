@@ -1,20 +1,21 @@
 package com.ortech.shopapp
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ortech.shopapp.Models.Coupon
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_branch_coupon_item.*
 import kotlinx.android.synthetic.main.fragment_coupon_details.*
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_COUPON_NAME = "couponName"
-private const val ARG_COUPON_TIMESTAMP = "couponTimestamp"
-private const val ARG_COUPON_POINTS = "couponPoints"
+private const val ARG_COUPON = "coupon"
 
 /**
  * A simple [Fragment] subclass.
@@ -23,9 +24,7 @@ private const val ARG_COUPON_POINTS = "couponPoints"
  */
 class CouponDetails : Fragment() {
   // TODO: Rename and change types of parameters
-  private var couponName: String? = null
-  private var couponTimestamp: String? = null
-  private var couponPoint: Int? = null
+  private var coupon: Coupon? = null
 
 //  private var textViewCouponName = textViewCouponDetailsName
 //  private var textViewTimestamp = textViewCouponDetailsTimestamp
@@ -34,10 +33,7 @@ class CouponDetails : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     arguments?.let {
-      couponName = it.getString(ARG_COUPON_NAME)
-      couponTimestamp = it.getString(ARG_COUPON_TIMESTAMP)
-      couponPoint = it.getInt(ARG_COUPON_POINTS)
-
+      coupon = it.getSerializable(ARG_COUPON) as? Coupon
     }
   }
 
@@ -52,29 +48,23 @@ class CouponDetails : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    textViewCouponDetailsName.text = couponName
-    textViewCouponDetailsTimestamp.text = couponTimestamp
-    textViewCouponDetailsPoints.text = couponPoint.toString()
+    textViewCouponDetailsName.text = coupon?.couponLabel ?: ""
+    textViewCouponDetailsTimestamp.text = coupon?.untilDate?.toDate().toString()  ?: Date().toString()
+    textViewCouponDetailsPoints.text = getString(R.string.text_label_point, coupon?.points.toString())
+
+    Picasso.get().load(Uri.parse(coupon?.imageURL))
+      .resize(200, 200)
+      .centerInside()
+      .into(imageViewCouponDetail)
 
   }
 
   companion object {
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CouponDetails.
-     */
-    // TODO: Rename and change types and number of parameters
     @JvmStatic
-    fun newInstance(param1: String, param2: String) =
+    fun newInstance(coupon: Coupon) =
       CouponDetails().apply {
         arguments = Bundle().apply {
-          putString(ARG_COUPON_NAME, couponName)
-          putString(ARG_COUPON_TIMESTAMP, couponTimestamp)
-          couponPoint?.let { putInt(ARG_COUPON_POINTS, it) }
+          putSerializable(ARG_COUPON, coupon)
         }
       }
   }

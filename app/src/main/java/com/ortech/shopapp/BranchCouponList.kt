@@ -1,12 +1,16 @@
 package com.ortech.shopapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.AllCouponListAdapter
+import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 
@@ -15,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
  */
 class BranchCouponList : Fragment() {
   private lateinit var couponBranchListAdapter: AllCouponListAdapter
+  private val db = Firebase.firestore
+  private var couponList = ArrayList<Coupon>()
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +43,28 @@ class BranchCouponList : Fragment() {
       addItemDecoration(topSpacing)
       branchCouponListRecyclerView.adapter = couponBranchListAdapter
     }
-//    getBranches()
+    fetchCoupons()
+  }
 
+
+  private fun fetchCoupons() {
+    db.collection("CMSCoupon").get()
+      .addOnSuccessListener {querySnapshot ->
+        Log.d(TAG, querySnapshot.size().toString())
+        for (queryDocumentSnapshot in querySnapshot) {
+          val newCoupon = queryDocumentSnapshot.toObject(Coupon::class.java)
+          Log.d(TAG, "new coupon : $newCoupon.id")
+          couponList.add(newCoupon)
+          couponBranchListAdapter.updateData(couponList)
+        }
+      }
+      .addOnFailureListener {
+        Log.e(TAG, "Can't get branch coupons ${it.toString()}")
+      }
+  }
+
+  companion object {
+    const val TAG = "BranchCouponList"
   }
 
 }
