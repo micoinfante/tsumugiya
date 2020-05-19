@@ -102,11 +102,10 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
-                android:adjustViewBounds="false"
                 android:background="@drawable/circular_image_white_bg_150dp"
-                android:cropToPadding="true"
+                android:cropToPadding="false"
                 android:maxHeight="100dp"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

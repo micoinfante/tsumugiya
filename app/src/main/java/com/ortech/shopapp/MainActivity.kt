@@ -9,12 +9,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Helpers.PreferenceHelper
 import com.ortech.shopapp.Models.GlobalUser
 import java.util.*
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,38 +36,26 @@ class MainActivity : AppCompatActivity() {
     val intent = Intent(this, BottomNavigationActivity::class.java)
 //        val intent = Intent(this, StoreTabListActivity::class.java)
 
-
-    FirebaseInstanceId.getInstance().instanceId
-      .addOnCompleteListener(OnCompleteListener { task ->
-        if (!task.isSuccessful) {
-          Log.w("Firebase Instance", "getInstanceId failed", task.exception)
-          return@OnCompleteListener
-        }
-
-        // Get new Instance ID token
-        val token = task.result?.token
-        // Log and toast
-//                val msg = getString("Got Firebase token: ", token)
-        Log.d(TAG, "FCM $token!!")
-//                Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-      })
-
     checkUUID()
     startActivity(intent)
   }
 
   private fun checkUUID() {
-    val sharedPreferences = getPreferences(Context.MODE_PRIVATE) ?: return
+    val sharedPreferences = getSharedPreferences(
+      getString(R.string.preference_UUID_key), Context.MODE_PRIVATE) ?: return
     val defaultUUID = UUID.randomUUID().toString()
     var currentUUID = defaultUUID
-    sharedPreferences.getString(getString(R.string.preference_UUID_key), defaultUUID)
+
+    sharedPreferences.getString(getString(R.string.preference_UUID_key), null)
       .let { userUUID ->
         if (userUUID != null) {
           currentUUID = userUUID
+          Log.d(TAG, "current UUID is not null")
         } else {
           with(sharedPreferences.edit()) {
             putString(getString(R.string.preference_UUID_key), defaultUUID)
             commit()
+            apply()
           }
         }
         getUserDetails(currentUUID)
@@ -86,7 +76,7 @@ class MainActivity : AppCompatActivity() {
           deviceUUID = userID,
           restoID = "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
           restoName = "ラーメン世界",
-          userID = UUID.randomUUID().toString()
+          userID = userID
         )
         db.collection("GlobalUsers").document(userID).set(newGlobalUser)
           .addOnSuccessListener {
@@ -95,6 +85,7 @@ class MainActivity : AppCompatActivity() {
           .addOnFailureListener {
             Log.e(TAG, "Failed to add new global user ${it.toString()}")
           }
+        updateFCMToken()
       }
     }
       .addOnFailureListener { error ->
@@ -102,7 +93,33 @@ class MainActivity : AppCompatActivity() {
       }
   }
 
+  fun updateFCMToken() {
+    val db = Firebase.firestore
+    val sharedPreferences = getSharedPreferences(
+      getString(R.string.preference_UUID_key), Context.MODE_PRIVATE) ?: return
+    sharedPreferences.getString(getString(R.string.preference_UUID_key), null)
+      .let { userUUID ->
+        if (userUUID != null) {
+
+          FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+              if (!task.isSuccessful) {
+                Log.w("Firebase Instance", "getInstanceId failed", task.exception)
+                return@OnCompleteListener
+              }
+
+              val token = task.result?.token
+              val data = hashMapOf("token" to token)
+              db.collection("GlobalUsers").document(userUUID).set(data, SetOptions.merge())
+            })
+
+        }
+      }
+
+  }
+
   companion object {
     const val TAG = "MainActivity"
+
   }
 }

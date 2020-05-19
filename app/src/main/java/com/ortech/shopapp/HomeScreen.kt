@@ -51,7 +51,7 @@ class HomeScreen : Fragment() {
 //          actionBar?.show()
 //          supportActionBar?.show()
 //          (activity as AppCompatActivity).supportActionBar?.show()
-          showNavigation()
+//          showNavigation()
         }
 
         if (dy <= 0) {
@@ -60,41 +60,18 @@ class HomeScreen : Fragment() {
 
 //          actionBar?.show()
 //          supportActionBar?.show()
-          showNavigation()
+//          showNavigation()
         }
         if (dy > 0){
           //                    actionBar?.hide()
           //                    supportActionBar?.hide()
 //          (activity as AppCompatActivity).supportActionBar?.hide()
-          hideNavigation()
+//          hideNavigation()
       }
         super.onScrolled(recyclerView, dx, dy)
       }
     })
   }
 
-
-  private fun hideNavigation() {
-//    if (homeRecyclerView.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
-      navigationCardView.visibility = View.GONE
-//    }
-//    val transition = object:Fade() {
-//      override fun setDuration(duration: Long): androidx.transition.Transition {
-//        return super.setDuration(600)
-//      }
-//
-//      override fun addTarget(targetId: Int): androidx.transition.Transition {
-//        return super.addTarget(navigationCardView.id)
-//      }
-//    }
-
-  }
-
-  private fun showNavigation() {
-//    if (homeRecyclerView.scrollState == RecyclerView.SCROLL_STATE_SETTLING || homeRecyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-      navigationCardView.visibility = View.VISIBLE
-//    }
-
-  }
 
 }

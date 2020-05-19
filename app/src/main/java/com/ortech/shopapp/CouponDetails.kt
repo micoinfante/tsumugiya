@@ -53,8 +53,6 @@ class CouponDetails : Fragment() {
     textViewCouponDetailsPoints.text = getString(R.string.text_label_point, coupon?.points.toString())
 
     Picasso.get().load(Uri.parse(coupon?.imageURL))
-      .resize(200, 200)
-      .centerInside()
       .into(imageViewCouponDetail)
 
   }

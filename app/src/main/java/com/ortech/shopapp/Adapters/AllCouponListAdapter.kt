@@ -66,8 +66,8 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 //        .fit()
 //        .centerCrop()
 //        .into(couponThumbnail)
-      Glide.with(itemView).load(Uri.parse(coupon.imageURL))
-        .centerCrop()
+      Glide.with(itemView)
+        .load(Uri.parse(coupon.imageURL))
         .into(couponThumbnail)
 
 
