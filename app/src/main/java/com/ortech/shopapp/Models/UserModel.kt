@@ -11,11 +11,15 @@ data class User(
     constructor():this("default", "default", "","","" )
 }
 
-// TODO("Create GlobalUser Data type - Inherit User type data to customize ")
 data class GlobalUser(
-  val user: User?,
   val deviceUUID: String,
-  val userID: String
+  val email: String = "default",
+  val password: String = "default",
+  val restoID: String = "",
+  val restoName: String = "",
+  val userID: String = "",
+  val token: String = "",
+  val device: String = "android"
 ) {
-    constructor():this(null, "", "")
+    constructor():this("", "default", "default")
 }

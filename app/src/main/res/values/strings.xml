@@ -25,4 +25,6 @@
     <string name="instagram_url">https://www.instagram.com/explore/tags/ramensekai</string>
 
     <string name="homescreen_weblink">https://www.google.com</string>
+
+    <string name="preference_UUID_key">Preference_UUID</string>
 </resources>
