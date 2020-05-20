@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
       }
   }
 
-  fun updateFCMToken() {
+  private fun updateFCMToken() {
     val db = Firebase.firestore
     val sharedPreferences = getSharedPreferences(
       getString(R.string.preference_UUID_key), Context.MODE_PRIVATE) ?: return
