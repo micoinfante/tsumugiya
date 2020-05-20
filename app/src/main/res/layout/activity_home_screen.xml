@@ -10,41 +10,22 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
 
-        android:layout_height="192dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMargin="20sp"
-
-            app:expandedTitleTextAppearance="@style/ExpandedAppBar"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            app:title="Good morning, Guest"
-            app:toolbarId="@+id/toolbar">
-
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ToolBarTheme"
-                app:collapseIcon="@drawable/ic_dashboard_black_24dp"
-                app:subtitleTextColor="#170C0C"
-                app:title="Good morning"
-                app:titleTextAppearance="@style/AppTheme.ActionBar.TitleTextStyle"
-                app:titleTextColor="#070606" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="100dp"
-                android:layout_height="53dp"
-                android:layout_gravity="bottom|right"
-                android:layout_marginBottom="5dp"
-                app:srcCompat="@drawable/ic_dashboard_black_24dp" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:collapseIcon="@drawable/nav_app_logo_50dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/nav_app_logo_25dp"
+            app:title="@string/app_name"
+            app:titleTextAppearance="@style/toolbarMenuTheme"
+            tools:titleTextAppearance="@style/toolbarMenuTheme" />
     </com.google.android.material.appbar.AppBarLayout>
 
 <!--    <androidx.cardview.widget.CardView-->
@@ -92,9 +73,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
-
-    </androidx.recyclerview.widget.RecyclerView>
+        />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

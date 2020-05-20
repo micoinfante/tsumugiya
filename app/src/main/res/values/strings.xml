@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">Shop App</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">ラーメン世界</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_tab" translatable="false">TabActivity</string>
@@ -28,4 +28,16 @@
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
     <string name="text_label_point" translatable="false">%s ポイント</string>
+
+    <string name="header_title_morning" translatable="false">Good Morning</string>
+    <string name="header_title_afternoon" translatable="false">Good Afternoon</string>
+    <string name="header_title_night" translatable="false">Good Evening</string>
+    <string name="header_image_url" tools:ignore="TypographyDashes" translatable="false">https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/store%2Fbanner1.jpg?alt=media&amp;token=a22384ce-dd82-4eaa-820a-f0f90e27280d</string>
+    <string name="home_link_notice" translatable="false" tools:ignore="TypographyDashes">https://shop.ra-mensekai.co.jp/news.html</string>
+
+    <string name="tab_home">Home</string>
+    <string name="tab_point">Points</string>
+    <string name="tab_store">Stores</string>
+    <string name="tab_menu">Menu</string>
+    <string name="tab_insta">Instagram</string>
 </resources>

@@ -5,27 +5,27 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:icon="@drawable/tab_home"
+        android:title="@string/tab_home" />
 
     <item
         android:id="@+id/navigation_customer_qr"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard"
+        android:icon="@drawable/tab_qrcode"
+        android:title="@string/tab_point"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/navigation_store_tabs"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:icon="@drawable/tab_store"
+        android:title="@string/tab_store" />
     <item
         android:id="@+id/navigation_menu_category"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/navigation_title_menu"
+        android:icon="@drawable/tab_ramen"
+        android:title="@string/tab_menu"
         app:showAsAction="withText" />
     <item
         android:id="@+id/navigation_instagram"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/navigation_title_instagram"
+        android:icon="@drawable/tab_insta"
+        android:title="@string/tab_insta"
         tools:ignore="DuplicateIds" />
 </menu>

@@ -7,10 +7,9 @@
     tools:context=".HomeScreenHeaderFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewHeader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        app:srcCompat="@android:drawable/presence_away"
         tools:src="@tools:sample/backgrounds/scenic" />
 </FrameLayout>

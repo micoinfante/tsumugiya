@@ -16,8 +16,8 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewPointTitle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
@@ -28,45 +28,41 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewCurrentPoints"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:gravity="center|center_horizontal|center_vertical"
                 android:minHeight="50dp"
-                android:text="6000"
+                android:text="0"
                 android:textColor="#FFFFFF"
                 android:textSize="40sp"
                 android:textStyle="bold"
                 app:autoSizeMinTextSize="50sp"
-                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"
-                tools:text="Textview"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPointTitle"
+                tools:text="6000"
                 tools:textSize="50sp" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="16dp"
                 android:gravity="bottom|center_horizontal"
+                android:maxWidth="150dp"
                 android:minWidth="150dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView6"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="@+id/guideline3">
 
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/textViewRanking"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -77,13 +73,14 @@
                     tools:text="Bronze" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/imageViewRanking"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@android:drawable/btn_star_big_on" />
+                    android:src="@android:drawable/btn_star_big_on"
+                    app:srcCompat="@drawable/bronze" />
 
                 <TextView
-                    android:id="@+id/textView10"
+                    android:id="@+id/textViewTotalPoints"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -93,6 +90,13 @@
                     android:textStyle="bold"
                     tools:text="lorem ipsum 1940pt" />
             </LinearLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.55" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

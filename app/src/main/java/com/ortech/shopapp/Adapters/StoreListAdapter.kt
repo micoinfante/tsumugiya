@@ -33,6 +33,7 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     return stores.size
   }
 
+
   @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when(holder) {

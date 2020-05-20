@@ -18,7 +18,7 @@
     <string name="home_second" translatable="false">Home Second</string>
     <string name="title_activity_store_tab_list" translatable="false">StoreTabListActivity</string>
     <string name="title_activity_store_map_view" translatable="false">Map</string>
-    <string name="navigation_title_menu" translatable="false">Menu</string>
+    <string name="navigation_title_menu" translatable="false">メニュー</string>
     <string name="navigation_title_instagram" translatable="false">Instagram</string>
 
     <string name="instagram_domain" translatable="false">instagram.com</string>
@@ -28,4 +28,10 @@
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
     <string name="text_label_point" translatable="false">%s$1 ポイント</string>
+
+    <string name="tab_home">ホーム</string>
+    <string name="tab_point">ポイント</string>
+    <string name="tab_store">ストアー</string>
+    <string name="tab_menu">メニュー</string>
+    <string name="tab_insta">Instagram</string>
 </resources>
