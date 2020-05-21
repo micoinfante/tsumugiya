@@ -3,14 +3,19 @@ package com.ortech.shopapp.Adapters
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomViewTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.common.io.Resources.getResource
 import com.ortech.shopapp.BranchCouponList
 import com.ortech.shopapp.CouponDetails
@@ -22,6 +27,9 @@ import kotlinx.android.synthetic.main.fragment_branch_coupon_item.view.*
 import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_fourth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_item.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
   private var couponList = ArrayList<Coupon>()
@@ -57,18 +65,28 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val couponThumbnail = itemView.imageViewCouponItemThumbnail
 
     fun bind(coupon: Coupon) {
+      val date = coupon.untilDate?.toDate().toString()
       couponName.text = coupon.couponLabel
-      timestamp.text = coupon.untilDate?.toDate().toString()
+      timestamp.text = date.substring(0, date.indexOf("GMT"))
       val pointText = itemView.context.getString(R.string.text_label_point, coupon.points)
       requiredPoints.text = pointText
 
-//      Picasso.get().load()
-//        .fit()
-//        .centerCrop()
-//        .into(couponThumbnail)
       Glide.with(itemView)
         .load(Uri.parse(coupon.imageURL))
-        .into(couponThumbnail)
+        .apply(RequestOptions.circleCropTransform())
+        .into(object: CustomViewTarget<ImageView, Drawable>(couponThumbnail){
+          override fun onLoadFailed(errorDrawable: Drawable?) {
+          }
+
+          override fun onResourceCleared(placeholder: Drawable?) {
+
+          }
+
+          override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+           couponThumbnail.setImageDrawable(resource)
+          }
+
+        })
 
 
       itemView.setOnClickListener {

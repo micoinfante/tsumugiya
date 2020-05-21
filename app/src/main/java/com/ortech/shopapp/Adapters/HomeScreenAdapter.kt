@@ -128,11 +128,20 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
           buttonCouponItem.setOnClickListener {
             val activity = itemView.context as AppCompatActivity
             val fragment = BranchCouponList()
-            val transaction =  activity.supportFragmentManager.beginTransaction()
-//            transaction.setCustomAnimations(enter, exit, popEnter, popExit)
-            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
+            val container = activity.findViewById<View>(R.id.nav_host_fragment_container)
+            container.postDelayed(Runnable {
+              val transaction =  activity.supportFragmentManager.beginTransaction()
+              transaction.setCustomAnimations(
+                R.anim.enter_from_right,
+                R.anim.exit_to_left,
+                R.anim.enter_from_left,
+                R.anim.exit_to_right
+              )
+              transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+              transaction.replace(R.id.container, fragment)
+              transaction.addToBackStack(null)
+              transaction.commit()
+            },0)
           }
         }
       }

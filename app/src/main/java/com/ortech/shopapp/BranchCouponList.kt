@@ -40,7 +40,7 @@ class BranchCouponList : Fragment() {
     couponBranchListAdapter = AllCouponListAdapter()
     branchCouponListRecyclerView.apply {
       layoutManager = LinearLayoutManager(this.context)
-      val topSpacing = TopSpacingDecoration(0)
+      val topSpacing = TopSpacingDecoration(5)
       addItemDecoration(topSpacing)
       branchCouponListRecyclerView.adapter = couponBranchListAdapter
     }
@@ -49,10 +49,9 @@ class BranchCouponList : Fragment() {
   }
 
   private fun setupToolBar() {
-    val toolbar = toolbar
+    val toolbar = toolbarCouponList
     toolbar.setNavigationOnClickListener {
-      Log.d(TAG, "Navigation Clicked")
-      activity?.onBackPressed()
+      activity?.supportFragmentManager?.popBackStack()
     }
 //    val currentActivity = (activity as AppCompatActivity)
 //    currentActivity.setSupportActionBar(toolbar)

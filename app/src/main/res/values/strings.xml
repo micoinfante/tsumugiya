@@ -62,4 +62,8 @@
     <string name="tab_store">Stores</string>
     <string name="tab_menu">Menu</string>
     <string name="tab_insta">Instagram</string>
+
+    <string name="coupon" translatable="false">クーポン</string>
+    <string name="qr_code_title" translatable="false">表示されているQRコードを\nスタッフへご提示ください。</string>
+    <string name="qr_code_subtitle" translatable="false">※クーポボンのご利用は、お一人様1日一回限りです。\n※他のサービスとの併用はできません。</string>
 </resources>

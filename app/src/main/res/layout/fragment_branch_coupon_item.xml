@@ -72,9 +72,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginLeft="8dp"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginBottom="8dp"
                             android:text="TextView"
-                            android:textColor="#F11F0F"
+                            android:textColor="@color/primary_tab_selected"
                             android:textSize="20sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,6 +89,7 @@
                             android:text="TextView"
                             android:textColor="#757575"
                             android:textSize="14sp"
+                            android:textStyle="italic"
                             app:layout_constraintBottom_toTopOf="@+id/textViewCouponItemPoints"
                             app:layout_constraintStart_toStartOf="@+id/guideline2" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -102,12 +103,14 @@
                 android:layout_height="100dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginLeft="32dp"
-                android:background="@drawable/circular_image_white_bg_150dp"
-                android:cropToPadding="false"
-                android:maxHeight="100dp"
-                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:background="@drawable/circular_image"
+                android:cropToPadding="true"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/fourth_section_banner" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
