@@ -17,15 +17,17 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:collapseIcon="@drawable/nav_app_logo_50dp"
+            app:collapseIcon="@drawable/nav_app_logo_25dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:navigationIcon="@drawable/nav_app_logo_25dp"
             app:title="@string/app_name"
             app:titleTextAppearance="@style/toolbarMenuTheme"
             tools:titleTextAppearance="@style/toolbarMenuTheme" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
 <!--    <androidx.cardview.widget.CardView-->

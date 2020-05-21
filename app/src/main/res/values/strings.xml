@@ -25,10 +25,30 @@
     <string name="instagram_url" translatable="false">https://www.instagram.com/explore/tags/ramensekai</string>
 
     <string name="homescreen_weblink" translatable="false">https://www.google.com</string>
+<!--    welcome guest, current point-->
+    <string name="homescreen_point_section_welcome" translatable="false">ようこそ ゲスト さま\n
+現在のポイント</string>
+    <string name="homescreen_point_up_to_next_rank" translatable="false">次のランクまで</string>
+    <string name="homescreen_notice_title" translatable="false">クーポン</string>
+<!--    Use coupons Get points for discount coupons! \ N-->
+<!--    The bonito bowl of bonito is even more delicious-->
+    <string name="homescreen_notice_subtitle" translatable="false">お得なクーポンをポイントを使ってGET!\n
+かつ庵のかつ丼をさらに美味く</string>
+<!--    use coupon-->
+    <string name="homescreen_notice_button_title" translatable="false">クーポンを使う</string>
+
+<!--    kuwashiku/in detail-->
+    <string name="homescreen_information_title" translatable="false">インフォメーション</string>
+    <string name="homescreen_information_subtitle1" translatable="false">期間限定・おすすめ</string>
+    <string name="homescreen_information_subtitle2" translatable="false">「うま辛極担々麺」 4月25日土から</string>
+    <string name="homescreen_information_button_title" translatable="false">詳しく</string>
+    <string name="homescreen_point_history_title" translatable="false">ポイント履歴</string>
+    <string name="homescreen_point_history_subtitle" translatable="false">あなたのトランザクションのリアルタイム追跡。</string>
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
     <string name="text_label_point" translatable="false">%s ポイント</string>
 
+    <string name="welcome" translatable="false">ようこそ, %s</string>
     <string name="header_title_morning" translatable="false">Good Morning</string>
     <string name="header_title_afternoon" translatable="false">Good Afternoon</string>
     <string name="header_title_night" translatable="false">Good Evening</string>
