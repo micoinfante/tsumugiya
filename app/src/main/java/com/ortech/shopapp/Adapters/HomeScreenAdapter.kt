@@ -2,6 +2,7 @@ package com.ortech.shopapp.Adapters
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -63,9 +64,10 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       0 -> (holder as StickyHeaderSection).bind()
       1 -> (holder as HomeScreenHeader).bind()
       2 -> (holder as HomeScreenPoints).bind()
-      3 -> (holder as HomeScreenItem).bind()
+      3 -> (holder as HomeScreenItem).bind(TYPE.NOTICE)
       4 -> (holder as HomeScreenFourthSection).bind()
       5 -> (holder as HomeScreenFifthSection).bind()
+      6 -> (holder as HomeScreenItem).bind(TYPE.POINT_HISTORY)
     }
   }
 
@@ -80,16 +82,49 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   class HomeScreenItem constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val buttonCouponItem = itemView.buttonCouponItem
+    private val homeItemTitle = itemView.textViewHomeItemTitle
+    private val homeItemSubtitle = itemView.textViewHomeItemSubTitle
+    private val homeItemThumbnail = itemView.imageViewHomeTitle
+    private val res = itemView.context
 
-    fun bind() {
-      buttonCouponItem.setOnClickListener {
-        val activity = itemView.context as AppCompatActivity
-        val fragment = BranchCouponList()
-        val transaction =  activity.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    fun bind(type: TYPE) {
+      when (type) {
+        TYPE.NOTICE -> {
+          homeItemTitle.text = res.getString(R.string.homescreen_notice_title)
+          homeItemSubtitle.text = res.getString(R.string.homescreen_notice_subtitle)
+          buttonCouponItem.text = res.getString(R.string.homescreen_notice_button_title)
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.point_history))
+          }
+          buttonCouponItem.setOnClickListener {
+            val activity = itemView.context as AppCompatActivity
+            val fragment = BranchCouponList()
+            val transaction =  activity.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+          }
+        }
+        TYPE.POINT_HISTORY -> {
+          homeItemTitle.text = res.getString(R.string.homescreen_point_history_title)
+          homeItemSubtitle.text = res.getString(R.string.homescreen_point_history_subtitle)
+          buttonCouponItem.text = res.getString(R.string.homescreen_notice_button_title)
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.point_history))
+          }
+          // TODO go to point history
+          buttonCouponItem.setOnClickListener {
+            val activity = itemView.context as AppCompatActivity
+            val fragment = BranchCouponList()
+            val transaction =  activity.supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+          }
+        }
       }
+
+
     }
   }
 
@@ -182,6 +217,12 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 //        .into(categoryIcon)
     }
 
+  }
+
+  companion object {
+    enum class TYPE {
+      NOTICE, POINT_HISTORY
+    }
   }
 
 }
