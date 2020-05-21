@@ -11,18 +11,22 @@
         android:id="@+id/appbar"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        tools:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:collapseIcon="@drawable/nav_app_logo_25dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:elevation="0dp"
             app:navigationIcon="@drawable/nav_app_logo_25dp"
             app:title="@string/app_name"
             app:titleTextAppearance="@style/toolbarMenuTheme"

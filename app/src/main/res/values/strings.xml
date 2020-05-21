@@ -26,14 +26,14 @@
 
     <string name="homescreen_weblink" translatable="false">https://www.google.com</string>
 <!--    welcome guest, current point-->
-    <string name="homescreen_point_section_welcome" translatable="false">ようこそ ゲスト さま\n
-現在のポイント</string>
-    <string name="homescreen_point_up_to_next_rank" translatable="false">次のランクまで</string>
+    <string name="homescreen_point_section_welcome" translatable="false">ようこそ ゲスト さま
+</string>
+    <string name="homescreen_point_section_subtitle" translatable="false">現在のポイント</string>
+    <string name="homescreen_point_up_to_next_rank" translatable="false">次のランクまで %d</string>
     <string name="homescreen_notice_title" translatable="false">クーポン</string>
 <!--    Use coupons Get points for discount coupons! \ N-->
 <!--    The bonito bowl of bonito is even more delicious-->
-    <string name="homescreen_notice_subtitle" translatable="false">お得なクーポンをポイントを使ってGET!\n
-かつ庵のかつ丼をさらに美味く</string>
+    <string name="homescreen_notice_subtitle" translatable="false">お得なクーポンをポイントを使ってGET!\nかつ庵のかつ丼をさらに美味く</string>
 <!--    use coupon-->
     <string name="homescreen_notice_button_title" translatable="false">クーポンを使う</string>
 
@@ -46,9 +46,11 @@
     <string name="homescreen_point_history_subtitle" translatable="false">あなたのトランザクションのリアルタイム追跡。</string>
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
+    <string name="preference_current_points_key" translatable="false">Preference_Current_Points</string>
+    <string name="preference_total_points_key" translatable="false">Preference_Points</string>
     <string name="text_label_point" translatable="false">%s ポイント</string>
 
-    <string name="welcome" translatable="false">ようこそ, %s</string>
+    <string name="header_welcome" translatable="false">ようこそ, %s</string>
     <string name="header_title_morning" translatable="false">Good Morning</string>
     <string name="header_title_afternoon" translatable="false">Good Afternoon</string>
     <string name="header_title_night" translatable="false">Good Evening</string>

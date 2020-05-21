@@ -3,44 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:background="#555353"
+    android:layout_height="@dimen/homescreen_section"
+    android:background="@color/accent_white"
     tools:context=".HomeScreenFragment">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="@color/primary_black">
+        android:layout_marginTop="@dimen/homescreen_top_margin"
+        app:cardBackgroundColor="@color/primary_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:text="TextView"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHomeItemSubTitle" />
-
-            <TextView
                 android:id="@+id/textViewHomeItemSubTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
+                android:layout_marginTop="8dp"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewHomeItemTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewHomeItemTitle"
+                tools:text="@string/homescreen_notice_subtitle" />
 
             <Button
                 android:id="@+id/buttonCouponItem"
@@ -50,23 +39,26 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/home_screen_item_button_corners"
-                android:minWidth="150dp"
+                android:minWidth="200dp"
                 android:text="Button"
                 android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_constraintCircleRadius="50" />
+                tools:layout_constraintCircleRadius="50"
+                tools:text="@string/homescreen_notice_button_title" />
 
             <ImageView
                 android:id="@+id/imageViewHomeTitle"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
                 android:layout_marginBottom="8dp"
                 android:src="@android:drawable/btn_star_big_on"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/point_history" />
 
             <TextView
                 android:id="@+id/textViewHomeItemTitle"
@@ -75,12 +67,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:text="TextView"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/homescreen_notice_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -15,6 +15,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Helpers.PreferenceHelper
 import com.ortech.shopapp.Models.GlobalUser
+import com.ortech.shopapp.Models.UserSingleton
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -50,11 +51,12 @@ class MainActivity : AppCompatActivity() {
       .let { userUUID ->
         if (userUUID != null) {
           currentUUID = userUUID
+          UserSingleton.instance.setCurrentUserID(currentUUID)
           Log.d(TAG, "current UUID is not null")
         } else {
           with(sharedPreferences.edit()) {
             putString(getString(R.string.preference_UUID_key), defaultUUID)
-            commit()
+            UserSingleton.instance.setCurrentUserID(defaultUUID)
             apply()
           }
         }
@@ -100,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     sharedPreferences.getString(getString(R.string.preference_UUID_key), null)
       .let { userUUID ->
         if (userUUID != null) {
-
+          UserSingleton.instance.setCurrentUserID(userUUID)
           FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
               if (!task.isSuccessful) {
@@ -110,6 +112,7 @@ class MainActivity : AppCompatActivity() {
 
               val token = task.result?.token
               val data = hashMapOf("token" to token)
+              UserSingleton.instance.fcmToken = token!!
               db.collection("GlobalUsers").document(userUUID).set(data, SetOptions.merge())
             })
 

@@ -15,7 +15,7 @@
     <style name="SekaiActionBar" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/accent_white</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/primary_background</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_black</item>
         <item name="actionMenuTextColor">@color/primary_black</item>
@@ -28,7 +28,10 @@
     <style name="ExpandedAppBar" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/primary_black</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textColorPrimary">@color/primary_black</item>
+        <item name="actionMenuTextColor">@color/primary_black</item>
+        <item name="android:textStyle">bold</item>
+
     </style>
 
     <style name="toolbarMenuTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
@@ -41,7 +44,7 @@
     <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/primary_black</item>
         <item name="actionMenuTextColor">@color/primary_black</item>
-        <item name="android:textSize">5sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

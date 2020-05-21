@@ -1,5 +1,6 @@
 package com.ortech.shopapp.Adapters
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -7,11 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.common.io.Resources.getResource
 import com.ortech.shopapp.BranchCouponList
+import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
@@ -21,13 +25,17 @@ import kotlinx.android.synthetic.main.fragment_home_screen_item.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_points.view.*
 import kotlinx.android.synthetic.main.fragment_sticky_header.view.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   private val itemCount = 7
+  private val points = Pair("current" to 0, "total" to 0)
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
+
+
     return when(viewType) {
       0 -> {
         StickyHeaderSection(
@@ -59,6 +67,11 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   }
 
+  fun setPointsData() {
+    notifyItemChanged(2)
+  }
+
+  @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when(position) {
       0 -> (holder as StickyHeaderSection).bind()
@@ -78,7 +91,6 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
   override fun getItemCount(): Int {
     return itemCount
   }
-
 
   class HomeScreenItem constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val buttonCouponItem = itemView.buttonCouponItem
@@ -108,7 +120,7 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         TYPE.POINT_HISTORY -> {
           homeItemTitle.text = res.getString(R.string.homescreen_point_history_title)
           homeItemSubtitle.text = res.getString(R.string.homescreen_point_history_subtitle)
-          buttonCouponItem.text = res.getString(R.string.homescreen_notice_button_title)
+          buttonCouponItem.text = res.getString(R.string.homescreen_information_button_title)
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.point_history))
           }
@@ -117,6 +129,7 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             val activity = itemView.context as AppCompatActivity
             val fragment = BranchCouponList()
             val transaction =  activity.supportFragmentManager.beginTransaction()
+//            transaction.setCustomAnimations(enter, exit, popEnter, popExit)
             transaction.replace(R.id.container, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
@@ -139,20 +152,23 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
       when (currentTime) {
         in 0..12 -> {
-          headerTitle.text = res.getString(R.string.header_title_morning)
+          val title = res.getString(R.string.header_title_morning)
+          headerTitle.text = res.getString(R.string.header_welcome, title)
         }
         in 12..16 -> {
-          headerTitle.text = res.getString(R.string.header_title_afternoon)
+          val title = res.getString(R.string.header_title_afternoon)
+          headerTitle.text = res.getString(R.string.header_welcome, title)
         }
         in 16..21 -> {
-          headerTitle.text = res.getString(R.string.header_title_night)
+          val title = res.getString(R.string.header_title_night)
+          headerTitle.text = res.getString(R.string.header_welcome, title)
         }
         in 21..24 -> {
-          headerTitle.text = res.getString(R.string.header_title_night)
+          val title = res.getString(R.string.header_title_night)
+          headerTitle.text = res.getString(R.string.header_welcome, title)
         }
 
       }
-
 
       // TODO add action to go to staff login
       loginButton.setOnClickListener {
@@ -177,11 +193,34 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val totalPoints = itemView.textViewTotalPoints
     private val imageRanking = itemView.imageViewRanking
     private val rankingTitle = itemView.textViewRanking
+    private val res = itemView.context
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("SetTextI18n")
     fun bind() {
-      currentPoints.text = 324.toString()
-      totalPoints.text = 444.toString()
-      rankingTitle.text = "Bronze"
+      val userTotalPoints = UserSingleton.instance.getTotalPoints()
+      currentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
+      totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, userTotalPoints)
+
+      when(userTotalPoints) {
+        in (0..1999) -> {
+          rankingTitle.text = "Bronze"
+          imageRanking.setImageDrawable(res.getDrawable(R.drawable.bronze))
+        }
+        in 2000..6999 -> {
+          rankingTitle.text = "Silver"
+          imageRanking.setImageDrawable(res.getDrawable(R.drawable.silver))
+        }
+        in 7000..9999 -> {
+          rankingTitle.text = "Gold"
+          imageRanking.setImageDrawable(res.getDrawable(R.drawable.gold))
+        }
+        else -> {
+          rankingTitle.text = "Platinum"
+          imageRanking.setImageDrawable(res.getDrawable(R.drawable.ichiban))
+        }
+
+      }
     }
 
   }
@@ -209,7 +248,7 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     fun bind() {
       imageView.setOnClickListener {
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("https://facebook.com")
+        intent.data = Uri.parse("https://store.shopping.yahoo.co.jp/ra-mensekai/suspend.html")
         itemView.context.startActivity(intent)
       }
 //      Picasso.get()

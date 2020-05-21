@@ -8,7 +8,8 @@
     <color name="primary_black">#191919</color>
     <color name="accent_white">#FFFFFF</color>
 
-    <color name="primary_background">#191919</color>
+    <color name="primary_background">#2c2a27</color>
     <color name="primary_text">#FFFFFF</color>
     <color name="primary_lightgray">#d3d3d3</color>
+    <color name="primary_tab_selected">#d34410</color>
 </resources>

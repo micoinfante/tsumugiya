@@ -13,6 +13,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
+import com.ortech.shopapp.Models.UserSingleton
 import kotlinx.android.synthetic.main.fragment_instagram.*
 
 
@@ -36,6 +37,10 @@ class InstagramFragment : Fragment() {
     igWebView.webViewClient = WebViewClient()
     igWebView.loadUrl(getString(R.string.instagram_url))
 
+  }
+
+  companion object {
+    const val TAG = "InstagramFragment"
   }
 
 

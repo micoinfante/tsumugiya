@@ -3,17 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
-    android:background="@color/primary_black">
+    android:layout_height="@dimen/homescreen_section"
+    android:layout_marginTop="@dimen/homescreen_top_margin"
+    android:background="@color/primary_background">
 
     <TextView
         android:id="@+id/textViewSubHeading"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:gravity="center"
+        android:text="@string/homescreen_information_subtitle2"
         android:textColor="@color/accent_white"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,12 +23,13 @@
 
     <TextView
         android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="TextView"
+        android:gravity="center"
+        android:text="@string/homescreen_information_title"
         android:textColor="@color/accent_white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -35,10 +38,11 @@
 
     <TextView
         android:id="@+id/textViewHeading"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="@string/homescreen_information_subtitle1"
         android:textColor="@color/accent_white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,17 +52,19 @@
 
     <Button
         android:id="@+id/buttonRedirect"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/home_screen_item_button_corners"
         android:minWidth="150dp"
-        android:text="web"
+        android:text="@string/homescreen_information_button_title"
         android:textAllCaps="false"
         android:textColor="@color/accent_white"
-        android:textSize="14sp"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSubHeading" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSubHeading"
+        tools:minWidth="200dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.HeaderListAdapter
 import com.ortech.shopapp.Adapters.HomeScreenAdapter
 import com.ortech.shopapp.Adapters.StoreListAdapter
+import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.Views.HeaderItemDecoration
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.activity_home_screen.*
@@ -20,6 +21,9 @@ import kotlinx.android.synthetic.main.activity_home_screen.*
 class HomeScreen : Fragment() {
 
   private val mainAdapter = HomeScreenAdapter()
+  private val points = hashMapOf("current" to 0, "total" to 0)
+  private var recyclerView: RecyclerView? = null
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -33,15 +37,39 @@ class HomeScreen : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    val recyclerView: RecyclerView? = view.findViewById(R.id.homeRecyclerView)
+    recyclerView = view.findViewById(R.id.homeRecyclerView)
 
     recyclerView?.apply {
       layoutManager = LinearLayoutManager(this@HomeScreen.context)
-      val topSpacingDecoration = TopSpacingDecoration(10)
-      addItemDecoration(topSpacingDecoration)
-      addItemDecoration(HeaderItemDecoration(recyclerView, false, isHeader()))
-      recyclerView.adapter = mainAdapter
+      addItemDecoration(HeaderItemDecoration(recyclerView!!, false, isHeader()))
+      recyclerView!!.adapter = mainAdapter
     }
+    getPoints()
+
+  }
+
+  private fun notifyUpdatedData() {
+    (recyclerView?.adapter as HomeScreenAdapter).setPointsData()
+  }
+
+  private fun getPoints() {
+    // TODO fetch database points and assign to singleton
+    val db = Firebase.firestore
+    val userID = UserSingleton.instance.userID
+    db.collection("PointHistory").whereEqualTo("userID", userID)
+      .get()
+      .addOnSuccessListener { querySnapshot ->
+        val currentPoints = querySnapshot.map { it ->
+          it["points"] as Long
+        }.sum()
+        UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
+        Log.d(TAG, "currentPoints $currentPoints")
+        notifyUpdatedData()
+      }
+      .addOnFailureListener {
+        UserSingleton.instance.setCurrentPoints(0)
+        notifyUpdatedData()
+      }
 
   }
 
@@ -52,8 +80,8 @@ class HomeScreen : Fragment() {
     }
   }
 
-
-
-
+  companion object {
+    const val TAG = "HomeScreen"
+  }
 
 }

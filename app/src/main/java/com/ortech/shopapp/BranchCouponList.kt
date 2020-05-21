@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -44,6 +45,19 @@ class BranchCouponList : Fragment() {
       branchCouponListRecyclerView.adapter = couponBranchListAdapter
     }
     fetchCoupons()
+    setupToolBar()
+  }
+
+  private fun setupToolBar() {
+    val toolbar = toolbar
+    toolbar.setNavigationOnClickListener {
+      Log.d(TAG, "Navigation Clicked")
+      activity?.onBackPressed()
+    }
+//    val currentActivity = (activity as AppCompatActivity)
+//    currentActivity.setSupportActionBar(toolbar)
+//    currentActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
+//    currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
   }
 
 
