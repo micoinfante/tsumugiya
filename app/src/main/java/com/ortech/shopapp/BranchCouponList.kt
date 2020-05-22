@@ -53,10 +53,6 @@ class BranchCouponList : Fragment() {
     toolbar.setNavigationOnClickListener {
       activity?.supportFragmentManager?.popBackStack()
     }
-//    val currentActivity = (activity as AppCompatActivity)
-//    currentActivity.setSupportActionBar(toolbar)
-//    currentActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
-//    currentActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
   }
 
 

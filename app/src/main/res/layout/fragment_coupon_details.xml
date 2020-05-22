@@ -51,7 +51,7 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/constraintLayoutCouponDetails"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="500dp"

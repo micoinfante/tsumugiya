@@ -21,6 +21,12 @@ import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
 class BottomNavigationActivity : AppCompatActivity() {
 
+  private val homeScreenTab = HomeScreen()
+  private val customerTab = CustomerQRCodeActivity()
+  private val storeTab = StoreTabListActivity()
+  private val menuTab= MenuFragment()
+  private val instagramTab = InstagramFragment()
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_bottom_navigation)
@@ -29,30 +35,28 @@ class BottomNavigationActivity : AppCompatActivity() {
     val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     ActivityCompat.requestPermissions(this, permissions,0)
 
-    loadFragment(HomeScreen())
+    loadFragment(homeScreenTab)
     navView.setOnNavigationItemSelectedListener {
       when(it.itemId){
         R.id.navigation_home -> {
-          loadFragment(HomeScreen())
+          loadFragment(homeScreenTab)
           return@setOnNavigationItemSelectedListener true
         }
 
         R.id.navigation_customer_qr -> {
-          loadFragment(CustomerQRCodeActivity())
+          loadFragment(customerTab)
           return@setOnNavigationItemSelectedListener true
         }
         R.id.navigation_store_tabs -> {
-          loadFragment(StoreTabListActivity())
-//          val intent = Intent(this, StoreTabListActivity::class.java)
-//          startActivity(intent)
+          loadFragment(storeTab)
           return@setOnNavigationItemSelectedListener true
         }
         R.id.navigation_menu_category -> {
-          loadFragment(MenuFragment())
+          loadFragment(menuTab)
           return@setOnNavigationItemSelectedListener true
         }
         R.id.navigation_instagram -> {
-          loadFragment(InstagramFragment())
+          loadFragment(instagramTab)
           return@setOnNavigationItemSelectedListener true
         }
 

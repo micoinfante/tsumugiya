@@ -21,22 +21,16 @@ import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Models.UserSingleton
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_branch_coupon_item.*
+import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 import kotlinx.android.synthetic.main.fragment_coupon_details.*
 import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_COUPON = "coupon"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [CouponDetails.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CouponDetails : Fragment() {
-  // TODO: Rename and change types of parameters
-  private var coupon: Coupon? = null
 
+
+  private var coupon: Coupon? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -49,12 +43,13 @@ class CouponDetails : Fragment() {
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    // Inflate the layout for this fragment
+
     return inflater.inflate(R.layout.fragment_coupon_details, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupToolBar()
 
     val date = coupon?.untilDate?.toDate().toString()
     textViewCouponDetailsName.text = coupon?.couponLabel ?: ""
@@ -79,6 +74,13 @@ class CouponDetails : Fragment() {
 
       })
 
+  }
+
+  private fun setupToolBar() {
+    val toolbar = toolbarCouponDetail
+    toolbar.setNavigationOnClickListener {
+      activity?.supportFragmentManager?.popBackStack()
+    }
   }
 
   private fun generateQRCode() {
