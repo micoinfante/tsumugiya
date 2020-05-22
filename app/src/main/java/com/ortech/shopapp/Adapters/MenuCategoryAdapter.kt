@@ -9,12 +9,9 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ortech.shopapp.Models.MenuCategory
-import com.ortech.shopapp.Models.Store
 import com.ortech.shopapp.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
 import kotlinx.android.synthetic.main.fragment_menu_item.view.*
-import kotlinx.android.synthetic.main.fragment_store_item.view.*
 
 class MenuCategoryAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var categories: ArrayList<MenuCategory> = arrayListOf<MenuCategory>()

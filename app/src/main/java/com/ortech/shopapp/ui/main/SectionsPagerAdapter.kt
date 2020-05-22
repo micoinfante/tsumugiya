@@ -5,14 +5,12 @@ import android.content.res.Resources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.R
 import com.ortech.shopapp.StoreListFragment
 import com.ortech.shopapp.StoreMapTabFragment
 
-private val TAB_TITLES = arrayOf(
-    Resources.getSystem().getString( R.string.tab_text_1),
-    Resources.getSystem().getString( R.string.tab_text_1)
-)
+private val TAB_TITLES = arrayOf<String>("Store List", "Map")
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,6 +18,11 @@ private val TAB_TITLES = arrayOf(
  */
 class SectionsPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm) {
+
+    init {
+//        TAB_TITLES.plus(Resources.getSystem().getString( R.string.tab_text_1))
+//        TAB_TITLES.plus(Resources.getSystem().getString( R.string.tab_text_2))
+    }
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
@@ -40,4 +43,5 @@ class SectionsPagerAdapter(fm: FragmentManager) :
         // Show 2 total pages.
         return 2
     }
+
 }

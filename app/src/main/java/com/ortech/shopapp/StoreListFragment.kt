@@ -5,14 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.StoreListAdapter
-import com.ortech.shopapp.Models.Store
+import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.fragment_store_tab_list.*
 
@@ -29,10 +27,9 @@ class StoreListFragment : Fragment() {
   private var phone: String? = null
   private var storeHours: String? = null
 
+  private var test = "Test"
   private var db = Firebase.firestore
-  private var stores = arrayListOf<Store>()
-
-//  private lateinit var storeListRecyclerView: RecyclerView
+  private var stores = arrayListOf<Branch>()
   private lateinit var storeListAdapter: StoreListAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +54,7 @@ class StoreListFragment : Fragment() {
       .addOnSuccessListener { result ->
         for (document in result) {
 
-          val newStore = document.toObject(Store::class.java)
+          val newStore = document.toObject(Branch::class.java)
           this.stores.add(newStore)
           storeListAdapter.updateData(this.stores)
         }
@@ -80,30 +77,14 @@ class StoreListFragment : Fragment() {
     setup()
   }
 
+  fun getStores() : ArrayList<Branch> {
+    return this.stores
+  }
+
 
   companion object {
     private val TAG = "StoreListFragment"
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param storeName Parameter 1.
-     * @param address Parameter 2.
-     * @return A new instance of fragment StoreListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    @JvmStatic
-//    fun newInstance(storeName: String, address: String, phone: String, storeHours: String) =
-//      StoreListFragment().apply {
-//        arguments = Bundle().apply {
-//          putString(ARG_STORE_NAME, storeName)
-//          putString(ARG_ADDRESS, address)
-//          putString(ARG_PHONE, phone)
-//          putString(ARG_STORE_HOURS, storeHours)
-//        }
-//      }
-//  }
     fun newInstance() =
       StoreListFragment().apply {
 //        setup()

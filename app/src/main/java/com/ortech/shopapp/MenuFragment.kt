@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.MenuCategoryAdapter
 import com.ortech.shopapp.Models.MenuCategory
-import com.ortech.shopapp.Models.Store
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.fragment_menu.*
 

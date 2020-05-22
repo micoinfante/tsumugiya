@@ -25,19 +25,19 @@
     <string name="instagram_url" translatable="false">https://www.instagram.com/explore/tags/ramensekai</string>
 
     <string name="homescreen_weblink" translatable="false">https://www.google.com</string>
-<!--    welcome guest, current point-->
+    <!--    welcome guest, current point-->
     <string name="homescreen_point_section_welcome" translatable="false">ようこそ ゲスト さま
 </string>
     <string name="homescreen_point_section_subtitle" translatable="false">現在のポイント</string>
     <string name="homescreen_point_up_to_next_rank" translatable="false">次のランクまで %d</string>
     <string name="homescreen_notice_title" translatable="false">クーポン</string>
-<!--    Use coupons Get points for discount coupons! \ N-->
-<!--    The bonito bowl of bonito is even more delicious-->
+    <!--    Use coupons Get points for discount coupons! \ N-->
+    <!--    The bonito bowl of bonito is even more delicious-->
     <string name="homescreen_notice_subtitle" translatable="false">お得なクーポンをポイントを使ってGET!\nかつ庵のかつ丼をさらに美味く</string>
-<!--    use coupon-->
+    <!--    use coupon-->
     <string name="homescreen_notice_button_title" translatable="false">クーポンを使う</string>
 
-<!--    kuwashiku/in detail-->
+    <!--    kuwashiku/in detail-->
     <string name="homescreen_information_title" translatable="false">インフォメーション</string>
     <string name="homescreen_information_subtitle1" translatable="false">期間限定・おすすめ</string>
     <string name="homescreen_information_subtitle2" translatable="false">「うま辛極担々麺」 4月25日土から</string>
@@ -54,7 +54,7 @@
     <string name="header_title_morning" translatable="false">Good Morning</string>
     <string name="header_title_afternoon" translatable="false">Good Afternoon</string>
     <string name="header_title_night" translatable="false">Good Evening</string>
-    <string name="header_image_url" tools:ignore="TypographyDashes" translatable="false">https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/store%2Fbanner1.jpg?alt=media&amp;token=a22384ce-dd82-4eaa-820a-f0f90e27280d</string>
+    <string name="header_image_url" translatable="false" tools:ignore="TypographyDashes">https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/store%2Fbanner1.jpg?alt=media&amp;token=a22384ce-dd82-4eaa-820a-f0f90e27280d</string>
     <string name="home_link_notice" translatable="false" tools:ignore="TypographyDashes">https://shop.ra-mensekai.co.jp/news.html</string>
 
     <string name="tab_home">Home</string>
@@ -66,4 +66,5 @@
     <string name="coupon" translatable="false">クーポン</string>
     <string name="qr_code_title" translatable="false">表示されているQRコードを\nスタッフへご提示ください。</string>
     <string name="qr_code_subtitle" translatable="false">※クーポボンのご利用は、お一人様1日一回限りです。\n※他のサービスとの併用はできません。</string>
+    <string name="map_pin" translatable="false">⯆</string>
 </resources>

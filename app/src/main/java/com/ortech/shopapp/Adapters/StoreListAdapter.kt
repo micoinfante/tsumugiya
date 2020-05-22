@@ -8,15 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.ortech.shopapp.Models.Store
+import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.R
-import com.ortech.shopapp.StoreItemFragment
-import com.ortech.shopapp.StoreListFragment
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_store_item.view.*
 
 class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-  private var stores = arrayListOf<Store>()
+  private var stores = arrayListOf<Branch>()
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
@@ -47,8 +45,8 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     }
   }
 
-  fun updateData(stores: ArrayList<Store>) {
-    this.stores = stores
+  fun updateData(branches: ArrayList<Branch>) {
+    this.stores = branches
     notifyDataSetChanged()
   }
 
@@ -61,15 +59,15 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val storePicture = itemView.imageViewStore
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    fun bind(store: Store) {
-      storeName.text = store.branch
-      storeAddress.text = store.location
-      storePhone.text = store.phone
+    fun bind(branch: Branch) {
+      storeName.text = branch.branch
+      storeAddress.text = branch.location
+      storePhone.text = branch.phone
       @SuppressWarnings
-      storeHours.text = "${store.opening}: ${store.closing}"
+      storeHours.text = "${branch.opening}: ${branch.closing}"
       storePicture.clipToOutline = true
       Picasso.get()
-        .load(Uri.parse(store.branchURLImages))
+        .load(Uri.parse(branch.branchURLImages))
         .into(storePicture)
 
     }
