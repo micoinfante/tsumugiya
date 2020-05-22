@@ -67,4 +67,19 @@
     <string name="qr_code_title" translatable="false">表示されているQRコードを\nスタッフへご提示ください。</string>
     <string name="qr_code_subtitle" translatable="false">※クーポボンのご利用は、お一人様1日一回限りです。\n※他のサービスとの併用はできません。</string>
     <string name="map_pin" translatable="false">⯆</string>
+
+    <string name="last_points_acquired" translatable="false">最後に獲得したポイント</string>
+    <string name="today_earned_points" translatable="false">今日の獲得ポイント</string>
+    <string name="collect_points" translatable="false">ポイントを貯める</string>
+
+    <string name="location" >[Location]</string>
+    <string name="contact">[Contact]</string>
+    <string name="store_hours">[Store Hours]</string>
+    <string name="holiday">[Holiday]</string>
+    <string name="placeholder" translatable="false">[Placeholder]</string>
+    <string name="access_button">Access</string>
+    <string name="capacity">[Capacity]</string>
+    <string name="private_parking">[Private Parking]</string>
+    <string name="use_coupon">クーポンを使う</string>
+
 </resources>

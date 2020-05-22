@@ -94,7 +94,7 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         val fragment = CouponDetails.newInstance(coupon)
         val transaction =  activity.supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
+        transaction.addToBackStack("CouponDetails")
         transaction.commit()
       }
 

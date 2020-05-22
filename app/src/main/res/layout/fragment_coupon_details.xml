@@ -20,7 +20,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
 
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/toolbarBranchDetails">
 
 
             <androidx.appcompat.widget.Toolbar
@@ -135,6 +135,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginLeft="16dp"
                         android:contentDescription="Point logo"
+                        android:tint="@color/primary_orange"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

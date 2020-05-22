@@ -34,4 +34,14 @@
     <string name="tab_store">ストアー</string>
     <string name="tab_menu">メニュー</string>
     <string name="tab_insta">Instagram</string>
+
+    <string name="location" >[所在地]</string>
+    <string name="contact">[連給先]</string>
+    <string name="store_hours">[滞業時間]</string>
+    <string name="holiday">[定休日]</string>
+    <string name="placeholder" translatable="false">[Placeholder]</string>
+    <string name="access_button">アクセス</string>
+    <string name="capacity">[収容規模]</string>
+    <string name="private_parking">[専用駐車場]</string>
+    <string name="use_coupon">クーポンを使う</string>
 </resources>

@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
+import com.ortech.shopapp.BranchCouponList
+import com.ortech.shopapp.BranchDetails
 import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.R
 import com.squareup.picasso.Picasso
@@ -31,13 +35,11 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     return stores.size
   }
 
-
   @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when(holder) {
       is StoreItemViewHolder -> {
         holder.apply {
-          Log.d(TAG, "New Store: $position")
           val store = stores[position]
           holder.bind(store)
         }
@@ -50,8 +52,7 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     notifyDataSetChanged()
   }
 
-
-  class StoreItemViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
+  inner class StoreItemViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val storeName = itemView.tvStoreName
     private val storeAddress = itemView.tvAddress
     private val storePhone = itemView.tvPhoneNumber
@@ -70,6 +71,20 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         .load(Uri.parse(branch.branchURLImages))
         .into(storePicture)
 
+      itemView.setOnClickListener {
+        val activity = itemView.context as AppCompatActivity
+        val fragment = BranchDetails()
+        val transaction =  activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(
+          R.anim.enter_from_right,
+          R.anim.exit_to_left,
+          R.anim.enter_from_left,
+          R.anim.exit_to_right
+        )
+        transaction.replace(R.id.container, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+      }
     }
   }
 

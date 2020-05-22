@@ -32,7 +32,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title="全支店クーポン"
             app:titleEnabled="true"
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/toolbarBranchDetails">
 
 
             <TextView

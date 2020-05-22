@@ -10,22 +10,32 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
 
-        android:layout_height="192dp"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:toolbarId="@+id/toolbar"
+            android:layout_height="100dp"
+            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
 
-            app:contentScrim="?attr/colorPrimary">
+            app:toolbarId="@+id/toolbarBranchDetails">
 
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_width="match_parent"></androidx.appcompat.widget.Toolbar>
+                android:id="@+id/toolbarBranchDetails"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"></androidx.appcompat.widget.Toolbar>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="26dp"
+                android:gravity="bottom|left"
+                android:text="@string/tab_point"
+                android:textSize="30sp"
+                android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,32 +45,42 @@
 
 
         android:background="@color/primary_background"
+        android:minHeight="500dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:minHeight="500dp"
+            android:paddingBottom="100dp">
 
             <Button
                 android:id="@+id/btnScanQRCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button"
-                tools:layout_editor_absoluteX="276dp"
-                tools:layout_editor_absoluteY="667dp"
-                tools:text="Scan QRCode" />
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/plain_rounded_button"
+                android:minWidth="160dp"
+                android:text="@string/collect_points"
+                android:textColor="@color/accent_white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewQRCode" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewPoints"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:maxWidth="400dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,27 +91,27 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/textView21"
+                        android:id="@+id/textViewCustomerEarnedPoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
-                        android:text="TextView"
+                        android:text="0"
                         android:textColor="@color/primary_tab_selected"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@+id/textView19"
-                        app:layout_constraintTop_toBottomOf="@+id/textView20"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewCustomerLastPoints"
                         tools:text="0" />
 
                     <TextView
-                        android:id="@+id/textView20"
+                        android:id="@+id/textViewCustomerLastPoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
-                        android:text="TextView"
+                        android:text="0"
                         android:textColor="@color/primary_tab_selected"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -104,6 +124,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/tab_point"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="@+id/textView18"
                         app:layout_constraintTop_toTopOf="@+id/textView17" />
 
@@ -112,6 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/tab_point"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="@+id/textView14"
                         app:layout_constraintTop_toTopOf="@+id/textView16" />
 
@@ -120,7 +142,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="TextView"
+                        android:text="@string/today_earned_points"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@+id/textView12"
                         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
@@ -129,12 +152,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="TextView"
+                        android:text="@string/last_points_acquired"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="@+id/textView12"
                         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/textViewCustomerCurrentPoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -154,6 +178,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
                         android:text="@string/tab_point"
+                        android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/textView12" />
 
@@ -161,8 +186,11 @@
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginTop="9dp"
                         android:text="@string/tab_point"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toEndOf="@+id/imageView7"
                         app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
@@ -170,7 +198,7 @@
                         android:id="@+id/divider"
                         android:layout_width="0dp"
                         android:layout_height="5dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/dotted_line"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/textView12"
@@ -180,8 +208,8 @@
                         android:id="@+id/imageView7"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:layout_marginTop="16dp"
                         android:tint="@color/primary_orange"
                         app:layout_constraintStart_toStartOf="parent"
@@ -220,7 +248,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewPoints" />
+                app:layout_constraintTop_toBottomOf="@+id/cardViewPoints"
+                tools:gravity="left" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

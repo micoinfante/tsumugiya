@@ -11,12 +11,31 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:theme="@style/AppTheme.AppBarOverlay">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/collapsingToolbarStoreListTab"
+            >
+
+            <TextView
+                android:id="@+id/textViewStoreListTab"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="26dp"
+                android:gravity="bottom|left"
+                android:text="@string/tab_store"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
+            app:tabIndicatorColor="@color/primary_orange"
+            app:tabRippleColor="#FFFFFF"
+            app:tabSelectedTextColor="@color/primary_orange"
             app:tabTextColor="#000000" />
     </com.google.android.material.appbar.AppBarLayout>
 
