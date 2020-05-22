@@ -62,9 +62,9 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
 
       mMap = p0
       setupMap()
-//      val sydney = LatLng(-34.0, 151.0)
-//      mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//      mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+      val sydney = LatLng(-34.0, 151.0)
+      mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+      mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
   }

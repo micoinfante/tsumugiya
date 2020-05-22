@@ -1,6 +1,7 @@
 package com.ortech.shopapp.ui.main
 
 import android.content.Context
+import android.content.res.Resources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -9,8 +10,8 @@ import com.ortech.shopapp.StoreListFragment
 import com.ortech.shopapp.StoreMapTabFragment
 
 private val TAB_TITLES = arrayOf(
-    R.string.tab_text_1,
-    R.string.tab_text_2
+    Resources.getSystem().getString( R.string.tab_text_1),
+    Resources.getSystem().getString( R.string.tab_text_1)
 )
 
 /**
