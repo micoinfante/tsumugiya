@@ -66,9 +66,35 @@ class BottomNavigationActivity : AppCompatActivity() {
   }
 
   private fun loadFragment(fragment: Fragment) {
-    val transaction = supportFragmentManager.beginTransaction()
-    transaction.replace(R.id.container, fragment)
-    transaction.addToBackStack(null)
-    transaction.commit()
+//    val transaction = supportFragmentManager.beginTransaction()
+//    transaction.replace(R.id.container, fragment)
+//    transaction.addToBackStack(null)
+//    transaction.commit()
+    selectContentFragment(fragment)
+  }
+
+  private fun selectContentFragment(fragmentToSelect: Fragment) {
+    val fragmentTransaction = supportFragmentManager.beginTransaction()
+
+    val currentFragments = supportFragmentManager.fragments
+    if (currentFragments.contains(fragmentToSelect)) {
+      // Show the fragment that we want to be selected.
+      fragmentTransaction.show(fragmentToSelect)
+    } else {
+      // The fragment to be selected does not (yet) exist in the fragment manager, add it.
+      fragmentTransaction.add(R.id.container, fragmentToSelect)
+    }
+    // Iterate through all cached fragments.
+    for (cachedFragment in currentFragments) {
+      if (cachedFragment !== fragmentToSelect) {
+        // Hide the fragments that are not the one being selected.
+        // Uncomment following line and change the name of the fragment if your host isn't an activity
+        // and a fragment otherwise whole view will get hidden.
+        // if (!cachedFragment.toString().contains("HomeContainerFragment"))
+
+        fragmentTransaction.hide(cachedFragment)
+      }
+    }
+    fragmentTransaction.commit()
   }
 }

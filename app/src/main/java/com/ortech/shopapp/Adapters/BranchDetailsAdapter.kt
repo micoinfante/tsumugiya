@@ -1,5 +1,6 @@
 package com.ortech.shopapp.Adapters
 
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,14 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ortech.shopapp.Models.Branch
+import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.R
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.branch_details_section.view.*
+import kotlinx.android.synthetic.main.fragment_branch_details.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
 
-class BranchDetailsAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var itemCount = 2
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -44,14 +49,42 @@ class BranchDetailsAdapter(): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun bind() {
-      imageView.setImageDrawable(itemView.context.getDrawable(R.drawable.app_logo_sekai))
+      Picasso.get()
+        .load(Uri.parse(branch.branchURLImages))
+        .into(imageView)
     }
 
   }
 
   inner class BranchDetailsHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
-    fun bind() {
+    private val location = itemView.textViewBranchDetailsLocation
+    private val contact = itemView.textViewBranchDetailsContact
+    private val storeHours = itemView.textViewBranchDetailsHours
+    private val holiday = itemView.textViewRegularHoliday
+    private val creditCard = itemView.textViewCreditCard
+    private val smartPayment = itemView.textViewSmartPayment
+    private val directions = itemView.textViewDirections
+    private val customerCapacity = itemView.textViewCustomerCapacity
+    private val parking = itemView.textViewCustomerParking
+    private val buttonMap = itemView.buttonBranchDetailsDirection
+    private val buttonUseCoupon = itemView.buttonBranchDetailsUseCoupon
+    private val currentPoints = itemView.textViewBranchDetailsCurrentPoints
+    private val res = itemView.context
 
+    fun bind() {
+      location.text = branch.location
+      contact.text = branch.phone
+      storeHours.text = res.getString(R.string.dash_store_hours, branch.opening , branch.closing)
+      holiday.text = branch.holiday
+      creditCard.text = branch.credit
+      smartPayment.text = branch.smartPhone
+      directions.text = branch.access
+      customerCapacity.text = branch.capacity
+      parking.text = branch.exclusive
+
+      currentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
+      // TODO view google maps
+      //  TODO use coupon/points
     }
   }
 

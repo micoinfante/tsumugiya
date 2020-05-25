@@ -38,10 +38,13 @@
     <string name="location" >[所在地]</string>
     <string name="contact">[連給先]</string>
     <string name="store_hours">[滞業時間]</string>
-    <string name="holiday">[定休日]</string>
     <string name="placeholder" translatable="false">[Placeholder]</string>
     <string name="access_button">アクセス</string>
     <string name="capacity">[収容規模]</string>
     <string name="private_parking">[専用駐車場]</string>
     <string name="use_coupon">クーポンを使う</string>
+    <string name="regular_holiday">[定休日]</string>
+    <string name="credit_card">[クレジットカード]</string>
+    <string name="smart_payment">[スマホ決済]</string>
+    <string name="branch_details_directions">[アクセス]</string>
 </resources>

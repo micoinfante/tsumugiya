@@ -75,11 +75,15 @@
     <string name="location" >[Location]</string>
     <string name="contact">[Contact]</string>
     <string name="store_hours">[Store Hours]</string>
-    <string name="holiday">[Holiday]</string>
     <string name="placeholder" translatable="false">[Placeholder]</string>
     <string name="access_button">Access</string>
     <string name="capacity">[Capacity]</string>
     <string name="private_parking">[Private Parking]</string>
     <string name="use_coupon">クーポンを使う</string>
+    <string name="regular_holiday">[定休日]</string>
+    <string name="credit_card">[クレジットカード]</string>
+    <string name="smart_payment">[スマホ決済]</string>
+    <string name="branch_details_directions">[アクセス]</string>
 
+    <string name="dash_store_hours" translatable="false">%1$s - %2$s</string>
 </resources>

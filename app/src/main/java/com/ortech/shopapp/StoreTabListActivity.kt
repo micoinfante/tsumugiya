@@ -13,6 +13,11 @@ import com.ortech.shopapp.ui.main.SectionsPagerAdapter
 
 class StoreTabListActivity : Fragment() {
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
@@ -24,6 +29,7 @@ class StoreTabListActivity : Fragment() {
     val sectionsPagerAdapter = SectionsPagerAdapter(childFragmentManager)
     val viewPager: ViewPager = view.findViewById(R.id.view_pager)
     viewPager.adapter = sectionsPagerAdapter
+    viewPager.offscreenPageLimit = 2
     setupScrollListener(viewPager, sectionsPagerAdapter)
     val tabs: TabLayout = view.findViewById(R.id.tabs)
     tabs.setupWithViewPager(viewPager)

@@ -133,12 +133,12 @@
             android:minHeight="400dp">
 
             <TextView
-                android:id="@+id/textView36"
+                android:id="@+id/textViewSmartPayment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
+                android:gravity="start"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,11 +152,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="12dp"
-                android:text="TextView"
+                android:text="@string/smart_payment"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView35" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewCreditCard" />
 
             <TextView
                 android:id="@+id/textView29"
@@ -165,19 +165,18 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:text="TextView"
+                android:text="@string/regular_holiday"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView33"
+                android:id="@+id/textViewRegularHoliday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -190,23 +189,23 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="12dp"
-                android:text="TextView"
+                android:text="@string/credit_card"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView33" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewRegularHoliday" />
 
             <TextView
-                android:id="@+id/textView35"
+                android:id="@+id/textViewCreditCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView34" />
+                app:layout_constraintTop_toBottomOf="@+id/textView34"
+                tools:text="Visa" />
 
             <TextView
                 android:id="@+id/textView38"
@@ -215,20 +214,23 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="12dp"
-                android:text="TextView"
+                android:text="@string/branch_details_directions"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView36" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewSmartPayment" />
 
             <TextView
-                android:id="@+id/textView39"
+                android:id="@+id/textViewDirections"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="start"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView38" />
 
@@ -238,22 +240,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="12dp"
-                android:text="TextView"
+                android:text="@string/capacity"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView39" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewDirections" />
 
             <TextView
-                android:id="@+id/textView41"
+                android:id="@+id/textViewCustomerCapacity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="TextView"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="start"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView40" />
+                app:layout_constraintTop_toBottomOf="@+id/textView40"
+                tools:text="1 customer 1 table" />
 
             <TextView
                 android:id="@+id/textView42"
@@ -261,24 +267,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="12dp"
-                android:text="TextView"
+                android:text="@string/private_parking"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView41" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewCustomerCapacity" />
 
             <TextView
-                android:id="@+id/textView43"
+                android:id="@+id/textViewCustomerParking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="TextView"
                 android:textColor="@color/accent_white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView42" />
+                app:layout_constraintTop_toBottomOf="@+id/textView42"
+                tools:text="5 PARKING" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -324,7 +330,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
             <TextView
-                android:id="@+id/textView50"
+                android:id="@+id/textViewBranchDetailsCurrentPoints"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -338,18 +344,18 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="100dp"
+                android:layout_width="130dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="fitXY"
-                app:layout_constraintStart_toEndOf="@+id/textView50"
-                app:layout_constraintTop_toTopOf="@+id/textView50"
-                app:srcCompat="@drawable/point_history" />
+                app:layout_constraintStart_toEndOf="@+id/textViewBranchDetailsCurrentPoints"
+                app:layout_constraintTop_toTopOf="@+id/textViewBranchDetailsCurrentPoints"
+                app:srcCompat="@drawable/coupon_icon" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/buttonBranchDetailsUseCoupon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

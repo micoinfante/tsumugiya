@@ -73,7 +73,7 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
       itemView.setOnClickListener {
         val activity = itemView.context as AppCompatActivity
-        val fragment = BranchDetails()
+        val fragment = BranchDetails.newInstance(branch)
         val transaction =  activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(
           R.anim.enter_from_right,

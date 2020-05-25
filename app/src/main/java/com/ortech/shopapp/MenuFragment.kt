@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.MenuCategoryAdapter
+import com.ortech.shopapp.Adapters.MenuType
 import com.ortech.shopapp.Models.MenuCategory
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.fragment_menu.*
@@ -36,6 +37,7 @@ class MenuFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    retainInstance = true
     arguments?.let {
       param1 = it.getString(ARG_PARAM1)
       param2 = it.getString(ARG_PARAM2)
@@ -50,7 +52,7 @@ class MenuFragment : Fragment() {
   }
 
   private fun setup() {
-    menuCategoryAdapter = MenuCategoryAdapter()
+    menuCategoryAdapter = MenuCategoryAdapter(MenuType.Category)
     val recyclerView = menuCategoryRecyclerView
     recyclerView.apply {
       layoutManager = LinearLayoutManager(this@MenuFragment.context)
@@ -65,7 +67,7 @@ class MenuFragment : Fragment() {
         for (document in result) {
           val newMenuCategory = document.toObject(MenuCategory::class.java)
           this.menuCategories.add(newMenuCategory)
-          menuCategoryAdapter.updateData(this.menuCategories)
+          menuCategoryAdapter.updateCategoryData(this.menuCategories)
         }
       }
       .addOnFailureListener {exception ->

@@ -1,6 +1,7 @@
 package com.ortech.shopapp.Models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Branch (
   val branch: String = "",
@@ -24,7 +25,7 @@ data class Branch (
   val latitude: Double = 0.0,
   val longitude: Double = 0.0
 
-) {
+): Serializable {
 //  constructor():this("",
 //    "",
 //    "",

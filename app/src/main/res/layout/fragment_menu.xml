@@ -3,10 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/accent_white"
     tools:context=".MenuFragment">
 
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/menuCategoryRecyclerView"
       android:layout_width="match_parent"
-      android:layout_height="match_parent" />
+      android:layout_height="match_parent"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginBottom="50dp"
+      android:paddingBottom="10dp" />
 </FrameLayout>

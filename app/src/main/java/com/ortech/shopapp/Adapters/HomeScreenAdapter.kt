@@ -106,19 +106,20 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
           homeItemSubtitle.text = res.getString(R.string.homescreen_notice_subtitle)
           buttonCouponItem.text = res.getString(R.string.homescreen_notice_button_title)
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.point_history))
+            homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.coupon_icon))
           }
           buttonCouponItem.setOnClickListener {
             val activity = itemView.context as AppCompatActivity
             val fragment = BranchCouponList()
             val transaction =  activity.supportFragmentManager.beginTransaction()
             transaction.setCustomAnimations(
-              R.anim.enter_from_right,
+              R.anim.enter_from_left,
               R.anim.exit_to_left,
               R.anim.enter_from_left,
-              R.anim.exit_to_right
+              R.anim.exit_to_left
             )
-            transaction.replace(R.id.container, fragment)
+            transaction.add(R.id.container, fragment)
+//            transaction.replace(R.id.container, fragment)
             transaction.addToBackStack("BranchCouponList")
             transaction.commit()
           }

@@ -31,6 +31,11 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   lateinit var mapView: MapView
   private var branches = ArrayList<Branch>()
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    retainInstance = true
+  }
+
   override fun onResume() {
     super.onResume()
     setupMapIfNeeded()

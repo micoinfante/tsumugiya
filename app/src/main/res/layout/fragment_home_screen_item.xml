@@ -58,7 +58,7 @@
                 android:src="@android:drawable/btn_star_big_on"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/point_history" />
+                app:srcCompat="@drawable/coupon_icon" />
 
             <TextView
                 android:id="@+id/textViewHomeItemTitle"

@@ -34,6 +34,7 @@ class StoreListFragment : Fragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    retainInstance = true
   }
 
   private fun setup() {
