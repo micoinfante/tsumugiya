@@ -1,5 +1,6 @@
 package com.ortech.shopapp.Adapters
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
@@ -83,9 +84,36 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
       parking.text = branch.exclusive
 
       currentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
-      // TODO view google maps
+
       //  TODO use coupon/points
+      buttonMap.setOnClickListener {
+
+        var uri: Uri?
+        var useBrowser = false
+
+        if (branch.latitude == 0.toDouble() || branch.longitude == 0.toDouble()) {
+          uri = Uri.parse("https://www.google.com.ph/maps/search/${branch.location}")
+          val intent = Intent(Intent.ACTION_VIEW, uri)
+          intent.setPackage("com.google.android.apps.maps")
+        } else {
+          val geoUri = Uri.parse("geo:${branch.latitude},${branch.longitude}")
+          var intent = Intent(Intent.ACTION_VIEW, geoUri)
+          intent.setPackage("com.google.android.apps.maps")
+          if (intent.resolveActivity(itemView.context.packageManager) !== null) {
+            itemView.context.startActivity(intent)
+          } else {
+            useBrowser = true
+            uri = Uri.parse("http://maps.google.com/maps?saddr=${branch.latitude},${branch.longitude}")
+            intent = Intent(Intent.ACTION_VIEW, uri)
+            intent.setPackage("com.google.android.apps.maps")
+            itemView.context.startActivity(intent)
+          }
+        }
+
+
+      }
     }
+
   }
 
   companion object {

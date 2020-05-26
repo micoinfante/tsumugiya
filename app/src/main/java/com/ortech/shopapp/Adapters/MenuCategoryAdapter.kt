@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ortech.shopapp.BranchCouponList
+import com.ortech.shopapp.MenuItemDetails
 import com.ortech.shopapp.MenuListFragment
 import com.ortech.shopapp.Models.MenuCategory
 import com.ortech.shopapp.Models.MenuList
@@ -109,19 +110,37 @@ class MenuCategoryAdapter (private val type: MenuType = MenuType.Category): Recy
   }
 
   inner class MenuListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
     private val menuLabel = itemView.textViewMenuListItem
     private val menuImage = itemView.imageViewMenuListItem
+
+
     fun bind(list: MenuList) {
       menuLabel.text = list.menuLabel
       Picasso.get()
         .load(Uri.parse(list.imageURL))
         .into(menuImage)
+      itemView.setOnClickListener {
+        val activity = itemView.context as AppCompatActivity
+        val fragment = MenuItemDetails.newInstance(list)
+        val transaction =  activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(
+          R.anim.enter_from_left,
+          R.anim.exit_to_left,
+          R.anim.enter_from_left,
+          R.anim.exit_to_left
+        )
+        transaction.add(R.id.container, fragment)
+        transaction.addToBackStack("MenuListFragment")
+        transaction.commit()
+      }
     }
   }
 
   companion object {
     const val TAG = "StoreListAdapter"
   }
+
 }
 enum class MenuType{
   Category, List

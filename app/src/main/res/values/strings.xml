@@ -86,4 +86,7 @@
     <string name="branch_details_directions">[アクセス]</string>
 
     <string name="dash_store_hours" translatable="false">%1$s - %2$s</string>
+    <string name="tax_included" translatable="false">※価格は全て税込みです。</string>
+    <string name="go_to_store" translatable="false">この商品の店舗へ</string>
+
 </resources>

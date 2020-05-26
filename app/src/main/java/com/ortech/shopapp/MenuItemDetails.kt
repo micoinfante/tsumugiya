@@ -42,7 +42,7 @@ class MenuItemDetails : Fragment() {
   private fun setup() {
     menuItem?.let {
       val adapter = MenuItemDetailsAdapter(it)
-      val recyclerView = recyclerViewBranchDetails
+      val recyclerView = recyclerViewMenuItemDetails
       recyclerView.apply {
         recyclerView.adapter = adapter
         addItemDecoration(HeaderItemDecoration(recyclerView!!, false, isHeader()))
