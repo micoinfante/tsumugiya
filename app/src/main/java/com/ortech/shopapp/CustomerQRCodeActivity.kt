@@ -1,20 +1,25 @@
 package com.ortech.shopapp
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.android.synthetic.main.activity_customer_qr_code.*
-import java.util.*
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import com.ortech.shopapp.Models.RequestCode
 
 class CustomerQRCodeActivity : Fragment() {
 
@@ -32,10 +37,12 @@ class CustomerQRCodeActivity : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    generateQRCode("testString")
+    generateQRCode()
+    setupScanner()
+    setupCameraPermission()
   }
 
-  private fun generateQRCode(data: String) {
+  private fun generateQRCode() {
     val imageView = view?.findViewById<ImageView>(R.id.imageViewQRCode)
     val content = getUUID() + ", transfer"
 
@@ -51,6 +58,58 @@ class CustomerQRCodeActivity : Fragment() {
     }
     imageView?.setImageBitmap(bitmap)
   }
+
+  private fun setupScanner() {
+    btnScanQRCode.setOnClickListener {
+      val intent = Intent(activity, QRCodeScannerActivity::class.java)
+      startActivity(intent)
+    }
+  }
+
+  private fun setupCameraPermission() {
+    val permission = activity?.applicationContext?.let {
+      ContextCompat.checkSelfPermission(
+        it,
+        Manifest.permission.CAMERA
+      )
+    }
+
+    if (permission != PackageManager.PERMISSION_GRANTED) {
+      Log.i(TAG, "Permission to use camera is denied")
+      makeRequest()
+    }
+
+  }
+
+  private fun makeRequest() {
+    this.activity?.let {
+      ActivityCompat.requestPermissions(
+        it.applicationContext as Activity,
+        arrayOf(Manifest.permission.CAMERA),
+        RequestCode.CAMERA)
+    }
+  }
+
+  override fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<out String>,
+    grantResults: IntArray
+  ) {
+//    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    when (requestCode) {
+        RequestCode.CAMERA -> {
+
+        if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+          Log.i(TAG, "Permission has been denied by user")
+        } else {
+          Log.i(TAG, "Permission has been granted by user")
+        }
+      }
+    }
+  }
+
+
 
   private fun getUUID() : String? {
     val sharedPreferences = activity?.getSharedPreferences(getString(R.string.preference_UUID_key),
