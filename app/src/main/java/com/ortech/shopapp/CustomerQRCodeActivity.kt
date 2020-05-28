@@ -18,7 +18,9 @@ import kotlinx.android.synthetic.main.activity_customer_qr_code.*
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.journeyapps.barcodescanner.CaptureManager
 import com.ortech.shopapp.Models.RequestCode
 
 class CustomerQRCodeActivity : Fragment() {
@@ -40,6 +42,7 @@ class CustomerQRCodeActivity : Fragment() {
     generateQRCode()
     setupScanner()
     setupCameraPermission()
+
   }
 
   private fun generateQRCode() {
@@ -61,18 +64,30 @@ class CustomerQRCodeActivity : Fragment() {
 
   private fun setupScanner() {
     btnScanQRCode.setOnClickListener {
-      val intent = Intent(activity, QRCodeScannerActivity::class.java)
-      startActivity(intent)
+//      val intent = Intent(activity, QRCodeScannerActivity::class.java)
+//      startActivity(intent)
+      val activity = (context as? AppCompatActivity)
+      val fragment = QRCodeScannerActivity()
+      val transaction = activity?.supportFragmentManager?.beginTransaction()
+
+      transaction?.setCustomAnimations(
+        R.anim.enter_from_left,
+        R.anim.exit_to_left,
+        R.anim.enter_from_left,
+        R.anim.exit_to_left
+      )
+      transaction?.replace(R.id.container, fragment,"CustomerQRCode")
+      transaction?.addToBackStack(null)
+      transaction?.commit()
+
     }
   }
 
   private fun setupCameraPermission() {
-    val permission = activity?.applicationContext?.let {
-      ContextCompat.checkSelfPermission(
-        it,
-        Manifest.permission.CAMERA
-      )
-    }
+    val permission =
+      this.context?.let { it1 ->
+        ContextCompat.checkSelfPermission(it1, Manifest.permission.CAMERA) }
+
 
     if (permission != PackageManager.PERMISSION_GRANTED) {
       Log.i(TAG, "Permission to use camera is denied")
@@ -82,9 +97,9 @@ class CustomerQRCodeActivity : Fragment() {
   }
 
   private fun makeRequest() {
-    this.activity?.let {
+    this.context?.let {
       ActivityCompat.requestPermissions(
-        it.applicationContext as Activity,
+        activity as AppCompatActivity,
         arrayOf(Manifest.permission.CAMERA),
         RequestCode.CAMERA)
     }

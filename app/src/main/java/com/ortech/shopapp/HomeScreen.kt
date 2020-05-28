@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_home_screen.*
 class HomeScreen : Fragment() {
 
   private val mainAdapter = HomeScreenAdapter()
-  private val points = hashMapOf("current" to 0, "total" to 0)
   private var recyclerView: RecyclerView? = null
 
   override fun onCreateView(
@@ -29,7 +28,6 @@ class HomeScreen : Fragment() {
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    val db = Firebase.firestore
 
     return inflater.inflate(R.layout.activity_home_screen, container, false)
   }
@@ -63,7 +61,6 @@ class HomeScreen : Fragment() {
           it["points"] as Long
         }.sum()
         UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
-        Log.d(TAG, "currentPoints $currentPoints")
         notifyUpdatedData()
       }
       .addOnFailureListener {

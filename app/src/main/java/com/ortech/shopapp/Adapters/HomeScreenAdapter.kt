@@ -35,7 +35,6 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
 
-
     return when(viewType) {
       0 -> {
         StickyHeaderSection(
@@ -99,15 +98,18 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val homeItemThumbnail = itemView.imageViewHomeTitle
     private val res = itemView.context
 
+    @SuppressLint("NewApi")
     fun bind(type: TYPE) {
       when (type) {
         TYPE.NOTICE -> {
           homeItemTitle.text = res.getString(R.string.homescreen_notice_title)
           homeItemSubtitle.text = res.getString(R.string.homescreen_notice_subtitle)
           buttonCouponItem.text = res.getString(R.string.homescreen_notice_button_title)
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.coupon_icon))
-          }
+
+          Glide.with(itemView)
+            .load(res.getDrawable(R.drawable.coupon_icon))
+            .into(homeItemThumbnail)
+
           buttonCouponItem.setOnClickListener {
             val activity = itemView.context as AppCompatActivity
             val fragment = BranchCouponList()
@@ -128,10 +130,11 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
           homeItemTitle.text = res.getString(R.string.homescreen_point_history_title)
           homeItemSubtitle.text = res.getString(R.string.homescreen_point_history_subtitle)
           buttonCouponItem.text = res.getString(R.string.homescreen_information_button_title)
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            homeItemThumbnail.setImageDrawable(res.getDrawable(R.drawable.point_history))
-          }
-          // TODO go to point history
+
+          Glide.with(itemView)
+            .load(res.getDrawable(R.drawable.point_history))
+            .into(homeItemThumbnail)
+
           buttonCouponItem.setOnClickListener {
             val activity = itemView.context as AppCompatActivity
             val fragment = BranchCouponList()
@@ -214,22 +217,30 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       currentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
       totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, userTotalPoints)
 
-      when(userTotalPoints) {
+      when(2000) {
         in (0..1999) -> {
           rankingTitle.text = "Bronze"
-          imageRanking.setImageDrawable(res.getDrawable(R.drawable.bronze))
+          Glide.with(itemView)
+            .load(res.getDrawable(R.drawable.bronze))
+            .into(imageRanking)
         }
         in 2000..6999 -> {
           rankingTitle.text = "Silver"
-          imageRanking.setImageDrawable(res.getDrawable(R.drawable.silver))
+          Glide.with(itemView)
+            .load(res.getDrawable(R.drawable.silver))
+            .into(imageRanking)
         }
         in 7000..9999 -> {
           rankingTitle.text = "Gold"
-          imageRanking.setImageDrawable(res.getDrawable(R.drawable.gold))
+          Glide.with(itemView)
+            .load(res.getDrawable(R.drawable.ichiban))
+            .into(imageRanking)
         }
         else -> {
           rankingTitle.text = "Platinum"
-          imageRanking.setImageDrawable(res.getDrawable(R.drawable.ichiban))
+          Glide.with(itemView)
+            .load(res.getDrawable(R.drawable.ichiban))
+            .into(imageRanking)
         }
 
       }

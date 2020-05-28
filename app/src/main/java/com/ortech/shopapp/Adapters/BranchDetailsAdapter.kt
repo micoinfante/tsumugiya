@@ -89,7 +89,6 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
       buttonMap.setOnClickListener {
 
         var uri: Uri?
-        var useBrowser = false
 
         if (branch.latitude == 0.toDouble() || branch.longitude == 0.toDouble()) {
           uri = Uri.parse("https://www.google.com.ph/maps/search/${branch.location}")
@@ -102,7 +101,6 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
           if (intent.resolveActivity(itemView.context.packageManager) !== null) {
             itemView.context.startActivity(intent)
           } else {
-            useBrowser = true
             uri = Uri.parse("http://maps.google.com/maps?saddr=${branch.latitude},${branch.longitude}")
             intent = Intent(Intent.ACTION_VIEW, uri)
             intent.setPackage("com.google.android.apps.maps")

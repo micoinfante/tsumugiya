@@ -89,4 +89,24 @@
     <string name="tax_included" translatable="false">※価格は全て税込みです。</string>
     <string name="go_to_store" translatable="false">この商品の店舗へ</string>
 
+    <string name="settings_title" translatable="false">設定</string>
+    <string name="settings_notification" translatable="false">通知</string>
+    <string name="settings_privacy_policy" translatable="false">プライバシーポリシー</string>
+    <string name="settings_opinion" translatable="false">ご意見・ご感想</string>
+    <string name="settings_notice" translatable="false">お知らせ</string>
+    <string name="settings_media_information" translatable="false">メディア掲載情報</string>
+    <string name="settings_copyright" translatable="false">© 株式会社 翔志.All Rights Reserved</string>
+    <string name="settings_sign_in" translatable="false">サインイン</string>
+
+    <string name="options_login" translatable="false">ログイン</string>
+    <string name="options_signup" translatable="false">登録</string>
+    <string name="options_later" translatable="false">あとで</string>
+
+    <string name="user_name" translatable="false">お名前</string>
+    <string name="user_email" translatable="false">メールアドレス</string>
+    <string name="user_password" translatable="false">パスワード</string>
+    <string name="user_forgot_password" translatable="false">パスワードを忘れた方</string>
+    <string name="label_or" translatable="false">または</string>
+
+
 </resources>
