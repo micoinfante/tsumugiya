@@ -17,7 +17,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_logo_sekai" />
+        app:srcCompat="@drawable/app_logo_sekai"
+        android:contentDescription="@string/app_logo" />
 
     <EditText
         android:id="@+id/editTextLoginEmail"
@@ -36,6 +37,7 @@
         android:inputType="textEmailAddress"
         android:minWidth="300dp"
         android:textSize="16sp"
+        android:importantForAutofill="no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +56,7 @@
         android:background="@drawable/textfield_rectangle"
         android:cursorVisible="true"
         android:ems="10"
+        android:importantForAutofill="no"
         android:hint="@string/user_password"
         android:inputType="textPassword"
         android:minWidth="300dp"
@@ -107,7 +110,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonGoogleLogin" />
 
     <View
         android:id="@+id/divider2"
@@ -139,7 +142,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/buttonFacebookLogin"
         android:layout_width="148dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -150,7 +153,7 @@
         app:srcCompat="@drawable/facebook" />
 
     <ImageView
-        android:id="@+id/imageView8"
+        android:id="@+id/buttonGoogleLogin"
         android:layout_width="148dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"

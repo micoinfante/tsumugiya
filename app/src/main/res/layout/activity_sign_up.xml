@@ -16,7 +16,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/app_logo_sekai" />
+        app:srcCompat="@drawable/app_logo_sekai"
+        android:contentDescription="@string/app_logo" />
 
     <EditText
         android:id="@+id/editTextSignUpName"
@@ -28,6 +29,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:importantForAutofill="no"
         android:background="@drawable/textfield_rectangle"
         android:cursorVisible="true"
         android:ems="10"
@@ -50,6 +52,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:importantForAutofill="no"
         android:background="@drawable/textfield_rectangle"
         android:cursorVisible="true"
         android:ems="10"
@@ -67,6 +70,7 @@
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:importantForAutofill="no"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
