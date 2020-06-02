@@ -2,8 +2,10 @@ package com.ortech.shopapp
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +13,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
+import com.ortech.shopapp.Models.PointHistory
+import com.ortech.shopapp.Models.UserSingleton
 import github.nisrulz.qreader.QRDataListener
 import github.nisrulz.qreader.QREader
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.activity_qr_code_scanner.*
+import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 import org.json.JSONException
+import java.util.*
 
 
-class QRCodeScannerActivity : Fragment() {
+class QRCodeScannerActivity : AppCompatActivity() {
 
   private var qrScanIntegrator: IntentIntegrator? = null
   private var qrEader: QREader? = null
@@ -29,38 +37,45 @@ class QRCodeScannerActivity : Fragment() {
     qrEader?.start()
   }
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.activity_qr_code_scanner, container, false)
-  }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-//    nav_view.visibility = View.GONE
-    val activity = (context as? AppCompatActivity)
-    val navBar = activity?.findViewById<NavigationView>(R.id.nav_view)
-  }
+    setContentView(R.layout.activity_qr_code_scanner)
 
-  override fun onDestroy() {
-    super.onDestroy()
-//    nav_view.visibility = View.VISIBLE
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
     val surfaceView = camera_view
-    qrEader = QREader.Builder(this.context, surfaceView,  QRDataListener {data ->
-      //      Toast.makeText(this, data, Toast.LENGTH_LONG).show()
+    qrEader = QREader.Builder(this.baseContext, surfaceView,  QRDataListener {data ->
+      transferPoints(data)
+      Log.d(TAG, "Scanned data: $data")
+      qrEader?.stop()
     }).facing(QREader.BACK_CAM)
       .enableAutofocus(true)
-      .height(camera_view.height)
+      .height(500)
       .width(camera_view.width)
       .build()
     if (!this.qrEader?.isCameraRunning!!) {
       qrEader?.start()
+    }
+
+    surfaceView.setOnClickListener {
+      performAction()
+    }
+
+    setupToolBar()
+
+  }
+
+
+  private fun setupToolBar() {
+    val toolbar = toolbar
+    toolbar.setNavigationOnClickListener {
+      closeActivity()
+    }
+  }
+
+  private fun closeActivity() {
+    if (supportFragmentManager.backStackEntryCount == 0) {
+      this.finish();
+    } else {
+      super.onBackPressed(); //replaced
     }
   }
 
@@ -78,30 +93,38 @@ class QRCodeScannerActivity : Fragment() {
     qrEader?.releaseAndCleanup()
   }
 
-//  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//    val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-//    if (result != null) {
-//      // If QRCode has no data.
-//      if (result.contents == null) {
-//        Toast.makeText(this, "Null data", Toast.LENGTH_LONG).show()
-//      } else {
-//        // If QRCode contains data.
-//        try {
-//          // Converting the data to json format
-//          Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
-//
-//        } catch (e: JSONException) {
-//          e.printStackTrace()
-//
-//          // Data not in the expected format. So, whole object as toast message.
-//          Toast.makeText(this, result.contents, Toast.LENGTH_LONG).show()
-//        }
-//
-//      }
-//    } else {
-//      super.onActivityResult(requestCode, resultCode, data)
-//    }
-//  }
+
+  private fun transferPoints(data: String) {
+    Log.d(TAG, "Trying to transfer points")
+    val dataArray = data.split(",")
+    progressbarQRScanner.visibility = View.VISIBLE
+    val transferData = PointHistory(
+      "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N","富山呉羽店","https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
+      "","","","qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
+      100, "","rhuet.transit@gmail.com",
+      "","","", Date(),"transferred",
+      dataArray.first()
+    )
+    val db = Firebase.firestore
+
+    db.collection("PointHistory").add(transferData)
+      .addOnCompleteListener {
+        if (it.isSuccessful) {
+          Log.d(TAG, "Transferred 100points to ${UserSingleton.instance.userID}")
+        }
+        if (it.isComplete) {
+          progressbarQRScanner.visibility = View.INVISIBLE
+          closeActivity()
+        }
+      }
+      .addOnFailureListener {
+        Log.d(TAG, "Failed to transfer points to ${UserSingleton.instance.userID} - ${it.localizedMessage}")
+      }
+  }
+
+  companion object {
+    const val TAG = "QRCodeScannerActivity"
+  }
 
 
 }

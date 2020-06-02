@@ -107,6 +107,7 @@
     <string name="user_forgot_password" translatable="false">パスワードを忘れた方</string>
     <string name="label_or" translatable="false">または</string>
     <string name="app_logo">App Logo Banner</string>
+    <string name="qr_code_corners">Qr Code Corners</string>
 
 
 </resources>

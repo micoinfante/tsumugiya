@@ -9,7 +9,7 @@
     android:background="@color/primary_background">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbarHome"
 
         android:layout_width="match_parent"
         android:layout_height="100dp">
@@ -55,13 +55,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="500dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewQRScan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
                 android:layout_marginTop="8dp"
+                android:minWidth="250dp"
+                android:minHeight="250dp"
+                android:padding="8dp"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,23 +75,19 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp">
 
                     <ImageView
                         android:id="@+id/imageViewCouponDetailQRCode"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:adjustViewBounds="true"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:adjustViewBounds="false"
                         android:contentDescription="Customer QRCode to earn points"
                         android:scaleType="fitXY"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/test_qrcode" />

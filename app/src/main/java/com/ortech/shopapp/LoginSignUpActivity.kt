@@ -16,6 +16,7 @@ class LoginSignUpActivity : AppCompatActivity(), View.OnClickListener {
     buttonOptionSignUp.setOnClickListener(this)
     buttonOptionLogin.setOnClickListener(this)
     buttonOptionLater.setOnClickListener(this)
+
   }
 
   override fun onClick(v: View?) {
@@ -28,7 +29,7 @@ class LoginSignUpActivity : AppCompatActivity(), View.OnClickListener {
           val intent = Intent(this, SignUpActivity::class.java)
           startActivity(intent)
         }
-        R.id.buttonLogin -> {
+        R.id.buttonOptionLogin -> {
           val intent = Intent(this, LoginActivity::class.java)
           startActivity(intent)
         }

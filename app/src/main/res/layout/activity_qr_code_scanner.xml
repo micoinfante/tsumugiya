@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbarHome"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -21,24 +21,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".QRCodeScannerActivity"></androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
     <SurfaceView
         android:id="@+id/camera_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:contentDescription="@string/qr_code_corners"
+        app:srcCompat="@drawable/qr_corners"
+        android:layout_gravity="center|center_vertical|center_horizontal"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressbarQRScanner"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center|center_vertical|center_horizontal"
+        android:visibility="invisible" />
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -16,7 +16,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.QRCodeWriter
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Models.UserSingleton
 import com.squareup.picasso.Picasso
@@ -84,21 +87,16 @@ class CouponDetails : Fragment() {
   }
 
   private fun generateQRCode() {
-    val imageView = view?.findViewById<ImageView>(R.id.imageViewCouponDetailQRCode)
+    val imageView = imageViewCouponDetailQRCode
     val userID = UserSingleton.instance.userID
-    val content = "$userID, ${coupon?.couponId}, ${coupon?.points}, ${coupon?.couponLabel}"
+    val content = "$userID, ${coupon?.couponID}, ${coupon?.points}, ${coupon?.couponLabel}"
 
-    val writer = QRCodeWriter()
-    val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 1000, 1000)
-    val width = bitMatrix.width
-    val height = bitMatrix.height
-    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-    for (x in 0 until width) {
-      for (y in 0 until height) {
-        bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
-      }
-    }
-    imageView?.setImageBitmap(bitmap)
+    val multiFormatWriter = MultiFormatWriter()
+    val hintMap = mapOf(EncodeHintType.MARGIN to 0)
+    val bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 512, 512, hintMap)
+    val qrCode = BarcodeEncoder().createBitmap(bitMatrix)
+
+    Glide.with(this.view!!).load(qrCode).into(imageView)
   }
 
   companion object {

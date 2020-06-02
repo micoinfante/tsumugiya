@@ -21,11 +21,11 @@ class SignUpActivity : AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_sign_up)
     name = editTextSignUpName
     email = editTextSignUpEmail
     password = editTextSignupPassword
     setupButtons()
-    setContentView(R.layout.activity_sign_up)
   }
 
   private fun setupButtons() {
@@ -56,6 +56,10 @@ class SignUpActivity : AppCompatActivity() {
       if (shouldContinue) {
         writeToDatabase(name, email, password)
       }
+    }
+
+    buttonSignUpLater.setOnClickListener {
+      finish()
     }
   }
 

@@ -5,10 +5,11 @@
 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbarHome"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,7 +20,7 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_action_back"
             app:title="@string/settings_title"
-            app:titleTextAppearance="@style/toolbarMenuTheme"></androidx.appcompat.widget.Toolbar>
+            app:titleTextAppearance="@style/toolbarMenuTheme" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -37,9 +38,11 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:background="#FFFFFF"
             android:minHeight="300dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,8 +54,8 @@
                     android:id="@+id/textViewSettingsNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
                     android:layout_weight="1"
-                    android:minWidth="200dp"
                     android:text="@string/settings_notification"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -68,10 +71,10 @@
 
             <TextView
                 android:id="@+id/textViewSettingsPrivacy"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:minWidth="200dp"
                 android:text="@string/settings_privacy_policy"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -80,6 +83,7 @@
                 android:id="@+id/textViewSettingsOpinion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:minWidth="200dp"
                 android:text="@string/settings_opinion"
@@ -89,8 +93,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                android:minWidth="textViewSettingsNotice"
                 android:text="@string/settings_notice"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -99,6 +103,7 @@
                 android:id="@+id/textViewSettingsMediaInformation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:minWidth="200dp"
                 android:text="@string/settings_media_information"
@@ -109,11 +114,13 @@
                 android:id="@+id/buttonGoToSignIn"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/plain_rounded_button"
                 android:maxHeight="50dp"
                 android:minWidth="150dp"
                 android:padding="8dp"
+                android:paddingBottom="16dp"
                 android:text="@string/settings_sign_in"
                 android:textColor="@color/accent_white"
                 android:textSize="18sp"

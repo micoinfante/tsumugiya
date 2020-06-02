@@ -34,6 +34,10 @@ import kotlin.collections.ArrayList
 class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
   private var couponList = ArrayList<Coupon>()
 
+  init {
+    setHasStableIds(true)
+  }
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
     return CouponViewHolder(inflater.inflate(R.layout.fragment_branch_coupon_item, parent, false))
@@ -63,6 +67,7 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val timestamp = itemView.textViewCouponItemTimestamp
     private val requiredPoints = itemView.textViewCouponItemPoints
     private val couponThumbnail = itemView.imageViewCouponItemThumbnail
+    private val res = itemView.context
 
     fun bind(coupon: Coupon) {
       val date = coupon.untilDate?.toDate().toString()
@@ -73,20 +78,9 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
       Glide.with(itemView)
         .load(Uri.parse(coupon.imageURL))
-        .apply(RequestOptions.circleCropTransform())
-        .into(object: CustomViewTarget<ImageView, Drawable>(couponThumbnail){
-          override fun onLoadFailed(errorDrawable: Drawable?) {
-          }
-
-          override fun onResourceCleared(placeholder: Drawable?) {
-
-          }
-
-          override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-           couponThumbnail.setImageDrawable(resource)
-          }
-
-        })
+        .circleCrop()
+        .placeholder(R.drawable.app_logo_sekai)
+        .into(couponThumbnail)
 
 
       itemView.setOnClickListener {

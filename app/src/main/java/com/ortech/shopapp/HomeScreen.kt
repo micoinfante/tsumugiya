@@ -1,13 +1,16 @@
 package com.ortech.shopapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.HeaderListAdapter
@@ -43,6 +46,28 @@ class HomeScreen : Fragment() {
       recyclerView!!.adapter = mainAdapter
     }
     getPoints()
+
+    buttonSettingsDebug.setOnClickListener  {
+      val intent = Intent(context, SettingsActivity::class.java)
+      startActivity(intent)
+    }
+
+    appbarHome.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+      //                    if(verticalOffset == 0 || verticalOffset <= mToolbar.getHeight() && !mToolbar.getTitle().equals(mCollapsedTitle)){
+      //                    mCollapsingToolbar.setTitle(mCollapsedTitle);
+      //                }else if(!mToolbar.getTitle().equals(mExpandedTitle)){
+      //                    mCollapsingToolbar.setTitle(mExpandedTitle);
+      //                }
+      if (verticalOffset == 0) {
+        var layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.topMargin = toolbarHomeScreen.height
+        buttonSettingsDebug.layoutParams = layoutParams
+      } else {
+        var layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.topMargin = 0
+        buttonSettingsDebug.layoutParams = layoutParams
+      }
+    })
 
   }
 

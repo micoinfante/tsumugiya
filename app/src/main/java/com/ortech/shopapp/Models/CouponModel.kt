@@ -8,7 +8,7 @@ data class Coupon (
   val couponStore: String = "",
   val storeID: String = "",
   val couponDetails: String = "",
-  val couponId: String = "",
+  val couponID: String = "",
   val couponLabel: String = "",
   val fromDate: Timestamp? = null,
   val imageURL: String = "",

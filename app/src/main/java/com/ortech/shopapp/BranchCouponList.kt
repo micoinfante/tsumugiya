@@ -1,5 +1,6 @@
 package com.ortech.shopapp
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -44,6 +46,21 @@ class BranchCouponList : Fragment() {
       addItemDecoration(topSpacing)
       branchCouponListRecyclerView.adapter = couponBranchListAdapter
     }
+
+    this.context?.let {
+      ContextCompat.getColor(
+        it, R.color.primary_orange)
+    }?.let { swipeRefreshCouponList.setProgressBackgroundColorSchemeColor(it) }
+
+//    swipeRefreshCouponList.setColorSchemeColors(ContextCompat.getColor(
+//      this.context!!, R.color.primary_orange))
+    swipeRefreshCouponList.setColorSchemeColors(Color.WHITE)
+
+    swipeRefreshCouponList.setOnRefreshListener {
+      fetchCoupons()
+    }
+
+
     fetchCoupons()
     setupToolBar()
   }
@@ -55,8 +72,14 @@ class BranchCouponList : Fragment() {
     }
   }
 
+  private fun updateData() {
+    couponBranchListAdapter.updateData(couponList)
+  }
+
 
   private fun fetchCoupons() {
+    couponList.clear()
+    updateData()
     db.collection("CMSCoupon").get()
       .addOnSuccessListener {querySnapshot ->
         Log.d(TAG, querySnapshot.size().toString())
@@ -64,8 +87,10 @@ class BranchCouponList : Fragment() {
           val newCoupon = queryDocumentSnapshot.toObject(Coupon::class.java)
           Log.d(TAG, "new coupon : $newCoupon.id")
           couponList.add(newCoupon)
-          couponBranchListAdapter.updateData(couponList)
+          updateData()
+          progressBarBranchCouponList.visibility = View.GONE
         }
+        swipeRefreshCouponList.isRefreshing = false
       }
       .addOnFailureListener {
         Log.e(TAG, "Can't get branch coupons ${it.toString()}")

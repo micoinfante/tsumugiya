@@ -2,6 +2,8 @@ package com.ortech.shopapp.Models
 
 import com.google.firebase.Timestamp
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
+import java.util.*
 
 data class PointHistory(
   val branchID: String = "",
@@ -17,8 +19,9 @@ data class PointHistory(
   val storeID: String = "",
   val storeName: String = "",
   val storeURL: String = "",
-  @SerializedName("timeStamp")
-  val timestamp: Timestamp? = null,
+  val timeStamp: Date = Date(),
   val transfer: String = "",
   val userID: String = ""
-)
+): Serializable{
+  constructor(): this("")
+}

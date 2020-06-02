@@ -10,14 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.common.io.Resources.getResource
 import com.ortech.shopapp.BranchCouponList
 import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.R
-import com.squareup.picasso.Picasso
+import com.ortech.shopapp.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_fourth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
@@ -25,7 +23,6 @@ import kotlinx.android.synthetic.main.fragment_home_screen_item.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_points.view.*
 import kotlinx.android.synthetic.main.fragment_sticky_header.view.*
 import java.util.*
-import kotlin.collections.HashMap
 
 class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
@@ -158,12 +155,13 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   inner class StickyHeaderSection (itemView: View): RecyclerView.ViewHolder(itemView) {
     private val headerTitle = itemView.textViewHeaderTitle
-    private val loginButton = itemView.imageButtonStaffLogin
 
     fun bind() {
       val calendar = Calendar.getInstance()
       val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
       val res = itemView.context
+
+      Log.d(TAG, "Sticky Header Binded")
 
       when (currentTime) {
         in 0..12 -> {
@@ -185,12 +183,13 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
       }
 
-      // TODO add action to go to staff login
-      loginButton.setOnClickListener {
-
+      itemView.setOnClickListener {
+        Log.d(TAG, "This is ItemView")
       }
 
+
     }
+
   }
 
   inner class HomeScreenHeader constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -199,6 +198,10 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       Glide.with(itemView)
         .load(Uri.parse(itemView.context.getString(R.string.header_image_url)))
         .into(imageViewHeader)
+
+      imageViewHeader.setOnClickListener {
+        Log.d(TAG, "Homescreen header")
+      }
     }
   }
 
@@ -282,6 +285,8 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
   }
 
   companion object {
+    const val TAG = "HomeScreenAdapter"
+
     enum class TYPE {
       NOTICE, POINT_HISTORY
     }

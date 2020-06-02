@@ -1,29 +1,37 @@
 package com.ortech.shopapp
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.android.synthetic.main.activity_customer_qr_code.*
-import android.Manifest
-import android.app.Activity
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.journeyapps.barcodescanner.CaptureManager
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.qrcode.QRCodeWriter
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.ortech.shopapp.Models.RequestCode
+import kotlinx.android.synthetic.main.activity_customer_qr_code.*
 
-class CustomerQRCodeActivity : Fragment() {
+class CustomerQRCodeActivity : Fragment(){
+
+  private var handler = Handler()
+  private var runnable = Runnable { Log.d(TAG, "Add action to back") }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -43,42 +51,54 @@ class CustomerQRCodeActivity : Fragment() {
     setupScanner()
     setupCameraPermission()
 
+    view.setOnTouchListener { v, event ->
+      when (event?.action) {
+        MotionEvent.ACTION_MOVE -> {
+          stopHandler()
+          startHandler()
+        }
+      }
+
+      v?.onTouchEvent(event) ?: true
+    }
+  }
+
+  private fun stopHandler() {
+    handler.removeCallbacks(runnable)
+  }
+
+  private fun startHandler() {
+    handler.postDelayed(runnable, 10000)
   }
 
   private fun generateQRCode() {
-    val imageView = view?.findViewById<ImageView>(R.id.imageViewQRCode)
+    val imageView = imageViewQRCode
     val content = getUUID() + ", transfer"
 
-    val writer = QRCodeWriter()
-    val bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE, 512, 512)
-    val width = bitMatrix.width
-    val height = bitMatrix.height
-    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-    for (x in 0 until width) {
-      for (y in 0 until height) {
-        bitmap.setPixel(x, y, if (bitMatrix.get(x, y)) Color.BLACK else Color.WHITE)
-      }
-    }
-    imageView?.setImageBitmap(bitmap)
+    val multiFormatWriter = MultiFormatWriter()
+    val hintMap = mapOf(EncodeHintType.MARGIN to 0)
+    val bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 512, 512, hintMap)
+    val qrCode = BarcodeEncoder().createBitmap(bitMatrix)
+    Glide.with(this.view!!).load(qrCode).into(imageView)
   }
 
   private fun setupScanner() {
     btnScanQRCode.setOnClickListener {
-//      val intent = Intent(activity, QRCodeScannerActivity::class.java)
-//      startActivity(intent)
-      val activity = (context as? AppCompatActivity)
-      val fragment = QRCodeScannerActivity()
-      val transaction = activity?.supportFragmentManager?.beginTransaction()
-
-      transaction?.setCustomAnimations(
-        R.anim.enter_from_left,
-        R.anim.exit_to_left,
-        R.anim.enter_from_left,
-        R.anim.exit_to_left
-      )
-      transaction?.replace(R.id.container, fragment,"CustomerQRCode")
-      transaction?.addToBackStack(null)
-      transaction?.commit()
+      val intent = Intent(activity, QRCodeScannerActivity::class.java)
+      startActivity(intent)
+//      val activity = (context as? AppCompatActivity)
+//      val fragment = QRCodeScannerActivity()
+//      val transaction = activity?.supportFragmentManager?.beginTransaction()
+//
+//      transaction?.setCustomAnimations(
+//        R.anim.enter_from_left,
+//        R.anim.exit_to_left,
+//        R.anim.enter_from_left,
+//        R.anim.exit_to_left
+//      )
+//      transaction?.replace(R.id.container, fragment,"CustomerQRCode")
+//      transaction?.addToBackStack(null)
+//      transaction?.commit()
 
     }
   }
@@ -138,9 +158,14 @@ class CustomerQRCodeActivity : Fragment() {
     }
   }
 
+
   companion object {
     const val TAG = "CustomerQRCode"
   }
 
 
+}
+
+interface UserInteractionListener {
+  fun onUserInteraction()
 }
