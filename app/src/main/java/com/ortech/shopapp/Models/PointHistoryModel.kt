@@ -13,13 +13,13 @@ data class PointHistory(
   val couponItem: String = "",
   val customerEmail: String = "",
   val mainID: String = "",
-  val points: Number = 0,
+  val points: Int = 0,
   val redeem: String = "",
   val staffEmail: String = "",
   val storeID: String = "",
   val storeName: String = "",
   val storeURL: String = "",
-  val timeStamp: Date = Date(),
+  val timeStamp: Timestamp? = null,
   val transfer: String = "",
   val userID: String = ""
 ): Serializable{

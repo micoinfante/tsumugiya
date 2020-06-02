@@ -3,15 +3,12 @@ package com.ortech.shopapp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.fragment_branch_details.*
-import java.net.URI
 
 class SettingsActivity: AppCompatActivity(), View.OnClickListener {
 
@@ -43,7 +40,7 @@ class SettingsActivity: AppCompatActivity(), View.OnClickListener {
   }
 
   private fun setupToolBar() {
-    toolbar.setNavigationOnClickListener {
+    toolbarHistory.setNavigationOnClickListener {
       finish()
     }
   }

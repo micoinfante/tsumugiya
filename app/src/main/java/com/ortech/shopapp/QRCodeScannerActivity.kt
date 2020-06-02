@@ -1,18 +1,10 @@
 package com.ortech.shopapp
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.Point
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.google.android.material.navigation.NavigationView
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
@@ -20,10 +12,7 @@ import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.Models.UserSingleton
 import github.nisrulz.qreader.QRDataListener
 import github.nisrulz.qreader.QREader
-import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 import kotlinx.android.synthetic.main.activity_qr_code_scanner.*
-import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
-import org.json.JSONException
 import java.util.*
 
 
@@ -65,7 +54,7 @@ class QRCodeScannerActivity : AppCompatActivity() {
 
 
   private fun setupToolBar() {
-    val toolbar = toolbar
+    val toolbar = toolbarHistory
     toolbar.setNavigationOnClickListener {
       closeActivity()
     }
@@ -102,7 +91,7 @@ class QRCodeScannerActivity : AppCompatActivity() {
       "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N","富山呉羽店","https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
       "","","","qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
       100, "","rhuet.transit@gmail.com",
-      "","","", Date(),"transferred",
+      "","","", Timestamp(Date()),"transferred",
       dataArray.first()
     )
     val db = Firebase.firestore

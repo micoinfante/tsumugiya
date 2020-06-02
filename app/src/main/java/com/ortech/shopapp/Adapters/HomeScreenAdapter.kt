@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ortech.shopapp.BranchCouponList
+import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.Models.UserSingleton
+import com.ortech.shopapp.PointHistoryActivity
 import com.ortech.shopapp.R
 import com.ortech.shopapp.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
@@ -133,18 +135,20 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             .into(homeItemThumbnail)
 
           buttonCouponItem.setOnClickListener {
-            val activity = itemView.context as AppCompatActivity
-            val fragment = BranchCouponList()
-              val transaction =  activity.supportFragmentManager.beginTransaction()
-              transaction.setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-                R.anim.enter_from_left,
-                R.anim.exit_to_right
-              )
-              transaction.replace(R.id.container, fragment)
-              transaction.addToBackStack(null)
-              transaction.commit()
+//            val activity = itemView.context as AppCompatActivity
+//            val fragment = BranchCouponList()
+//              val transaction =  activity.supportFragmentManager.beginTransaction()
+//              transaction.setCustomAnimations(
+//                R.anim.enter_from_right,
+//                R.anim.exit_to_left,
+//                R.anim.enter_from_left,
+//                R.anim.exit_to_right
+//              )
+//              transaction.replace(R.id.container, fragment)
+//              transaction.addToBackStack(null)
+//              transaction.commit()
+            val intent = Intent(itemView.context, PointHistoryActivity::class.java)
+            itemView.context.startActivity(intent)
           }
         }
       }
