@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -84,12 +85,15 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
 
       itemView.setOnClickListener {
-        val activity = itemView.context as AppCompatActivity
-        val fragment = CouponDetails.newInstance(coupon)
-        val transaction =  activity.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack("CouponDetails")
-        transaction.commit()
+        val intent = Intent(itemView.context, CouponDetails::class.java)
+        intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
+        itemView.context.startActivity(intent)
+//        val activity = itemView.context as AppCompatActivity
+//        val fragment = CouponDetails.newInstance(coupon)
+//        val transaction =  activity.supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.container, fragment)
+//        transaction.addToBackStack("CouponDetails")
+//        transaction.commit()
       }
 
     }

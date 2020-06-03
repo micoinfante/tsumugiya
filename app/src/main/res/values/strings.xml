@@ -2,8 +2,8 @@
     <string name="app_name">ラーメン世界</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_tab" translatable="false">TabActivity</string>
-    <string name="tab_text_1" translatable="false">Store List</string>
-    <string name="tab_text_2" translatable="false">Map</string>
+    <string name="tab_text_1" translatable="false">店舗一覧</string>
+    <string name="tab_text_2" translatable="false">地図から探す</string>
     <string name="title_activity_bottom_navigation" translatable="false">BottomNavigationActivity</string>
     <string name="next" translatable="false">Next</string>
     <string name="previous" translatable="false">Previous</string>
@@ -107,7 +107,8 @@
     <string name="user_forgot_password" translatable="false">パスワードを忘れた方</string>
     <string name="label_or" translatable="false">または</string>
     <string name="app_logo">App Logo Banner</string>
-    <string name="qr_code_corners">Qr Code Corners</string>
+    <string name="qr_code_corners" translatable="false">Qr Code Corners</string>
+    <string name="yen" translatable="false">¥%s</string>
 
 
 </resources>

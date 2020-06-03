@@ -76,10 +76,11 @@ class MenuItemDetailsAdapter (private val menuItem: MenuList): RecyclerView.Adap
     private val title = itemView.textViewMenuItemLabel
     private val price = itemView.textViewMenuItemPrice
     private val description = itemView.textViewMenuItemDescription
+    private val res = itemView.context.resources
 
     fun bind() {
       title.text = menuItem.menuLabel
-      price.text = menuItem.menuPrice
+      price.text = res.getString(R.string.yen, menuItem.menuPrice)
       description.text = menuItem.menuDetails
       // ToDo AddAction to button
     }

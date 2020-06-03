@@ -12,7 +12,7 @@ data class User(
 }
 
 data class GlobalUser(
-  val deviceUUID: String,
+  val deviceUUID: String = "",
   val email: String = "default",
   val password: String = "default",
   val restoID: String = "",

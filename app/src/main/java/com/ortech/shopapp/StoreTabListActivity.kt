@@ -2,13 +2,14 @@ package com.ortech.shopapp
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.viewpager.widget.ViewPager
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.material.tabs.TabLayout
 import com.ortech.shopapp.ui.main.SectionsPagerAdapter
 
 class StoreTabListActivity : Fragment() {
@@ -29,7 +30,7 @@ class StoreTabListActivity : Fragment() {
     val sectionsPagerAdapter = SectionsPagerAdapter(childFragmentManager)
     val viewPager: ViewPager = view.findViewById(R.id.view_pager)
     viewPager.adapter = sectionsPagerAdapter
-    viewPager.offscreenPageLimit = 2
+    viewPager.offscreenPageLimit = 11;
     setupScrollListener(viewPager, sectionsPagerAdapter)
     val tabs: TabLayout = view.findViewById(R.id.tabs)
     tabs.setupWithViewPager(viewPager)
@@ -56,6 +57,20 @@ class StoreTabListActivity : Fragment() {
       }
 
     })
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+
+    val fm = activity?.supportFragmentManager
+    var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+
+    if (supportMapFragment != null) {
+      fm?.beginTransaction()?.remove(supportMapFragment)
+      fm?.commit{
+        commitAllowingStateLoss()
+      }
+    }
   }
 
   companion object {

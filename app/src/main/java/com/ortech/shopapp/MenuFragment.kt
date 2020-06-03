@@ -13,7 +13,9 @@ import com.ortech.shopapp.Adapters.MenuCategoryAdapter
 import com.ortech.shopapp.Adapters.MenuType
 import com.ortech.shopapp.Models.MenuCategory
 import com.ortech.shopapp.Views.TopSpacingDecoration
+import kotlinx.android.synthetic.main.fragment_branch_list.*
 import kotlinx.android.synthetic.main.fragment_menu.*
+import kotlinx.android.synthetic.main.fragment_menu.menuCategoryRecyclerView
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -51,6 +53,7 @@ class MenuFragment : Fragment() {
 
   }
 
+
   private fun setup() {
     menuCategoryAdapter = MenuCategoryAdapter(MenuType.Category)
     val recyclerView = menuCategoryRecyclerView
@@ -58,6 +61,13 @@ class MenuFragment : Fragment() {
       layoutManager = LinearLayoutManager(this@MenuFragment.context)
       addItemDecoration(TopSpacingDecoration(6))
       recyclerView.adapter = menuCategoryAdapter
+    }
+  }
+
+  private fun setupToolBar() {
+    val toolbar = toolbarMenu
+    toolbar.setNavigationOnClickListener {
+      activity?.supportFragmentManager?.popBackStack()
     }
   }
 

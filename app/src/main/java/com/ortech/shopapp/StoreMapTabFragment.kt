@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.google.android.gms.maps.*
@@ -27,13 +28,13 @@ import kotlinx.android.synthetic.main.fragment_map_pin.view.*
 
 class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
 
-  private lateinit var mMap: GoogleMap
-  lateinit var mapView: MapView
+  private var mMap: GoogleMap? = null
+  private var mapView: MapView? = null
   private var branches = ArrayList<Branch>()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    retainInstance = true
+//    retainInstance = true
   }
 
   override fun onResume() {
@@ -52,14 +53,23 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   }
 
   private fun setupMapIfNeeded() {
-//    if (mapView == null) {
-//
-//    }
+    if (mMap == null) {
+      val fm = activity?.supportFragmentManager
+      var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+      if (supportMapFragment == null) {
+        supportMapFragment = SupportMapFragment.newInstance()
+        fm?.beginTransaction()?.replace(R.id.mapView, supportMapFragment)?.commit()
+      }
+      supportMapFragment?.getMapAsync(this)
+      if (branches.count() == 0) {
+        getBranches()
+      }
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
+    Log.d(TAG, "ViewCreated")
     val fm = activity?.supportFragmentManager
     var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
     if (supportMapFragment == null) {
@@ -68,7 +78,7 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
     }
     supportMapFragment?.getMapAsync(this)
     getBranches()
-  }
+}
 
   @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   override fun onMapReady(p0: GoogleMap?) {
@@ -83,7 +93,7 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   }
 
   private fun setupMap() {
-    mMap.isMyLocationEnabled = true
+//    mMap?.isMyLocationEnabled ?: return = true
 
   }
 
@@ -115,6 +125,7 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   }
 
   private fun getBranches() {
+    Log.d(TAG, "Getting branches")
     val db = Firebase.firestore
     db.collection("CMSBranches").get()
       .addOnSuccessListener { result ->
@@ -135,11 +146,29 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
       val options = MarkerOptions()
         .position(position)
         .icon(it)
-      mMap.addMarker(options)
-      mMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+      mMap?.addMarker(options)
+      mMap?.moveCamera(CameraUpdateFactory.newLatLng(position))
       this.branches.add(branch)
     }
   }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+
+    val fm = activity?.supportFragmentManager
+    var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+//    if (supportMapFragment == null) {
+//      supportMapFragment = SupportMapFragment.newInstance()
+//      fm?.beginTransaction()?.replace(R.id.mapView, supportMapFragment)?.commit()
+//    }
+    if (supportMapFragment != null) {
+      fm?.beginTransaction()?.remove(supportMapFragment)
+      fm?.commit {
+        commitAllowingStateLoss()
+      }
+    }
+  }
+
 
   companion object {
    const val TAG = "StoreMapTabFragment"

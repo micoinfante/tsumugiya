@@ -87,6 +87,8 @@
         </activity>
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PointHistoryActivity"/>
+        <activity android:name=".BranchCouponList"/>
+        <activity android:name=".CouponDetails"/>
     </application>
 
 </manifest>

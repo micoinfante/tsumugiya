@@ -2,6 +2,7 @@ package com.ortech.shopapp.ui.main
 
 import android.content.Context
 import android.content.res.Resources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -10,7 +11,7 @@ import com.ortech.shopapp.R
 import com.ortech.shopapp.StoreListFragment
 import com.ortech.shopapp.StoreMapTabFragment
 
-private val TAB_TITLES = arrayOf<String>("Store List", "Map")
+private val TAB_TITLES = arrayOf<String>("店舗一覧", "地図から探す")
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -20,8 +21,8 @@ class SectionsPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm) {
 
     init {
-//        TAB_TITLES.plus(Resources.getSystem().getString( R.string.tab_text_1))
-//        TAB_TITLES.plus(Resources.getSystem().getString( R.string.tab_text_2))
+//        TAB_TITLES.plus(Resources.getSystem().getString(R.string.tab_text_1))
+//        TAB_TITLES.plus(Resources.getSystem().getString(R.string.tab_text_2))
     }
 
     override fun getItem(position: Int): Fragment {

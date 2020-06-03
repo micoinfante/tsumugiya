@@ -97,4 +97,9 @@ class BottomNavigationActivity : AppCompatActivity() {
     }
     fragmentTransaction.commit()
   }
+
+  override fun onBackPressed() {
+    return
+  }
+
 }

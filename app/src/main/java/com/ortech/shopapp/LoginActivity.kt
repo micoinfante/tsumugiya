@@ -62,25 +62,39 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
     val password = editTextLoginPassword.text.toString()
     var shouldLogin = true
 
+    Log.d(TAG, "Trying to login")
+
     if (email.trim().isEmpty()) {
       shouldLogin = false
+      Toast.makeText(baseContext, "Email is required",
+        Toast.LENGTH_SHORT).show()
     }
 
     if (password.trim().isEmpty()) {
       shouldLogin = false
+      Toast.makeText(baseContext, "Password is required",
+        Toast.LENGTH_SHORT).show()
     }
 
     if (shouldLogin) {
+      Log.d(TAG, "Checking details")
       auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
         if (task.isSuccessful) {
-          Toast.makeText(this, "Invalid User name password", Toast.LENGTH_SHORT)
+          val intent = Intent(this, BottomNavigationActivity::class.java)
+          startActivity(intent)
+          Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT)
             .show()
         } else {
+          Log.d(TAG, task.exception.toString())
           Toast.makeText(this, "Invalid Email or Password", Toast.LENGTH_SHORT)
             .show()
         }
       }
+        .addOnFailureListener {
+          Log.e(TAG, it.localizedMessage!!)
+        }
     }
+
   }
 
   private fun forgotPasswordAction() {

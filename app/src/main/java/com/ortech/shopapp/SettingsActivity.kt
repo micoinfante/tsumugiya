@@ -1,13 +1,16 @@
 package com.ortech.shopapp
 
+import android.app.NotificationManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ortech.shopapp.ui.notifications.NotificationsViewModel
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity: AppCompatActivity(), View.OnClickListener {
@@ -28,7 +31,7 @@ class SettingsActivity: AppCompatActivity(), View.OnClickListener {
 
     setupToolBar()
     checkUser()
-
+    switchNotification.isChecked = NotificationManagerCompat.from(baseContext).areNotificationsEnabled()
   }
 
   private fun checkUser() {
@@ -77,7 +80,14 @@ class SettingsActivity: AppCompatActivity(), View.OnClickListener {
   }
 
   private fun changeNotificationStatus() {
-    switchNotification.isChecked = true
+//    switchNotification.isChecked = NotificationManagerCompat.from(baseContext).areNotificationsEnabled()
+//    if (NotificationManagerCompat.from(baseContext).areNotificationsEnabled()) {
+//
+//    } else {
+//      startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
+//    }
+    switchNotification.isChecked = !switchNotification.isChecked
+    startActivity(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
   }
 
   private fun loadURL(uri: Uri) {

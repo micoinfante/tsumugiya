@@ -3,8 +3,8 @@
 
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_tab" translatable="false">TabActivity</string>
-    <string name="tab_text_1" translatable="false">Store List</string>
-    <string name="tab_text_2" translatable="false">Map</string>
+    <string name="tab_text_1" translatable="false">店舗一覧</string>
+    <string name="tab_text_2" translatable="false">地図から探す</string>
     <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -31,7 +31,7 @@
 
     <string name="tab_home">ホーム</string>
     <string name="tab_point">ポイント</string>
-    <string name="tab_store">ストアー</string>
+    <string name="tab_store">ストア</string>
     <string name="tab_menu">メニュー</string>
     <string name="tab_insta">Instagram</string>
 

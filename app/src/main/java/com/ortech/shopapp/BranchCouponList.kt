@@ -20,21 +20,28 @@ import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 /**
  * A simple [Fragment] subclass.
  */
-class BranchCouponList : Fragment() {
+class BranchCouponList : AppCompatActivity() {
   private lateinit var couponBranchListAdapter: AllCouponListAdapter
   private val db = Firebase.firestore
   private var couponList = ArrayList<Coupon>()
 
-  override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_branch_coupon_list, container, false)
-  }
+//  override fun onCreateView(
+//    inflater: LayoutInflater, container: ViewGroup?,
+//    savedInstanceState: Bundle?
+//  ): View? {
+//    // Inflate the layout for this fragment
+//    return inflater.inflate(R.layout.fragment_branch_coupon_list, container, false)
+//  }
+//
+//  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//    super.onViewCreated(view, savedInstanceState)
+//    setup()
+//  }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.fragment_branch_coupon_list)
+
     setup()
   }
 
@@ -47,7 +54,7 @@ class BranchCouponList : Fragment() {
       branchCouponListRecyclerView.adapter = couponBranchListAdapter
     }
 
-    this.context?.let {
+    this.baseContext?.let {
       ContextCompat.getColor(
         it, R.color.primary_orange)
     }?.let { swipeRefreshCouponList.setProgressBackgroundColorSchemeColor(it) }
@@ -68,7 +75,7 @@ class BranchCouponList : Fragment() {
   private fun setupToolBar() {
     val toolbar = toolbarCouponList
     toolbar.setNavigationOnClickListener {
-      activity?.supportFragmentManager?.popBackStack()
+      finish()
     }
   }
 

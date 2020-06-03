@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.HeaderListAdapter
@@ -20,11 +21,24 @@ import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.Views.HeaderItemDecoration
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.activity_home_screen.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeScreen : Fragment() {
 
   private val mainAdapter = HomeScreenAdapter()
   private var recyclerView: RecyclerView? = null
+  private val db = Firebase.firestore
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    getTotalPointsHistory()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    getTotalPointsHistory()
+  }
 
   override fun onCreateView(
     inflater: LayoutInflater,
@@ -45,7 +59,9 @@ class HomeScreen : Fragment() {
       addItemDecoration(HeaderItemDecoration(recyclerView!!, false, isHeader()))
       recyclerView!!.adapter = mainAdapter
     }
-    getPoints()
+
+//    getPoints()
+
 
     buttonSettingsDebug.setOnClickListener  {
       val intent = Intent(context, SettingsActivity::class.java)
@@ -53,17 +69,12 @@ class HomeScreen : Fragment() {
     }
 
     appbarHome.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-      //                    if(verticalOffset == 0 || verticalOffset <= mToolbar.getHeight() && !mToolbar.getTitle().equals(mCollapsedTitle)){
-      //                    mCollapsingToolbar.setTitle(mCollapsedTitle);
-      //                }else if(!mToolbar.getTitle().equals(mExpandedTitle)){
-      //                    mCollapsingToolbar.setTitle(mExpandedTitle);
-      //                }
       if (verticalOffset == 0) {
-        var layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.topMargin = toolbarHomeScreen.height
         buttonSettingsDebug.layoutParams = layoutParams
       } else {
-        var layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
+        val layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.topMargin = 0
         buttonSettingsDebug.layoutParams = layoutParams
       }
@@ -77,22 +88,61 @@ class HomeScreen : Fragment() {
 
   private fun getPoints() {
     // TODO fetch database points and assign to singleton
-    val db = Firebase.firestore
+
     val userID = UserSingleton.instance.userID
     db.collection("PointHistory").whereEqualTo("userID", userID)
+      .whereEqualTo("redeem", "redeemed")
       .get()
       .addOnSuccessListener { querySnapshot ->
         val currentPoints = querySnapshot.map { it ->
           it["points"] as Long
         }.sum()
-        UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
+        UserSingleton.instance.setTotalPoints(currentPoints.toInt())
         notifyUpdatedData()
       }
       .addOnFailureListener {
-        UserSingleton.instance.setCurrentPoints(0)
+        UserSingleton.instance.setTotalPoints(0)
         notifyUpdatedData()
       }
 
+  }
+
+  // get pointsToday and lastPoitns transferred
+  private fun getTotalPointsHistory() {
+    val userID = UserSingleton.instance.userID
+    db.collection("TotalPoints").whereEqualTo("userID", userID)
+      .get()
+      .addOnSuccessListener { querySnapshot ->
+        // check date
+        if (querySnapshot.count() != 0) {
+          val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+          val today = sdf.format(Date()).toString()
+          val timestamp = querySnapshot.first()["dates"] as Timestamp
+          val timestampToday = sdf.format(timestamp.toDate()).toString()
+          val currentPoints = querySnapshot.first()["totalPoints"] as Double
+
+          UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
+          if (today == timestampToday) {
+            Log.d(TAG, "Dates are equal")
+            val pointsToday = querySnapshot.first()["pointsToday"] as Double
+            val lastPoints = querySnapshot.first()["lastPoints"] as Double
+            UserSingleton.instance.setLastPointsTransferred(pointsToday.toInt())
+            UserSingleton.instance.setPointsToday(lastPoints.toInt())
+          } else {
+            UserSingleton.instance.setLastPointsTransferred(0)
+            UserSingleton.instance.setPointsToday(0)
+          }
+          notifyUpdatedData()
+        }
+
+
+      }
+      .addOnFailureListener {
+        UserSingleton.instance.setLastPointsTransferred(0)
+        UserSingleton.instance.setPointsToday(0)
+        UserSingleton.instance.setCurrentPoints(0)
+        notifyUpdatedData()
+      }
   }
 
   private fun isHeader() : (itemPosition: Int) -> Boolean {

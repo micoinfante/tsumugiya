@@ -110,19 +110,21 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             .into(homeItemThumbnail)
 
           buttonCouponItem.setOnClickListener {
-            val activity = itemView.context as AppCompatActivity
-            val fragment = BranchCouponList()
-            val transaction =  activity.supportFragmentManager.beginTransaction()
-            transaction.setCustomAnimations(
-              R.anim.enter_from_left,
-              R.anim.exit_to_left,
-              R.anim.enter_from_left,
-              R.anim.exit_to_left
-            )
-            transaction.add(R.id.container, fragment)
-//            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack("BranchCouponList")
-            transaction.commit()
+            val intent = Intent(itemView.context, BranchCouponList::class.java)
+            itemView.context.startActivity(intent)
+//            val activity = itemView.context as AppCompatActivity
+//            val fragment = BranchCouponList()
+//            val transaction =  activity.supportFragmentManager.beginTransaction()
+//            transaction.setCustomAnimations(
+//              R.anim.enter_from_left,
+//              R.anim.exit_to_left,
+//              R.anim.enter_from_left,
+//              R.anim.exit_to_left
+//            )
+//            transaction.add(R.id.container, fragment)
+////            transaction.replace(R.id.container, fragment)
+//            transaction.addToBackStack("BranchCouponList")
+//            transaction.commit()
           }
         }
         TYPE.POINT_HISTORY -> {
@@ -220,31 +222,39 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("SetTextI18n")
     fun bind() {
-      val userTotalPoints = UserSingleton.instance.getTotalPoints()
+      val userTotalPoints = UserSingleton.instance.getCurrentPoints()
       currentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
-      totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, userTotalPoints)
 
-      when(2000) {
+
+      when(userTotalPoints) {
         in (0..1999) -> {
           rankingTitle.text = "Bronze"
+          val currentRankPoints = 2000-userTotalPoints
+          totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, currentRankPoints)
           Glide.with(itemView)
             .load(res.getDrawable(R.drawable.bronze))
             .into(imageRanking)
         }
         in 2000..6999 -> {
           rankingTitle.text = "Silver"
+          val currentRankPoints = 7000-userTotalPoints
+          totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, currentRankPoints)
           Glide.with(itemView)
             .load(res.getDrawable(R.drawable.silver))
             .into(imageRanking)
         }
         in 7000..9999 -> {
           rankingTitle.text = "Gold"
+          val currentRankPoints = 10000-userTotalPoints
+          totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, currentRankPoints)
           Glide.with(itemView)
             .load(res.getDrawable(R.drawable.ichiban))
             .into(imageRanking)
         }
         else -> {
           rankingTitle.text = "Platinum"
+          val currentRankPoints = 20000-userTotalPoints
+          totalPoints.text = res.getString(R.string.homescreen_point_up_to_next_rank, currentRankPoints)
           Glide.with(itemView)
             .load(res.getDrawable(R.drawable.ichiban))
             .into(imageRanking)

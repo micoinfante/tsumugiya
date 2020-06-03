@@ -41,6 +41,7 @@ class PointHistoryActivity : AppCompatActivity() {
   private fun getPointHistory() {
     db.collection("PointHistory")
       .whereEqualTo("userID", UserSingleton.instance.userID)
+      .orderBy("timeStamp")
       .get()
       .addOnSuccessListener { querySnapshot ->
         if (querySnapshot.count() == 0) {
@@ -49,9 +50,6 @@ class PointHistoryActivity : AppCompatActivity() {
         querySnapshot.forEach { queryDocumentSnapshot ->
           Log.d(TAG, queryDocumentSnapshot.data.toString())
           val newHistory = queryDocumentSnapshot.toObject(PointHistory::class.java)
-          historyList.add(newHistory)
-          historyList.add(newHistory)
-          historyList.add(newHistory)
           historyList.add(newHistory)
           updateData()
           progressBarHistory.visibility = View.INVISIBLE

@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.MenuCategoryAdapter
@@ -15,7 +17,10 @@ import com.ortech.shopapp.Models.MenuCategory
 import com.ortech.shopapp.Models.MenuList
 import com.ortech.shopapp.Views.GridSpacingItemDecoration
 import com.ortech.shopapp.Views.TopSpacingDecoration
+import kotlinx.android.synthetic.main.fragment_branch_list.*
+import kotlinx.android.synthetic.main.fragment_coupon_details.*
 import kotlinx.android.synthetic.main.fragment_menu.*
+import kotlinx.android.synthetic.main.fragment_menu.menuCategoryRecyclerView
 
 
 const val ARGS_MENU_CATEGORY = "menu"
@@ -46,6 +51,15 @@ class MenuListFragment() : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setup()
+    setupToolBar()
+  }
+
+  private fun setupToolBar() {
+    val toolbar = toolbarMenu
+    toolbar.navigationIcon = this.context?.let { ContextCompat.getDrawable(it, R.drawable.ic_action_back) }
+    toolbar.setNavigationOnClickListener {
+      activity?.supportFragmentManager?.popBackStack()
+    }
   }
 
   private fun setup() {

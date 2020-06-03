@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Models.UserSingleton
@@ -68,28 +71,42 @@ class SignUpActivity : AppCompatActivity() {
     val db = Firebase.firestore
     val userRef =  db.collection("GlobalUsers")
 
-    userRef.whereEqualTo("email", email).get()
-      .addOnSuccessListener {
-        if (it.documents.size == 0) {
-          updateDocument(name, email, password)
-        } else {
-          // user is alreadu registered
-          MaterialAlertDialogBuilder(this.applicationContext)
-            .setTitle(R.string.options_signup)
-            .setMessage("User is already Registered")
-            .setPositiveButton("OK"){ dialog, which ->
+   Firebase.auth.createUserWithEmailAndPassword(email, password)
+     .addOnCompleteListener {task ->
+       if (task.isSuccessful) {
+         userRef.whereEqualTo("email", email).get()
+           .addOnSuccessListener {
+             if (it.documents.size == 0) {
+               updateDocument(name, email, password)
+             } else {
+               // user is alreadu registered
+               MaterialAlertDialogBuilder(this.applicationContext)
+                 .setTitle(R.string.options_signup)
+                 .setMessage("User is already Registered")
+                 .setPositiveButton("OK"){ dialog, which ->
 
-            }.show()
-        }
-      }
-      .addOnFailureListener {
-        MaterialAlertDialogBuilder(applicationContext)
-          .setTitle(R.string.options_signup)
-          .setMessage(it.localizedMessage)
-          .setPositiveButton("OK"){ dialog, which ->
+                 }.show()
+             }
+           }
+           .addOnFailureListener {
+             MaterialAlertDialogBuilder(applicationContext)
+               .setTitle(R.string.options_signup)
+               .setMessage(it.localizedMessage)
+               .setPositiveButton("OK"){ dialog, which ->
 
-          }.show()
-      }
+               }.show()
+           }
+       } else {
+         Log.d(TAG, "createUserWithEmail:failure", task.exception)
+         Toast.makeText(baseContext, task.exception.toString(),
+           Toast.LENGTH_SHORT).show()
+       }
+     }
+     .addOnFailureListener {
+       Log.e(TAG, "createUserWithEmail:failure", it)
+       Toast.makeText(baseContext, "Authentication failed. ${it.toString()}",
+         Toast.LENGTH_SHORT).show()
+     }
   }
 
   private fun updateDocument(name: String, email: String, password: String) {
@@ -104,7 +121,7 @@ class SignUpActivity : AppCompatActivity() {
             "name" to name,
             "email" to email,
             "password" to password
-          ))
+          ), SetOptions.merge())
           .addOnSuccessListener {
             MaterialAlertDialogBuilder(applicationContext)
               .setTitle(R.string.options_signup)
@@ -123,7 +140,8 @@ class SignUpActivity : AppCompatActivity() {
       }
   }
 
-
-
+  companion object {
+    const val TAG = "SignUpActivity"
+  }
 
 }

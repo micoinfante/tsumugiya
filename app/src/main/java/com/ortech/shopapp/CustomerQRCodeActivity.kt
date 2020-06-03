@@ -20,13 +20,19 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.encoder.QRCode
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.ortech.shopapp.Models.RequestCode
 import kotlinx.android.synthetic.main.activity_customer_qr_code.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CustomerQRCodeActivity : Fragment(){
 
@@ -35,6 +41,7 @@ class CustomerQRCodeActivity : Fragment(){
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    getTotalPoints()
   }
 
   override fun onCreateView(
@@ -85,21 +92,8 @@ class CustomerQRCodeActivity : Fragment(){
   private fun setupScanner() {
     btnScanQRCode.setOnClickListener {
       val intent = Intent(activity, QRCodeScannerActivity::class.java)
+      intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_CUSTOMER)
       startActivity(intent)
-//      val activity = (context as? AppCompatActivity)
-//      val fragment = QRCodeScannerActivity()
-//      val transaction = activity?.supportFragmentManager?.beginTransaction()
-//
-//      transaction?.setCustomAnimations(
-//        R.anim.enter_from_left,
-//        R.anim.exit_to_left,
-//        R.anim.enter_from_left,
-//        R.anim.exit_to_left
-//      )
-//      transaction?.replace(R.id.container, fragment,"CustomerQRCode")
-//      transaction?.addToBackStack(null)
-//      transaction?.commit()
-
     }
   }
 
@@ -142,6 +136,41 @@ class CustomerQRCodeActivity : Fragment(){
         }
       }
     }
+  }
+
+  private fun getTotalPoints() {
+    val userID = getUUID()
+    val db = Firebase.firestore
+
+    db.collection("TotalPoints").whereEqualTo("userID", userID)
+      .limit(1)
+      .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+        if (firebaseFirestoreException != null) {
+          Log.w(TAG, "Listener Failed", firebaseFirestoreException)
+        }
+
+        if (querySnapshot != null) {
+          val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+          val today = sdf.format(Date()).toString()
+          val timestamp = querySnapshot.first()["dates"] as Timestamp
+          val timestampToday = sdf.format(timestamp.toDate()).toString()
+          val currentPoints = querySnapshot.first()["totalPoints"] as Double
+
+          textViewCustomerCurrentPoints.text = currentPoints.toInt().toString()
+
+          if (today == timestampToday) {
+            val pointsToday = querySnapshot.first()["pointsToday"] as Double
+            val lastPoints = querySnapshot.first()["lastPoints"] as Double
+            textViewCustomerLastPoints.text = lastPoints.toInt().toString()
+            textViewCustomerEarnedPoints.text = pointsToday.toInt().toString()
+          } else {
+            textViewCustomerLastPoints.text = "0"
+            textViewCustomerEarnedPoints.text = "0"
+          }
+
+        }
+      }
+
   }
 
 

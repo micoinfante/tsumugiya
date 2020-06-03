@@ -113,7 +113,7 @@
             <Button
                 android:id="@+id/buttonGoToSignIn"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="30dp"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/plain_rounded_button"
