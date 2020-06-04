@@ -36,7 +36,7 @@
                 android:layout_marginLeft="24dp"
                 android:gravity="bottom|left"
                 android:text="@string/coupon"
-                android:textSize="30sp"
+                android:textSize="40sp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -67,7 +67,7 @@
                 android:minHeight="250dp"
                 android:padding="8dp"
                 app:cardBackgroundColor="#FFFFFF"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
                 android:gravity="left"
                 android:text="@string/qr_code_title"
                 android:textColor="@color/accent_white"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -171,7 +171,7 @@
                         android:layout_marginEnd="11dp"
                         android:layout_marginRight="11dp"
                         android:textColor="#E53935"
-                        android:textSize="19sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/textView24"

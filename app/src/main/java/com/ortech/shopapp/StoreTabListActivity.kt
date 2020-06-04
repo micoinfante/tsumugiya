@@ -63,7 +63,7 @@ class StoreTabListActivity : Fragment() {
     super.onDestroyView()
 
     val fm = activity?.supportFragmentManager
-    var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+    val supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
 
     if (supportMapFragment != null) {
       fm?.beginTransaction()?.remove(supportMapFragment)

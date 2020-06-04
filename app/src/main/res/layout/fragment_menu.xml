@@ -35,7 +35,7 @@
           android:layout_marginLeft="26sp"
           android:gravity="bottom|start"
           android:text="@string/tab_menu"
-          android:textSize="30sp"
+          android:textSize="40sp"
           android:textStyle="bold" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>

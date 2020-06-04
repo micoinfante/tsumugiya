@@ -1,5 +1,6 @@
 package com.ortech.shopapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -38,42 +40,16 @@ class QRCodeScannerActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_qr_code_scanner)
 
-
-  }
-
-
-  private fun setupToolBar() {
-    val toolbar = toolbarHistory
-    toolbar.setNavigationOnClickListener {
-      closeActivity()
-    }
-  }
-
-  private fun closeActivity() {
-    if (supportFragmentManager.backStackEntryCount == 0) {
-      this.finish();
-    } else {
-      super.onBackPressed(); //replaced
-    }
-  }
-
-  private fun performAction() {
-    qrScanIntegrator?.initiateScan()
-  }
-
-  override fun onResume() {
-    super.onResume()
     val surfaceView = camera_view
     qrEader = QREader.Builder(this.baseContext, surfaceView,  QRDataListener {data ->
       //      transferPoints(data)
 
-        if (!hasScanned) {
-          hasScanned = true
-          checkTransaction(data)
-          Log.d(TAG, "Scanned data: $data")
+      if (!hasScanned) {
+        checkTransaction(data)
+        Log.d(TAG, "Scanned data: $data")
 
 
-        }
+      }
 //      qrEader?.stop()
 
 
@@ -95,6 +71,38 @@ class QRCodeScannerActivity : AppCompatActivity() {
     // check what type is using: User or staff
     userType = intent.getStringExtra(ARGS_TYPE)
     Log.d(TAG, "Using by type: $userType")
+  }
+
+
+  private fun setupToolBar() {
+    val toolbar = toolbarHistory
+    toolbar.setNavigationOnClickListener {
+      closeActivity()
+    }
+  }
+
+  private fun closeActivity() {
+    if (userType == TYPE_CUSTOMER) {
+      if (supportFragmentManager.backStackEntryCount == 0) {
+        this.finish();
+      } else {
+        super.onBackPressed(); //replaced
+      }
+    } else {
+      Firebase.auth.signOut()
+      val intent = Intent(baseContext, BottomNavigationActivity::class.java)
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+      startActivity(intent)
+    }
+  }
+
+  private fun performAction() {
+    qrScanIntegrator?.initiateScan()
+  }
+
+  override fun onResume() {
+    super.onResume()
+
 
     qrEader?.initAndStart(camera_view)
   }
@@ -112,6 +120,7 @@ class QRCodeScannerActivity : AppCompatActivity() {
   private fun checkTransaction(data: String) {
     if (userType == TYPE_CUSTOMER) {
       if (data.split(",").size > 4) {
+        hasScanned = true
         transferPointsByCustomer(data)
       }
     } else {
@@ -121,50 +130,53 @@ class QRCodeScannerActivity : AppCompatActivity() {
 
   private fun processQRCodeOfCustomer(data: String) {
     if (data.contains("transfer")) {
-      transferPointsByCustomer(data)
+      transferPointsToCustomer(data)
     } else {
-      redeemCouponByCustomer(data)
+      redeemCouponOfCustomer(data)
     }
   }
 
   private fun transferPointsToCustomer(data: String) {
-    val dataArray = data.replace(" ", "").split(",")
-    Log.d(TAG, "Trying to transfer points $dataArray.toString()")
-    progressbarQRScanner.visibility = View.VISIBLE
-    val pointHistory = PointHistory(
-      "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N","富山呉羽店",
-      "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
-      "","","","qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-      100, "","rhuet.transit@gmail.com",
-      "","","", Timestamp(Date()),"transferred",
-      dataArray.first()
-    )
-
-
-
-    val totalPoints = TotalPoints(Timestamp(Date()),
-       UserSingleton.instance.toString(),
-      100, 100, "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-      "ラーメン世界", UserSingleton.instance.getCurrentPoints()+100,
-        UserSingleton.instance.userID
-      )
-
-
-    val db = Firebase.firestore
-
-    db.collection("PointHistory").add(pointHistory)
-      .addOnCompleteListener {
-        if (it.isSuccessful) {
-          Log.d(TAG, "Transferred 100points to ${UserSingleton.instance.userID}")
-        }
-        if (it.isComplete) {
-          progressbarQRScanner.visibility = View.INVISIBLE
-          closeActivity()
-        }
-      }
-      .addOnFailureListener {
-        Log.d(TAG, "Failed to transfer points to ${UserSingleton.instance.userID} - ${it.localizedMessage}")
-      }
+    val intent = Intent(baseContext, TransferPointsActivity::class.java)
+    intent.putExtra(TransferPointsActivity.ARGS_TRANSFER, data)
+    startActivity(intent)
+//    val dataArray = data.replace(" ", "").split(",")
+//    Log.d(TAG, "Trying to transfer points $dataArray.toString()")
+//    progressbarQRScanner.visibility = View.VISIBLE
+//    val pointHistory = PointHistory(
+//      "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N","富山呉羽店",
+//      "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
+//      "","","","qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
+//      100, "","rhuet.transit@gmail.com",
+//      "","","", Timestamp(Date()),"transferred",
+//      dataArray.first()
+//    )
+//
+//
+//
+//    val totalPoints = TotalPoints(Timestamp(Date()),
+//       UserSingleton.instance.toString(),
+//      100, 100, "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
+//      "ラーメン世界", UserSingleton.instance.getCurrentPoints()+100,
+//        UserSingleton.instance.userID
+//      )
+//
+//
+//    val db = Firebase.firestore
+//
+//    db.collection("PointHistory").add(pointHistory)
+//      .addOnCompleteListener {
+//        if (it.isSuccessful) {
+//          Log.d(TAG, "Transferred 100points to ${UserSingleton.instance.userID}")
+//        }
+//        if (it.isComplete) {
+//          progressbarQRScanner.visibility = View.INVISIBLE
+//          closeActivity()
+//        }
+//      }
+//      .addOnFailureListener {
+//        Log.d(TAG, "Failed to transfer points to ${UserSingleton.instance.userID} - ${it.localizedMessage}")
+//      }
   }
 
   private fun transferPointsByCustomer(data: String) {
@@ -262,8 +274,10 @@ class QRCodeScannerActivity : AppCompatActivity() {
 
   }
 
-  private fun redeemCouponByCustomer(data: String) {
-
+  private fun redeemCouponOfCustomer(data: String) {
+    val intent = Intent(baseContext, RedeemCouponActivity::class.java)
+    intent.putExtra(RedeemCouponActivity.ARGS_REDEEM, data)
+    startActivity(intent)
   }
 
   private fun processQRCodeByStaff(data: String) {

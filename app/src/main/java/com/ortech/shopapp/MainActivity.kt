@@ -9,10 +9,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
+import com.google.zxing.qrcode.encoder.QRCode
 import com.ortech.shopapp.Helpers.PreferenceHelper
 import com.ortech.shopapp.Models.GlobalUser
 import com.ortech.shopapp.Models.UserSingleton
@@ -31,13 +34,17 @@ class MainActivity : AppCompatActivity() {
       .setContentText("This is a test content")
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-//        val intent = Intent(this, HomeScreen::class.java)
-    val intent = Intent(this, BottomNavigationActivity::class.java)
-//        val intent = Intent(this, StoreTabListActivity::class.java)
-
-    checkUUID()
-    updateFCMToken()
-    startActivity(intent)
+    if (Firebase.auth.currentUser != null) {
+      val qrIntent = Intent(baseContext, QRCodeScannerActivity::class.java)
+      qrIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+      qrIntent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
+      startActivity(qrIntent)
+    } else {
+      val intent = Intent(this, BottomNavigationActivity::class.java)
+      checkUUID()
+      updateFCMToken()
+      startActivity(intent)
+    }
   }
 
   private fun checkUUID() {
@@ -92,6 +99,33 @@ class MainActivity : AppCompatActivity() {
       .addOnFailureListener { error ->
         Log.e(TAG, "get user details error: ${error.toString()}")
       }
+
+    db.collection("TotalPoints").whereEqualTo("userID", userID)
+      .get()
+      .addOnSuccessListener {
+        if (it.count() == 0) {
+          createTotalPointsData(userID)
+        }
+      }
+      .addOnFailureListener {
+
+      }
+  }
+
+  private fun createTotalPointsData(userID: String) {
+    val db = Firebase.firestore
+    db.collection("TotalPoints").add(
+      hashMapOf(
+        "userID" to userID,
+        "totalPoints" to 0,
+        "lastPoints" to 0,
+        "pointsToday" to 0,
+        "deviceUUID" to userID,
+        "restoID" to "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
+        "restoName" to "ラーメン世界",
+        "dates" to Timestamp(Date())
+      )
+    )
   }
 
 
@@ -120,7 +154,6 @@ class MainActivity : AppCompatActivity() {
       }
 
   }
-
 
 
   companion object {

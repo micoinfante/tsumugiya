@@ -154,13 +154,13 @@ class CustomerQRCodeActivity : Fragment(){
           val today = sdf.format(Date()).toString()
           val timestamp = querySnapshot.first()["dates"] as Timestamp
           val timestampToday = sdf.format(timestamp.toDate()).toString()
-          val currentPoints = querySnapshot.first()["totalPoints"] as Double
+          val currentPoints = querySnapshot.first()["totalPoints"] as Number
 
           textViewCustomerCurrentPoints.text = currentPoints.toInt().toString()
 
           if (today == timestampToday) {
-            val pointsToday = querySnapshot.first()["pointsToday"] as Double
-            val lastPoints = querySnapshot.first()["lastPoints"] as Double
+            val pointsToday = querySnapshot.first()["pointsToday"] as Number
+            val lastPoints = querySnapshot.first()["lastPoints"] as Number
             textViewCustomerLastPoints.text = lastPoints.toInt().toString()
             textViewCustomerEarnedPoints.text = pointsToday.toInt().toString()
           } else {
@@ -172,8 +172,6 @@ class CustomerQRCodeActivity : Fragment(){
       }
 
   }
-
-
 
   private fun getUUID() : String? {
     val sharedPreferences = activity?.getSharedPreferences(getString(R.string.preference_UUID_key),

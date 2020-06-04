@@ -119,13 +119,13 @@ class HomeScreen : Fragment() {
           val today = sdf.format(Date()).toString()
           val timestamp = querySnapshot.first()["dates"] as Timestamp
           val timestampToday = sdf.format(timestamp.toDate()).toString()
-          val currentPoints = querySnapshot.first()["totalPoints"] as Double
+          val currentPoints = querySnapshot.first()["totalPoints"] as Number
 
           UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
           if (today == timestampToday) {
             Log.d(TAG, "Dates are equal")
-            val pointsToday = querySnapshot.first()["pointsToday"] as Double
-            val lastPoints = querySnapshot.first()["lastPoints"] as Double
+            val pointsToday = querySnapshot.first()["pointsToday"] as Number
+            val lastPoints = querySnapshot.first()["lastPoints"] as Number
             UserSingleton.instance.setLastPointsTransferred(pointsToday.toInt())
             UserSingleton.instance.setPointsToday(lastPoints.toInt())
           } else {

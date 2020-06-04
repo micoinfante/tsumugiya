@@ -1,6 +1,7 @@
 package com.ortech.shopapp
 
 import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.AllCouponListAdapter
 import com.ortech.shopapp.Models.Coupon
+import com.ortech.shopapp.Models.PointHistory
+import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 
@@ -24,6 +27,7 @@ class BranchCouponList : AppCompatActivity() {
   private lateinit var couponBranchListAdapter: AllCouponListAdapter
   private val db = Firebase.firestore
   private var couponList = ArrayList<Coupon>()
+  private var pointHistoryList = ArrayList<PointHistory>()
 
 //  override fun onCreateView(
 //    inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +53,7 @@ class BranchCouponList : AppCompatActivity() {
     couponBranchListAdapter = AllCouponListAdapter()
     branchCouponListRecyclerView.apply {
       layoutManager = LinearLayoutManager(this.context)
-      val topSpacing = TopSpacingDecoration(5)
+      val topSpacing = TopSpacingDecoration(20)
       addItemDecoration(topSpacing)
       branchCouponListRecyclerView.adapter = couponBranchListAdapter
     }
@@ -65,10 +69,11 @@ class BranchCouponList : AppCompatActivity() {
 
     swipeRefreshCouponList.setOnRefreshListener {
       fetchCoupons()
+      fetchRedeemedCoupons()
     }
 
-
     fetchCoupons()
+    fetchRedeemedCoupons()
     setupToolBar()
   }
 
@@ -81,6 +86,7 @@ class BranchCouponList : AppCompatActivity() {
 
   private fun updateData() {
     couponBranchListAdapter.updateData(couponList)
+    couponBranchListAdapter.updateTransactionData(pointHistoryList)
   }
 
 
@@ -102,6 +108,24 @@ class BranchCouponList : AppCompatActivity() {
       .addOnFailureListener {
         Log.e(TAG, "Can't get branch coupons ${it.toString()}")
       }
+  }
+
+
+  private fun fetchRedeemedCoupons() {
+    val userID = UserSingleton.instance.userID
+    val db = Firebase.firestore.collection("PointHistory")
+
+    db.whereEqualTo("userID", userID)
+      .whereEqualTo("redeem", "redeemed")
+      .get()
+      .addOnSuccessListener {
+        it.forEach {pointHistory ->
+          val newPointHistory = pointHistory.toObject(PointHistory::class.java)
+          pointHistoryList.add(newPointHistory)
+          updateData()
+        }
+      }
+
   }
 
   companion object {

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ortech.shopapp.Models.PointHistory
@@ -63,7 +64,13 @@ class PointHistoryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
       timestamp.text = sdf.format(date!!).toString()
       details.text = history.branchName
-      points.text = history.points.toString()
+      points.text = res.getString(R.string.text_label_point, history.points.toString())
+
+      if (history.transfer == "transferred") {
+        points.setTextColor(ContextCompat.getColor(itemView.context,R.color.primary_green))
+      } else {
+        points.setTextColor(ContextCompat.getColor(itemView.context,R.color.primary_red))
+      }
 
       Glide.with(itemView)
         .load(Uri.parse(history.branchURL))

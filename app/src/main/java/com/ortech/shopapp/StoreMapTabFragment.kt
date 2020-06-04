@@ -34,8 +34,22 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-//    retainInstance = true
+    retainInstance = true
+    if (mMap == null) {
+      val fm = childFragmentManager
+      var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+      if (supportMapFragment == null) {
+        supportMapFragment = SupportMapFragment.newInstance()
+        fm?.beginTransaction()?.replace(R.id.mapView, supportMapFragment)?.commit()
+      }
+      supportMapFragment?.getMapAsync(this)
+      if (branches.count() == 0) {
+        getBranches()
+      }
+    }
+
   }
+
 
   override fun onResume() {
     super.onResume()
@@ -54,7 +68,7 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
 
   private fun setupMapIfNeeded() {
     if (mMap == null) {
-      val fm = activity?.supportFragmentManager
+      val fm = childFragmentManager
       var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
       if (supportMapFragment == null) {
         supportMapFragment = SupportMapFragment.newInstance()
@@ -70,7 +84,7 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     Log.d(TAG, "ViewCreated")
-    val fm = activity?.supportFragmentManager
+    val fm = childFragmentManager
     var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
     if (supportMapFragment == null) {
       supportMapFragment = SupportMapFragment.newInstance()
@@ -155,7 +169,7 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   override fun onDestroyView() {
     super.onDestroyView()
 
-    val fm = activity?.supportFragmentManager
+    val fm = childFragmentManager
     var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
 //    if (supportMapFragment == null) {
 //      supportMapFragment = SupportMapFragment.newInstance()

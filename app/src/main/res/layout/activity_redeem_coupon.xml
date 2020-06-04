@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TransferPointsActivity">
+    tools:context=".RedeemCouponActivity">
 
     <ProgressBar
-        android:id="@+id/progressBarTransferPoints"
+        android:id="@+id/progressBarRedeemPoints"
         style="?android:attr/progressBarStyle"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -52,7 +52,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textViewScannedQRCodeDetails"
+                android:id="@+id/textViewRedeemScannedQRCodeDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/primary_lightgray"
@@ -71,19 +71,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="20dp"
         android:text="TextView"
         android:textColor="@color/home_screen_card_background"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/cardViewPointsContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="131dp" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/cardViewRedeemPointsContainer"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewPointsContainer"
-        android:layout_width="409dp"
+        android:id="@+id/cardViewRedeemPointsContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
         android:background="@color/primary_lightgray"
         android:minHeight="400dp"
@@ -100,27 +104,15 @@
             android:layout_height="match_parent"
             android:minHeight="400dp">
 
-            <ImageView
-                android:id="@+id/buttonIncrementPoints"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_black_24dp" />
 
-            <EditText
-                android:id="@+id/editTextTransferPoints"
+            <TextView
+                android:id="@+id/textViewRequiredPoints"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/points_rectangle"
                 android:ems="10"
                 android:gravity="center"
-                android:hint="0"
-                android:inputType="number"
                 android:maxWidth="200dp"
                 android:minWidth="250dp"
                 android:minHeight="140dp"
@@ -130,28 +122,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonIncrementPoints"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="100" />
 
-            <ImageView
-                android:id="@+id/buttonDecrementPoints"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTransferPoints"
-                app:srcCompat="@drawable/ic_remove_black_50dp" />
 
             <TextView
-                android:id="@+id/buttonConfirmTransfer"
+                android:id="@+id/buttonConfirmRedeem"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:background="@color/primary_orange"
                 android:gravity="center"
-                android:minWidth="100dp"
+                android:minWidth="120dp"
                 android:text="TextView"
                 android:textColor="@color/accent_white"
                 app:layout_constraintBottom_toBottomOf="parent"

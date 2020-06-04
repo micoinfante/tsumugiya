@@ -3,6 +3,7 @@ package com.ortech.shopapp
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.gcm.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Models.RequestCode
 import kotlinx.android.synthetic.main.activity_login.*
@@ -29,6 +31,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
     setContentView(R.layout.activity_login)
 
     auth = Firebase.auth
+
+    if (BuildConfig.DEBUG) {
+      editTextLoginEmail.text = Editable.Factory.getInstance().newEditable("rhuet.transit@gmail.com")
+      editTextLoginPassword.text = Editable.Factory.getInstance().newEditable("ixoojb")
+    }
 
     buttonLogin.setOnClickListener(this)
     buttonLoginLater.setOnClickListener(this)
@@ -78,24 +85,57 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
     if (shouldLogin) {
       Log.d(TAG, "Checking details")
-      auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
-        if (task.isSuccessful) {
-          val intent = Intent(this, BottomNavigationActivity::class.java)
-          startActivity(intent)
-          Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT)
-            .show()
-        } else {
-          Log.d(TAG, task.exception.toString())
-          Toast.makeText(this, "Invalid Email or Password", Toast.LENGTH_SHORT)
-            .show()
-        }
-      }
-        .addOnFailureListener {
-          Log.e(TAG, it.localizedMessage!!)
-        }
+      // TODO check logging in for staff first
+      loginStaffAccount(email, password)
     }
 
   }
+
+  private fun loginStaffAccount(email: String, password: String) {
+    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+      if (task.isSuccessful) {
+        Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT)
+          .show()
+              val intent = Intent(baseContext, QRCodeScannerActivity::class.java)
+          intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
+          startActivity(intent)
+      } else {
+        Log.d(TAG, task.exception.toString())
+        loginCustomerAccount(email, password)
+      }
+    }
+      .addOnFailureListener {
+        Log.e(TAG, it.localizedMessage!!)
+        Toast.makeText(this, "Login failed: ${it.localizedMessage}", Toast.LENGTH_SHORT)
+          .show()
+      }
+  }
+
+  private fun loginCustomerAccount(email: String, password: String) {
+    val db = Firebase.firestore
+    db.collection("GlobalUsers")
+      .whereEqualTo("email", email)
+      .whereEqualTo("password", password)
+      .limit(1)
+      .get()
+      .addOnSuccessListener {
+        if (it.documents.isNotEmpty()) {
+          Toast.makeText(this, "Successfully Login", Toast.LENGTH_SHORT)
+            .show()
+          val intent = Intent(baseContext, BottomNavigationActivity::class.java)
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+          startActivity(intent)
+        } else {
+          Toast.makeText(this, "Invalid User name password", Toast.LENGTH_SHORT)
+            .show()
+        }
+      }
+      .addOnFailureListener {
+        Toast.makeText(this, it.localizedMessage, Toast.LENGTH_SHORT)
+          .show()
+      }
+  }
+
 
   private fun forgotPasswordAction() {
     val emailEditText = EditText(this)
@@ -168,25 +208,45 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
 
   private fun login2() {
-//    val db = Firebase.firestore
-//    db.collection("GlobalUsers")
-//      .whereEqualTo("email", email)
+
+//    val db = Firebase.firestore.collection("CMSStaff")
+//    db.whereEqualTo("email", email)
 //      .whereEqualTo("password", password)
 //      .limit(1)
 //      .get()
 //      .addOnSuccessListener {
-//        if (it.documents.isNotEmpty()) {
-//          // TODO Change text
-//          Toast.makeText(this, "Successfully Login", Toast.LENGTH_SHORT)
-//            .show()
-//          // TODO add startActivity(toHomeScreen)
+//        if (it.count() != 0) {
+//          // set current logged in staff
+//          val intent = Intent(baseContext, QRCodeScannerActivity::class.java)
+//          intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
+//          startActivity(intent)
 //        } else {
-//          Toast.makeText(this, "Invalid User name password", Toast.LENGTH_SHORT)
-//            .show()
+//          loginCustomerAccount(email, password)
 //        }
 //      }
 //      .addOnFailureListener {
-//        Toast.makeText(this, it.localizedMessage, Toast.LENGTH_SHORT)
+//        Toast.makeText(this, "Login Failed ${it.localizedMessage}", Toast.LENGTH_SHORT)
+//          .show()
+//      }
+
+
+    //    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
+//      if (task.isSuccessful) {
+//        val intent = Intent(this, BottomNavigationActivity::class.java)
+//        startActivity(intent)
+//        Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT)
+//          .show()
+    //          val intent = Intent(baseContext, QRCodeScannerActivity::class.java)
+//          intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
+//          startActivity(intent)
+//      } else {
+//        Log.d(TAG, task.exception.toString())
+//
+//      }
+//    }
+//      .addOnFailureListener {
+//        Log.e(TAG, it.localizedMessage!!)
+//        Toast.makeText(this, "Login failed: ${it.localizedMessage}", Toast.LENGTH_SHORT)
 //          .show()
 //      }
   }

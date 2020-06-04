@@ -1,39 +1,36 @@
 package com.ortech.shopapp.Adapters
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.CountDownTimer
 import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomViewTarget
-import com.bumptech.glide.request.transition.Transition
-import com.google.common.io.Resources.getResource
-import com.ortech.shopapp.BranchCouponList
+import com.ortech.shopapp.CountDownAlert
 import com.ortech.shopapp.CouponDetails
 import com.ortech.shopapp.Models.Coupon
+import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.R
-import com.squareup.picasso.Picasso
-import io.grpc.internal.SharedResourceHolder
 import kotlinx.android.synthetic.main.fragment_branch_coupon_item.view.*
-import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
-import kotlinx.android.synthetic.main.fragment_home_fourth_section.view.*
-import kotlinx.android.synthetic.main.fragment_home_screen_item.view.*
+
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.time.milliseconds
 
 class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
   private var couponList = ArrayList<Coupon>()
+  private var pointHistoryList = ArrayList<PointHistory>()
 
   init {
     setHasStableIds(true)
@@ -63,19 +60,31 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     notifyDataSetChanged()
   }
 
+  fun updateTransactionData(pointHistoryList: ArrayList<PointHistory>) {
+    this.pointHistoryList = pointHistoryList
+    notifyDataSetChanged()
+  }
+
   inner class CouponViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val couponName = itemView.textViewCouponItemName
     private val timestamp = itemView.textViewCouponItemTimestamp
     private val requiredPoints = itemView.textViewCouponItemPoints
     private val couponThumbnail = itemView.imageViewCouponItemThumbnail
+    private val couponDetails = itemView.textVIewCouponDetails
+    private val timerShade = itemView.cardViewTimer
+    private val timer = itemView.textViewCouponTimer
+    private val couponItem = itemView.cardViewCouponItem
     private val res = itemView.context
 
     fun bind(coupon: Coupon) {
+      val isCouponUsed = checkRedemption(coupon)
+
       val date = coupon.untilDate?.toDate().toString()
       couponName.text = coupon.couponLabel
       timestamp.text = date.substring(0, date.indexOf("GMT"))
       val pointText = itemView.context.getString(R.string.text_label_point, coupon.points)
       requiredPoints.text = pointText
+      couponDetails.text = coupon.couponDetails
 
       Glide.with(itemView)
         .load(Uri.parse(coupon.imageURL))
@@ -83,23 +92,91 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         .placeholder(R.drawable.app_logo_sekai)
         .into(couponThumbnail)
 
+//
+//      itemView.setOnClickListener {
+//        if (!isCouponUsed) {
+//          val intent = Intent(itemView.context, CouponDetails::class.java)
+//          intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
+//          itemView.context.startActivity(intent)
+//        }
+//      }
 
-      itemView.setOnClickListener {
-        val intent = Intent(itemView.context, CouponDetails::class.java)
-        intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
-        itemView.context.startActivity(intent)
-//        val activity = itemView.context as AppCompatActivity
-//        val fragment = CouponDetails.newInstance(coupon)
-//        val transaction =  activity.supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.container, fragment)
-//        transaction.addToBackStack("CouponDetails")
-//        transaction.commit()
+    }
+
+    private fun checkRedemption(coupon: Coupon): Boolean {
+      pointHistoryList.forEach {pointHistory ->
+        if (pointHistory.couponID == coupon.couponID) {
+          val today = Date()
+          val pointHistoryRedemption = pointHistory.timeStamp?.toDate()
+
+          val couponAvailability = pointHistoryRedemption?.let { incrementDay(it) }
+
+          Log.d(TAG, "$today > $couponAvailability")
+         if (today > couponAvailability) {
+            timerShade.visibility = View.INVISIBLE
+          } else {
+            val diff = (couponAvailability?.time ?: Date().time) - Date().time
+            val remainingTime = Date(diff)
+            addCountDownTimer(remainingTime)
+            timerShade.visibility = View.VISIBLE
+            timerShade.setOnClickListener {
+               Log.d(TAG, "Timer shade click")
+               val currentMillis = (couponAvailability?.time ?: Date().time) - Date().time
+               val activity = itemView.context as AppCompatActivity
+               val fragment = CountDownAlert.newInstance(currentMillis)
+               val transaction =  activity.supportFragmentManager.beginTransaction()
+               transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+               transaction.add(R.id.branchCouponContainer, fragment)
+                transaction.addToBackStack(null)
+               transaction.commit()
+             }
+           return true
+          }
+        } else {
+          itemView.setOnClickListener {
+              val intent = Intent(itemView.context, CouponDetails::class.java)
+              intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
+              itemView.context.startActivity(intent)
+            }
+          }
       }
+      return false
+    }
 
+    private fun addCountDownTimer(date: Date) {
+
+      val cal = Calendar.getInstance()
+      cal.time = date
+      val millis = cal.timeInMillis
+      Log.d(TAG, "Setting countdown $millis")
+      object : CountDownTimer(millis, 1000) {
+        override fun onFinish() {
+         timerShade.visibility = View.INVISIBLE
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+          Log.d(TAG, "$millisUntilFinished")
+          timer.text = String.format("%02d:%02d:%02d",
+            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))
+          )
+        }
+      }.start()
+    }
+
+    private fun incrementDay(date: Date): Date {
+      val cal = Calendar.getInstance(Locale.getDefault())
+      cal.time = date
+      cal.add(Calendar.DATE, 1)
+      return cal.time
     }
 
   }
 
+  companion object {
+    const val TAG = "CouponListAdapter"
+  }
 }
 
 

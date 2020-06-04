@@ -18,6 +18,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -26,9 +29,11 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Models.UserSingleton
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_customer_qr_code.*
 import kotlinx.android.synthetic.main.fragment_branch_coupon_item.*
 import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 import kotlinx.android.synthetic.main.fragment_coupon_details.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -43,6 +48,7 @@ class CouponDetails : AppCompatActivity() {
     coupon = intent.getSerializableExtra(ARG_COUPON) as Coupon
 
     setupToolBar()
+    getTotalPoints()
 
     val date = coupon?.untilDate?.toDate().toString()
     textViewCouponDetailsName.text = coupon?.couponLabel ?: ""
@@ -90,16 +96,27 @@ class CouponDetails : AppCompatActivity() {
     Glide.with(this).load(qrCode).into(imageView)
   }
 
+  private fun getTotalPoints() {
+    val userID = UserSingleton.instance.userID
+    val db = Firebase.firestore
+
+    db.collection("TotalPoints").whereEqualTo("userID", userID)
+      .limit(1)
+      .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+        if (firebaseFirestoreException != null) {
+          Log.w(CustomerQRCodeActivity.TAG, "Listener Failed", firebaseFirestoreException)
+        }
+
+        if (querySnapshot != null) {
+          val currentPoints = querySnapshot.first()["totalPoints"] as Number
+          textViewCouponDetailsCurrentPoints.text = currentPoints.toInt().toString()
+        }
+      }
+
+  }
+
   companion object {
 
     const val ARG_COUPON = "coupon"
-//
-//    @JvmStatic
-//    fun newInstance(coupon: Coupon) =
-//      CouponDetails().apply {
-//        arguments = Bundle().apply {
-//          putSerializable(ARG_COUPON, coupon)
-//        }
-//      }
   }
 }
