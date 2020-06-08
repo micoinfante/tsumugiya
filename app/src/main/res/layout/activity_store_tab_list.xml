@@ -24,7 +24,7 @@
                 android:layout_marginLeft="26dp"
                 android:gravity="bottom|left"
                 android:text="@string/tab_store"
-                android:textSize="30sp"
+                android:textSize="40sp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -33,9 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            app:tabIndicatorColor="@color/primary_orange"
             app:tabRippleColor="#FFFFFF"
             app:tabSelectedTextColor="@color/primary_orange"
+            app:tabTextAppearance="@style/tabBarMenuTheme"
             app:tabTextColor="#000000" />
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -9,16 +9,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ortech.shopapp.CountDownAlert
 import com.ortech.shopapp.CouponDetails
+import com.ortech.shopapp.Models.AdapterItem
 import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.R
 import kotlinx.android.synthetic.main.fragment_branch_coupon_item.view.*
+import kotlinx.android.synthetic.main.fragment_sticky_header.view.*
+import kotlinx.android.synthetic.main.header_coupon.view.*
 
 import java.sql.Time
 import java.text.SimpleDateFormat
@@ -31,6 +35,7 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   private var couponList = ArrayList<Coupon>()
   private var pointHistoryList = ArrayList<PointHistory>()
+  private var storeCouponList: ArrayList<AdapterItem<Coupon>> = arrayListOf()
 
   init {
     setHasStableIds(true)
@@ -38,31 +43,72 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
-    return CouponViewHolder(inflater.inflate(R.layout.fragment_branch_coupon_item, parent, false))
-  }
-
-  override fun getItemViewType(position: Int): Int {
-    return position
-  }
-
-  override fun getItemCount(): Int {
-    return couponList.size
-  }
-
-  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    if (holder is CouponViewHolder) {
-      holder.bind(couponList[position])
+    return if (viewType == TYPE_HEADER) {
+      CouponHeaderHolder(inflater.inflate(R.layout.header_coupon, parent,false))
+    } else {
+      CouponViewHolder(inflater.inflate(R.layout.fragment_branch_coupon_item, parent, false))
     }
   }
 
-  fun updateData(couponList: ArrayList<Coupon>) {
-    this.couponList = couponList
+
+  override fun getItemViewType(position: Int) : Int {
+    return if (storeCouponList[position].viewType == TYPE_HEADER) {
+      TYPE_HEADER
+    } else {
+      TYPE_COUPON
+    }
+  }
+
+  override fun getItemCount(): Int {
+    Log.d(TAG, "Number of items: ${storeCouponList.count()}")
+    return storeCouponList.count()
+  }
+
+  override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    holder.setIsRecyclable(false)
+    when(holder) {
+      is CouponHeaderHolder -> {
+        val title = storeCouponList[position].value?.couponStore
+        if (title != null) {
+          holder.bind(title)
+        } else {
+          holder.bind("error")
+        }
+      }
+      is CouponViewHolder -> {
+        if (storeCouponList[position].viewType == TYPE_COUPON) {
+          storeCouponList[position].let { holder.bind(it) }
+        }
+      }
+    }
+
+  }
+
+  fun updateData(storeCouponList: ArrayList<AdapterItem<Coupon>>) {
+    Log.d(TAG, "Updated Number of items: ${storeCouponList.count()}")
+    this.storeCouponList = storeCouponList
     notifyDataSetChanged()
+  }
+
+  fun removeAll() {
+    this.storeCouponList.clear()
+    this.pointHistoryList.clear()
+    notifyDataSetChanged()
+    Log.d(TAG, "Deleted all data: ${storeCouponList.count()}")
   }
 
   fun updateTransactionData(pointHistoryList: ArrayList<PointHistory>) {
     this.pointHistoryList = pointHistoryList
     notifyDataSetChanged()
+  }
+
+
+  inner class CouponHeaderHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
+    private val header = itemView.textViewStoreHeader
+
+    fun bind(title: String) {
+      header.text = title
+    }
   }
 
   inner class CouponViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -76,8 +122,9 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val couponItem = itemView.cardViewCouponItem
     private val res = itemView.context
 
-    fun bind(coupon: Coupon) {
-      val isCouponUsed = checkRedemption(coupon)
+    fun bind(item: AdapterItem<Coupon>) {
+      val coupon = item.value?:return
+      val isCouponUsed = checkRedemption(item)
 
       val date = coupon.untilDate?.toDate().toString()
       couponName.text = coupon.couponLabel
@@ -92,46 +139,46 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         .placeholder(R.drawable.app_logo_sekai)
         .into(couponThumbnail)
 
-//
-//      itemView.setOnClickListener {
-//        if (!isCouponUsed) {
-//          val intent = Intent(itemView.context, CouponDetails::class.java)
-//          intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
-//          itemView.context.startActivity(intent)
-//        }
-//      }
-
     }
 
-    private fun checkRedemption(coupon: Coupon): Boolean {
+    private fun checkRedemption(item: AdapterItem<Coupon>): Boolean {
+      val coupon = item.value?:return false
+      if (pointHistoryList.count() == 0) {
+        itemView.setOnClickListener {
+          val intent = Intent(itemView.context, CouponDetails::class.java)
+          intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
+          itemView.context.startActivity(intent)
+        }
+      }
       pointHistoryList.forEach {pointHistory ->
-        if (pointHistory.couponID == coupon.couponID) {
-          val today = Date()
-          val pointHistoryRedemption = pointHistory.timeStamp?.toDate()
+        Log.d(TAG, "Cell ${coupon.couponStore} == ${pointHistory.branchName}")
+        if (pointHistory.couponID == coupon.couponID && coupon.couponStore == pointHistory.branchName) {
+            val today = Date()
+            val pointHistoryRedemption = pointHistory.timeStamp?.toDate()
 
-          val couponAvailability = pointHistoryRedemption?.let { incrementDay(it) }
+            val couponAvailability = pointHistoryRedemption?.let { incrementDay(it) }
 
-          Log.d(TAG, "$today > $couponAvailability")
-         if (today > couponAvailability) {
-            timerShade.visibility = View.INVISIBLE
-          } else {
-            val diff = (couponAvailability?.time ?: Date().time) - Date().time
-            val remainingTime = Date(diff)
-            addCountDownTimer(remainingTime)
-            timerShade.visibility = View.VISIBLE
-            timerShade.setOnClickListener {
-               Log.d(TAG, "Timer shade click")
-               val currentMillis = (couponAvailability?.time ?: Date().time) - Date().time
-               val activity = itemView.context as AppCompatActivity
-               val fragment = CountDownAlert.newInstance(currentMillis)
-               val transaction =  activity.supportFragmentManager.beginTransaction()
-               transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-               transaction.add(R.id.branchCouponContainer, fragment)
+            Log.d(TAG, "$today > $couponAvailability")
+            if (today > couponAvailability) {
+              timerShade.visibility = View.INVISIBLE
+            } else {
+              val diff = (couponAvailability?.time ?: Date().time) - Date().time
+              val remainingTime = Date(diff)
+              addCountDownTimer(remainingTime)
+              timerShade.visibility = View.VISIBLE
+              timerShade.setOnClickListener {
+                Log.d(TAG, "Timer shade click")
+                val currentMillis = (couponAvailability?.time ?: Date().time) - Date().time
+                val activity = itemView.context as AppCompatActivity
+                val fragment = CountDownAlert.newInstance(currentMillis)
+                val transaction =  activity.supportFragmentManager.beginTransaction()
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                transaction.add(R.id.branchCouponContainer, fragment)
                 transaction.addToBackStack(null)
-               transaction.commit()
-             }
-           return true
-          }
+                transaction.commit()
+              }
+              return true
+            }
         } else {
           itemView.setOnClickListener {
               val intent = Intent(itemView.context, CouponDetails::class.java)
@@ -176,7 +223,10 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   companion object {
     const val TAG = "CouponListAdapter"
+    const val TYPE_HEADER = 0
+    const val TYPE_COUPON = 1
   }
+
 }
 
 

@@ -12,26 +12,26 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp"
         tools:elevation="0dp">
 
-        <androidx.appcompat.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarHomeScreen"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_height="?attr/actionBarSize"
             android:layout_marginStart="6dp"
             android:layout_marginLeft="6dp"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+                android:theme="@style/AppTheme.PopupOverlay"
             app:collapseIcon="@drawable/nav_app_logo_25dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:elevation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:navigationIcon="@drawable/nav_app_logo_25dp"
             app:title="@string/app_name"
             app:titleTextAppearance="@style/toolbarMenuTheme"
             tools:titleTextAppearance="@style/toolbarMenuTheme" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
 <!--    <androidx.cardview.widget.CardView-->
@@ -76,10 +76,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/homeRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </androidx.recyclerview.widget.RecyclerView>
 

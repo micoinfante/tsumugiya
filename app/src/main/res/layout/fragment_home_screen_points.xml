@@ -27,8 +27,9 @@
                 android:minHeight="25dp"
                 android:text="@string/homescreen_point_section_welcome"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
+                app:autoSizeMinTextSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +42,7 @@
                 android:minHeight="50dp"
                 android:text="0"
                 android:textColor="#FFFFFF"
-                android:textSize="40sp"
+                android:textSize="42sp"
                 android:textStyle="bold"
                 app:autoSizeMinTextSize="50sp"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
@@ -69,14 +70,14 @@
                     android:gravity="center"
                     android:text="TextView"
                     android:textColor="#FFFFFF"
-                    android:textSize="23sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     tools:text="Bronze" />
 
                 <ImageView
                     android:id="@+id/imageViewRanking"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
                     android:src="@android:drawable/btn_star_big_on"
                     app:srcCompat="@drawable/bronze"
                     tools:srcCompat="@drawable/bronze" />
@@ -88,7 +89,7 @@
                     android:gravity="center"
                     android:text="TextView"
                     android:textColor="#FFFFFF"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="lorem ipsum 1940pt" />
             </LinearLayout>
@@ -106,9 +107,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:gravity="center"
-                android:text="@string/homescreen_point_section_subtitle"
                 android:textColor="@color/accent_white"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="parent"

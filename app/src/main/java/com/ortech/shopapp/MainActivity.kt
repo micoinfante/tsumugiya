@@ -8,6 +8,8 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
@@ -28,6 +30,10 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
+//    FacebookSdk.sdkInitialize(getApplicationContext());
+//    AppEventsLogger.activateApp(this);
+//    AppEventsLogger.activateApp(this, getString(R.string.facebook_app_id))
+
     var builder = NotificationCompat.Builder(this, 999.toString())
       .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
       .setContentTitle("This is a test title")
@@ -41,7 +47,20 @@ class MainActivity : AppCompatActivity() {
       startActivity(qrIntent)
     } else {
       val intent = Intent(this, BottomNavigationActivity::class.java)
-      checkUUID()
+
+      val emailUID = checkEmailLoggedInUser()
+      val fbUID = checkFacebookLoggedInUser()
+      val googleUID = checkGoogleLoggedInUser()
+
+      if (emailUID != null) {
+        getUserDetails(emailUID)
+      } else if (fbUID != null) {
+        getUserDetails(fbUID)
+      } else if (googleUID != null) {
+        getUserDetails(googleUID)
+      } else {
+        checkUUID()
+      }
       updateFCMToken()
       startActivity(intent)
     }
@@ -70,6 +89,54 @@ class MainActivity : AppCompatActivity() {
       }
   }
 
+  private fun checkGoogleLoggedInUser() : String? {
+    val sharedPreferences = getSharedPreferences(
+      getString(R.string.preference_UUID_key_google), Context.MODE_PRIVATE) ?: return null
+
+    sharedPreferences.getString(getString(R.string.preference_UUID_key_google), null)
+      .let { userUUID ->
+        return if (userUUID != null) {
+          UserSingleton.instance.setCurrentUserID(userUUID)
+          Log.d(TAG, "current Google UUID is not null: $userUUID")
+          userUUID
+        } else {
+          null
+        }
+      }
+  }
+
+  private fun checkFacebookLoggedInUser(): String? {
+    val sharedPreferences = getSharedPreferences(
+      getString(R.string.preference_UUID_key_facebook), Context.MODE_PRIVATE) ?: return null
+
+    sharedPreferences.getString(getString(R.string.preference_UUID_key_facebook), null)
+      .let { userUUID ->
+        return if (userUUID != null) {
+          UserSingleton.instance.setCurrentUserID(userUUID)
+          Log.d(TAG, "current facebook UUID is not null")
+          userUUID
+        } else {
+          null
+        }
+      }
+  }
+
+  private fun checkEmailLoggedInUser(): String?{
+    val sharedPreferences = getSharedPreferences(
+      getString(R.string.preference_UUID_key_email), Context.MODE_PRIVATE) ?: return null
+
+    sharedPreferences.getString(getString(R.string.preference_UUID_key_email), null)
+      .let { userUUID ->
+        return if (userUUID != null) {
+          UserSingleton.instance.setCurrentUserID(userUUID)
+          Log.d(TAG, "current Google email is not null")
+          userUUID
+        } else {
+          null
+        }
+      }
+  }
+
   private fun getUserDetails(userID: String) {
     // userID is document path/reference, userID field in document is random generated unique string
     val db = Firebase.firestore
@@ -77,6 +144,8 @@ class MainActivity : AppCompatActivity() {
       .addOnSuccessListener { documentSnapshot ->
       if (documentSnapshot.exists()) {
         val globalUser = documentSnapshot.toObject(GlobalUser::class.java)
+        val userName = documentSnapshot.get("name") as? String
+        UserSingleton.instance.name = userName
         Log.d(TAG, globalUser.toString())
       } else {
         Log.d(TAG, "You have to create a new document, user is not existing in document/$userID")
@@ -132,8 +201,8 @@ class MainActivity : AppCompatActivity() {
   private fun updateFCMToken() {
     val db = Firebase.firestore
     val sharedPreferences = getSharedPreferences(
-      getString(R.string.preference_UUID_key), Context.MODE_PRIVATE) ?: return
-    sharedPreferences.getString(getString(R.string.preference_UUID_key), null)
+      UserSingleton.instance.userID, Context.MODE_PRIVATE) ?: return
+    sharedPreferences.getString(UserSingleton.instance.userID, null)
       .let { userUUID ->
         if (userUUID != null) {
           UserSingleton.instance.setCurrentUserID(userUUID)
@@ -154,6 +223,8 @@ class MainActivity : AppCompatActivity() {
       }
 
   }
+
+
 
 
   companion object {

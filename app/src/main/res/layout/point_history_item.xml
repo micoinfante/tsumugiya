@@ -52,6 +52,7 @@
             android:layout_height="match_parent"
             android:gravity="bottom|end"
             android:textColor="#0F7A13"
+            android:textSize="16sp"
             android:textStyle="bold"
             tools:text="100 points" />
     </LinearLayout>

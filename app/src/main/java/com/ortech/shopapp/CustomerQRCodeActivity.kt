@@ -30,6 +30,7 @@ import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.encoder.QRCode
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.ortech.shopapp.Models.RequestCode
+import com.ortech.shopapp.Models.UserSingleton
 import kotlinx.android.synthetic.main.activity_customer_qr_code.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,6 +43,7 @@ class CustomerQRCodeActivity : Fragment(){
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     getTotalPoints()
+    startHandler()
   }
 
   override fun onCreateView(
@@ -80,7 +82,7 @@ class CustomerQRCodeActivity : Fragment(){
 
   private fun generateQRCode() {
     val imageView = imageViewQRCode
-    val content = getUUID() + ", transfer"
+    val content = UserSingleton.instance.userID + ", transfer"
 
     val multiFormatWriter = MultiFormatWriter()
     val hintMap = mapOf(EncodeHintType.MARGIN to 0)
@@ -138,8 +140,13 @@ class CustomerQRCodeActivity : Fragment(){
     }
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+    stopHandler()
+  }
+
   private fun getTotalPoints() {
-    val userID = getUUID()
+    val userID = UserSingleton.instance.userID
     val db = Firebase.firestore
 
     db.collection("TotalPoints").whereEqualTo("userID", userID)

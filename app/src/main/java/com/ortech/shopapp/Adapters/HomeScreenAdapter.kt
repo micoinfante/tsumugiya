@@ -12,12 +12,9 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ortech.shopapp.BranchCouponList
+import com.ortech.shopapp.*
 import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.Models.UserSingleton
-import com.ortech.shopapp.PointHistoryActivity
-import com.ortech.shopapp.R
-import com.ortech.shopapp.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_fourth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
@@ -167,24 +164,53 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       val currentTime = calendar.get(Calendar.HOUR_OF_DAY)
       val res = itemView.context
 
-      Log.d(TAG, "Sticky Header Binded")
+      val username = UserSingleton.instance.name
+      var userLoggedIn = true
+
+      if (username == "") {
+        userLoggedIn = false
+      }
+      if (username == null) {
+        userLoggedIn = false
+      }
+      if (username == "default") {
+        userLoggedIn = false
+      }
+
 
       when (currentTime) {
         in 0..12 -> {
           val title = res.getString(R.string.header_title_morning)
-          headerTitle.text = res.getString(R.string.header_welcome, title)
+          if (!userLoggedIn) {
+            headerTitle.text = res.getString(R.string.header_welcome, title)
+          } else {
+            headerTitle.text = res.getString(R.string.header_title_night_loggedin, username)
+          }
+
         }
         in 12..16 -> {
           val title = res.getString(R.string.header_title_afternoon)
-          headerTitle.text = res.getString(R.string.header_welcome, title)
+          if (!userLoggedIn) {
+            headerTitle.text = res.getString(R.string.header_welcome, title)
+          } else {
+            headerTitle.text = res.getString(R.string.header_title_afternoon_loggedin, username)
+          }
         }
         in 16..21 -> {
           val title = res.getString(R.string.header_title_night)
-          headerTitle.text = res.getString(R.string.header_welcome, title)
+          if (!userLoggedIn) {
+            headerTitle.text = res.getString(R.string.header_welcome, title)
+          } else {
+            headerTitle.text = res.getString(R.string.header_title_night_loggedin, username)
+          }
         }
         in 21..24 -> {
           val title = res.getString(R.string.header_title_night)
-          headerTitle.text = res.getString(R.string.header_welcome, title)
+          if (userLoggedIn) {
+            headerTitle.text = res.getString(R.string.header_welcome, title)
+          } else {
+            headerTitle.text = res.getString(R.string.header_title_night_loggedin, username)
+          }
         }
 
       }
@@ -225,6 +251,25 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       val userTotalPoints = UserSingleton.instance.getCurrentPoints()
       currentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
 
+      val username = UserSingleton.instance.name
+
+      var userLoggedIn = true
+
+      if (username == "") {
+        userLoggedIn = false
+      }
+      if (username == null) {
+        userLoggedIn = false
+      }
+      if (username == "default") {
+        userLoggedIn = false
+      }
+
+      if (userLoggedIn) {
+        pointTitle.text = res.getString(R.string.homescreen_point_section_welcome_loggedin, username)
+      } else {
+        pointTitle.text = res.getString(R.string.homescreen_point_section_welcome)
+      }
 
       when(userTotalPoints) {
         in (0..1999) -> {
@@ -273,8 +318,8 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     fun bind() {
       buttonRedirect.setOnClickListener {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(itemView.context.getString(R.string.home_link_notice))
+        val intent = Intent(itemView.context, WebViewActivity::class.java)
+        intent.putExtra(WebViewActivity.ARG_URL,  itemView.context.getString(R.string.home_link_notice))
         itemView.context.startActivity(intent)
       }
 
@@ -287,8 +332,8 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     fun bind() {
       imageView.setOnClickListener {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse("https://store.shopping.yahoo.co.jp/ra-mensekai/suspend.html")
+        val intent = Intent(itemView.context, WebViewActivity::class.java)
+        intent.putExtra(WebViewActivity.ARG_URL, "https://store.shopping.yahoo.co.jp/ra-mensekai/")
         itemView.context.startActivity(intent)
       }
 //      Picasso.get()

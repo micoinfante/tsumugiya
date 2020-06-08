@@ -41,15 +41,15 @@ class RedeemCouponActivity : AppCompatActivity() {
 
   private fun confirmTransfer () {
     val builder = AlertDialog.Builder(this)
-    builder.setTitle("Confirm Transfer")
-    builder.setMessage("Transfer points")
-    builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
+    builder.setTitle(getString(R.string.redeem_coupons_customer))
+    builder.setMessage(getString(R.string.confirm_submit_details))
+    builder.setPositiveButton(getString(R.string.yes), DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
       progressBarRedeemPoints.visibility = View.VISIBLE
       checkPoints()
       dialog.dismiss()
     }))
 
-    builder.setNegativeButton("Cancel", DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
+    builder.setNegativeButton(getString(R.string.cancel), DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
       dialog.dismiss()
     }))
 
@@ -146,40 +146,52 @@ class RedeemCouponActivity : AppCompatActivity() {
     val requiredPoints = dataArray[2].toInt()
     val staffEmail = Firebase.auth.currentUser?.email ?: "error staff email"
 
-    val pointHistoryData = hashMapOf(
-      "userID" to dataArray.first(),
-      "transfer" to "",
-      "timeStamp" to Timestamp(Date()),
-      "storeURL" to "",
-      "storeName" to "",
-      "storeID" to "",
-      "staffEmail" to staffEmail,
-      "redeem" to "redeemed",
-      "points" to requiredPoints,
-      "mainID" to  "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-      "customerEmail" to "",
-      "couponItem" to dataArray.last(),
-      "couponID" to dataArray[1],
-      "branchURL" to "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
-      "branchName" to "富山呉羽店",
-      "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
-    )
-
-    pointHistoryRef.add(pointHistoryData)
+    db.collection("CMSCoupon").whereEqualTo("couponID", dataArray[1])
+      .get()
       .addOnSuccessListener {
-        progressBarRedeemPoints.visibility = View.INVISIBLE
-        clearData()
-        Toast.makeText(baseContext, "Reduce points by $requiredPoints ", Toast.LENGTH_SHORT).show()
-      }
-      .addOnFailureListener {
-        progressBarRedeemPoints.visibility = View.INVISIBLE
-        Toast.makeText(baseContext, "Failed to redeem coupon", Toast.LENGTH_SHORT).show()
+        if (it.count() != 0) {
+
+          val pointHistoryData = hashMapOf(
+            "userID" to dataArray.first(),
+            "transfer" to "",
+            "timeStamp" to Timestamp(Date()),
+            "storeURL" to "",
+            "storeName" to "",
+            "storeID" to "",
+            "staffEmail" to staffEmail,
+            "redeem" to "redeemed",
+            "points" to requiredPoints,
+            "mainID" to  "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
+            "customerEmail" to "",
+            "couponItem" to dataArray.last(),
+            "couponID" to dataArray[1],
+            "branchURL" to "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
+            "branchName" to "富山呉羽店",
+            "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
+          )
+
+          pointHistoryRef.add(pointHistoryData)
+            .addOnSuccessListener {
+              progressBarRedeemPoints.visibility = View.INVISIBLE
+              clearData()
+              val message = getString(R.string.redeem_successful)
+              Toast.makeText(baseContext, message, Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+              progressBarRedeemPoints.visibility = View.INVISIBLE
+              Toast.makeText(baseContext, "Failed to redeem coupon", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+          progressBarRedeemPoints.visibility = View.INVISIBLE
+          Toast.makeText(baseContext, "Failed to redeem coupon", Toast.LENGTH_SHORT).show()
+        }
       }
   }
 
   private fun invalidPoints() {
     val builder = AlertDialog.Builder(this)
-    builder.setMessage("Insufficient Points")
+    builder.setTitle(getString(R.string.redeem_coupons_customer))
+    builder.setMessage(getString(R.string.insufficient_points))
     builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
       clearData()
       dialog.dismiss()
@@ -189,7 +201,8 @@ class RedeemCouponActivity : AppCompatActivity() {
 
   private fun alreadyRedeemed() {
     val builder = AlertDialog.Builder(this)
-    builder.setMessage("Coupon ALready redeemed by user")
+    builder.setTitle(getString(R.string.redeem_coupons_customer))
+    builder.setMessage(getString(R.string.invalid)) // already redeemed = invalid
     builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
       clearData()
       dialog.dismiss()

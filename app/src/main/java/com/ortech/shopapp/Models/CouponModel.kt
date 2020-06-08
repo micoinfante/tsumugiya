@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Coupon (
-  val couponStore: String? = "",
+  var couponStore: String? = "",
   val storeID: String? = "",
   val couponDetails: String? = "",
   val couponID: String? = "",
@@ -19,6 +19,7 @@ data class Coupon (
   val orderBy: String? = "",
   val points: String? = "",
   val selectedBranches: ArrayList<String>? = ArrayList(),
+  val selectedStoreName: ArrayList<String>? = ArrayList(),
   val untilDate: Timestamp? = null,
   val fromDateStr: String? = "",
   val untilDateStr: String? = ""
@@ -36,6 +37,7 @@ data class Coupon (
     parcel.readString(),
     parcel.readString(),
     parcel.readString(),
+    parcel.createStringArrayList(),
     parcel.createStringArrayList(),
     parcel.readParcelable(Timestamp::class.java.classLoader),
     parcel.readString(),
@@ -58,6 +60,7 @@ data class Coupon (
     parcel.writeString(orderBy)
     parcel.writeString(points)
     parcel.writeStringList(selectedBranches)
+    parcel.writeStringList(selectedStoreName)
     parcel.writeParcelable(untilDate, flags)
     parcel.writeString(fromDateStr)
     parcel.writeString(untilDateStr)

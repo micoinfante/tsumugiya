@@ -60,9 +60,6 @@ class HomeScreen : Fragment() {
       recyclerView!!.adapter = mainAdapter
     }
 
-//    getPoints()
-
-
     buttonSettingsDebug.setOnClickListener  {
       val intent = Intent(context, SettingsActivity::class.java)
       startActivity(intent)
@@ -73,7 +70,10 @@ class HomeScreen : Fragment() {
         val layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.topMargin = toolbarHomeScreen.height
         buttonSettingsDebug.layoutParams = layoutParams
+//        appbarHome.setExpanded(true,true)
       } else {
+//        appBarLayout.setExpanded(false, true);
+//        appbarHome.setExpanded(false,true)
         val layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.topMargin = 0
         buttonSettingsDebug.layoutParams = layoutParams
@@ -87,7 +87,6 @@ class HomeScreen : Fragment() {
   }
 
   private fun getPoints() {
-    // TODO fetch database points and assign to singleton
 
     val userID = UserSingleton.instance.userID
     db.collection("PointHistory").whereEqualTo("userID", userID)
@@ -111,38 +110,39 @@ class HomeScreen : Fragment() {
   private fun getTotalPointsHistory() {
     val userID = UserSingleton.instance.userID
     db.collection("TotalPoints").whereEqualTo("userID", userID)
-      .get()
-      .addOnSuccessListener { querySnapshot ->
+      .addSnapshotListener { querySnapshot , firebaseFirestoreException ->
         // check date
-        if (querySnapshot.count() != 0) {
-          val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-          val today = sdf.format(Date()).toString()
-          val timestamp = querySnapshot.first()["dates"] as Timestamp
-          val timestampToday = sdf.format(timestamp.toDate()).toString()
-          val currentPoints = querySnapshot.first()["totalPoints"] as Number
+        if (querySnapshot != null) {
+          if (querySnapshot.count() != 0) {
+            val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+            val today = sdf.format(Date()).toString()
+            val timestamp = querySnapshot.first()["dates"] as Timestamp
+            val timestampToday = sdf.format(timestamp.toDate()).toString()
+            val currentPoints = querySnapshot.first()["totalPoints"] as Number
 
-          UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
-          if (today == timestampToday) {
-            Log.d(TAG, "Dates are equal")
-            val pointsToday = querySnapshot.first()["pointsToday"] as Number
-            val lastPoints = querySnapshot.first()["lastPoints"] as Number
-            UserSingleton.instance.setLastPointsTransferred(pointsToday.toInt())
-            UserSingleton.instance.setPointsToday(lastPoints.toInt())
-          } else {
-            UserSingleton.instance.setLastPointsTransferred(0)
-            UserSingleton.instance.setPointsToday(0)
+            UserSingleton.instance.setCurrentPoints(currentPoints.toInt())
+            if (today == timestampToday) {
+              Log.d(TAG, "Dates are equal")
+              val pointsToday = querySnapshot.first()["pointsToday"] as Number
+              val lastPoints = querySnapshot.first()["lastPoints"] as Number
+              UserSingleton.instance.setLastPointsTransferred(pointsToday.toInt())
+              UserSingleton.instance.setPointsToday(lastPoints.toInt())
+            } else {
+              UserSingleton.instance.setLastPointsTransferred(0)
+              UserSingleton.instance.setPointsToday(0)
+            }
+            notifyUpdatedData()
           }
-          notifyUpdatedData()
         }
 
+        if (firebaseFirestoreException != null) {
+          UserSingleton.instance.setLastPointsTransferred(0)
+          UserSingleton.instance.setPointsToday(0)
+          UserSingleton.instance.setCurrentPoints(0)
+          notifyUpdatedData()
+        }
+      }
 
-      }
-      .addOnFailureListener {
-        UserSingleton.instance.setLastPointsTransferred(0)
-        UserSingleton.instance.setPointsToday(0)
-        UserSingleton.instance.setCurrentPoints(0)
-        notifyUpdatedData()
-      }
   }
 
   private fun isHeader() : (itemPosition: Int) -> Boolean {

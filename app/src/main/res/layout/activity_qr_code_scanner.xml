@@ -44,6 +44,18 @@
         android:layout_gravity="center|center_vertical|center_horizontal"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal|center"
+        android:layout_marginTop="300dp"
+        android:gravity="center"
+
+        android:text="@string/scan_qr_code"
+        android:textColor="@color/accent_white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -16,7 +16,7 @@
     <style name="SekaiActionBar" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/accent_white</item>
-        <item name="colorPrimaryDark">@color/primary_background</item>
+        <item name="colorPrimaryDark">@color/accent_white</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_black</item>
         <item name="actionMenuTextColor">@color/primary_black</item>
@@ -24,6 +24,8 @@
         <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+<!--        <item name="android:statusBarColor">@color/</item>-->
+        <item name="android:windowLightStatusBar">true</item>
 <!--        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>-->
     </style>
 
@@ -39,7 +41,12 @@
     <style name="toolbarMenuTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:colorBackground">@color/accent_white</item>
         <item name="android:textColor">@color/primary_black</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="tabBarMenuTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 

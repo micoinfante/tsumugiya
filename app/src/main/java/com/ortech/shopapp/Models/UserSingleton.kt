@@ -10,8 +10,14 @@ class UserSingleton private constructor() {
   // total points earned today
   private var pointsToday = 0
 
+
+
   var userID = ""
   var fcmToken = ""
+  var isFacebookLoggedIn: Boolean = false
+  var isGoogleLoggedIn: Boolean = false
+  var email: String? = null
+  var name: String? = null
 
   fun setCurrentUserID(value: String) {
     this.userID = value

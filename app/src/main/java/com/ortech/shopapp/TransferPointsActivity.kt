@@ -75,15 +75,14 @@ class TransferPointsActivity : AppCompatActivity(), View.OnClickListener {
 
   private fun confirmTransfer () {
     val builder = AlertDialog.Builder(this)
-    builder.setTitle("Confirm Transfer")
-    builder.setMessage("Transfer points")
+    builder.setTitle(getString(R.string.transfer_customer_points))
     builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = {dialog: DialogInterface, which: Int ->
       progressBarTransferPoints.visibility = View.VISIBLE
       transferPoints()
       dialog.dismiss()
     }))
 
-    builder.setNegativeButton("Cancel", DialogInterface.OnClickListener(function = {dialog: DialogInterface, which: Int ->
+    builder.setNegativeButton(getString(R.string.cancel), DialogInterface.OnClickListener(function = {dialog: DialogInterface, which: Int ->
       dialog.dismiss()
     }))
 
@@ -92,7 +91,7 @@ class TransferPointsActivity : AppCompatActivity(), View.OnClickListener {
 
   private fun rescanMessage() {
     val builder = AlertDialog.Builder(this)
-    builder.setMessage("Re scan qr code")
+    builder.setMessage("Rescan qr code")
     builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = {dialog: DialogInterface, which: Int ->
       dialog.dismiss()
     }))
@@ -175,7 +174,7 @@ class TransferPointsActivity : AppCompatActivity(), View.OnClickListener {
       .addOnSuccessListener {
         progressBarTransferPoints.visibility = View.INVISIBLE
         clearData()
-        Toast.makeText(baseContext, "Transferred ${toTransferPoints.toInt()}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(baseContext, getString(R.string.transfer_successful, toTransferPoints.toString()), Toast.LENGTH_SHORT).show()
       }
       .addOnFailureListener {
         progressBarTransferPoints.visibility = View.INVISIBLE
@@ -195,6 +194,8 @@ class TransferPointsActivity : AppCompatActivity(), View.OnClickListener {
       finish()
     }
   }
+
+
 
   companion object {
     const val TAG = "TransferPointsActivity"

@@ -27,7 +27,7 @@
     <string name="homescreen_weblink" translatable="false">https://www.google.com</string>
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
-    <string name="text_label_point" translatable="false">%s$1 ポイント</string>
+    <string name="text_label_point" translatable="false">%s ポイント</string>
 
     <string name="tab_home">ホーム</string>
     <string name="tab_point">ポイント</string>

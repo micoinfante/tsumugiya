@@ -168,19 +168,19 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
 
   override fun onDestroyView() {
     super.onDestroyView()
-
-    val fm = childFragmentManager
-    var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
-//    if (supportMapFragment == null) {
-//      supportMapFragment = SupportMapFragment.newInstance()
-//      fm?.beginTransaction()?.replace(R.id.mapView, supportMapFragment)?.commit()
+//
+//    val fm = childFragmentManager
+//    var supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+////    if (supportMapFragment == null) {
+////      supportMapFragment = SupportMapFragment.newInstance()
+////      fm?.beginTransaction()?.replace(R.id.mapView, supportMapFragment)?.commit()
+////    }
+//    if (supportMapFragment != null) {
+//      fm?.beginTransaction()?.remove(supportMapFragment)
+//      fm?.commit {
+//        commitAllowingStateLoss()
+//      }
 //    }
-    if (supportMapFragment != null) {
-      fm?.beginTransaction()?.remove(supportMapFragment)
-      fm?.commit {
-        commitAllowingStateLoss()
-      }
-    }
   }
 
 

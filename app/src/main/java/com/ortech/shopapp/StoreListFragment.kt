@@ -32,11 +32,6 @@ class StoreListFragment : Fragment() {
   private var stores = arrayListOf<Branch>()
   private lateinit var storeListAdapter: StoreListAdapter
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    retainInstance = true
-  }
-
   private fun setup() {
     storeListAdapter = StoreListAdapter()
     val storeListRecyclerView = recyclerViewStoreList

@@ -55,8 +55,8 @@
         android:background="@drawable/textfield_rectangle"
         android:cursorVisible="true"
         android:ems="10"
-        android:importantForAutofill="no"
         android:hint="@string/user_password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:minWidth="300dp"
         android:textSize="16sp"
@@ -144,8 +144,8 @@
         android:id="@+id/buttonFacebookLogin"
         android:layout_width="148dp"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2"
@@ -156,11 +156,31 @@
         android:layout_width="148dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2"
         app:srcCompat="@drawable/google" />
+
+    <ProgressBar
+        android:id="@+id/progressBarLogin"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/buttonFacebookLoginMain"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="616dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

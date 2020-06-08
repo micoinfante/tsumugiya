@@ -90,7 +90,7 @@ class QRCodeScannerActivity : AppCompatActivity() {
       }
     } else {
       Firebase.auth.signOut()
-      val intent = Intent(baseContext, BottomNavigationActivity::class.java)
+      val intent = Intent(baseContext, MainActivity::class.java)
       intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
       startActivity(intent)
     }
@@ -134,6 +134,11 @@ class QRCodeScannerActivity : AppCompatActivity() {
     } else {
       redeemCouponOfCustomer(data)
     }
+  }
+
+  override fun onBackPressed() {
+    super.onBackPressed()
+    finish()
   }
 
   private fun transferPointsToCustomer(data: String) {
@@ -220,7 +225,6 @@ class QRCodeScannerActivity : AppCompatActivity() {
           val today = sdf.format(Date()).toString()
           val timestamp = document["dates"] as Timestamp
           val timestampToday = sdf.format(timestamp.toDate()).toString()
-          val currentPoints = document["totalPoints"] as Double
           var totalPoints: HashMap<String, Any>
 
           totalPoints = if (today == timestampToday) {
@@ -243,7 +247,8 @@ class QRCodeScannerActivity : AppCompatActivity() {
             .addOnCompleteListener {
               if (it.isComplete || it.isSuccessful) {
                 runOnUiThread {
-                  Toast.makeText(baseContext, "Transferred $points", Toast.LENGTH_LONG).show()
+                  val message = getString(R.string.earn_points_successful, points.toString())
+                  Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
                 }
                 Handler().post(Runnable {
                   progressbarQRScanner.visibility = View.INVISIBLE

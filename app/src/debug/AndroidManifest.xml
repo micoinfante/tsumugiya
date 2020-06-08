@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-        <activity android:name="com.ortech.shopapp.RedeemCouponActivity"></activity>
+        <activity android:name="com.ortech.shopapp.ForgotPasswordActivity"></activity>
+        <activity android:name="com.ortech.shopapp.WebViewActivity" />
+        <activity android:name="com.ortech.shopapp.RedeemCouponActivity" />
         <activity android:name="com.ortech.shopapp.PointHistoryActivity" />
     </application>
 

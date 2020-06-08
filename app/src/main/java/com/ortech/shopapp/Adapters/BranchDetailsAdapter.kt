@@ -1,5 +1,6 @@
 package com.ortech.shopapp.Adapters
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -8,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_transfer_points.*
 import kotlinx.android.synthetic.main.branch_details_section.view.*
 import kotlinx.android.synthetic.main.fragment_branch_details.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
@@ -109,6 +113,17 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
         }
 
 
+      }
+      buttonUseCoupon.setOnClickListener {
+
+
+        val builder = AlertDialog.Builder(itemView.context)
+        builder.setTitle(branch.branch)
+        builder.setMessage(res.getString(R.string.no_coupon_available))
+        builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
+          dialog.dismiss()
+        }))
+        builder.show()
       }
     }
 

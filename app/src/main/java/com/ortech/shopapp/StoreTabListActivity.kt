@@ -30,7 +30,7 @@ class StoreTabListActivity : Fragment() {
     val sectionsPagerAdapter = SectionsPagerAdapter(childFragmentManager)
     val viewPager: ViewPager = view.findViewById(R.id.view_pager)
     viewPager.adapter = sectionsPagerAdapter
-    viewPager.offscreenPageLimit = 11;
+//    viewPager.offscreenPageLimit = 11;
     setupScrollListener(viewPager, sectionsPagerAdapter)
     val tabs: TabLayout = view.findViewById(R.id.tabs)
     tabs.setupWithViewPager(viewPager)
@@ -62,15 +62,15 @@ class StoreTabListActivity : Fragment() {
   override fun onDestroyView() {
     super.onDestroyView()
 
-    val fm = activity?.supportFragmentManager
-    val supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
-
-    if (supportMapFragment != null) {
-      fm?.beginTransaction()?.remove(supportMapFragment)
-      fm?.commit{
-        commitAllowingStateLoss()
-      }
-    }
+//    val fm = activity?.supportFragmentManager
+//    val supportMapFragment = fm?.findFragmentById(R.id.mapView) as SupportMapFragment?
+//
+//    if (supportMapFragment != null) {
+//      fm?.beginTransaction()?.remove(supportMapFragment)
+//      fm?.commit{
+//        commitAllowingStateLoss()
+//      }
+//    }
   }
 
   companion object {

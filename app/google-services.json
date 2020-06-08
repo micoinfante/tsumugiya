@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "936466283506-673nc4v34qndquk7kvupsad8hc8vkfp0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ortech.shopapp",
+            "certificate_hash": "0abcd93b392f859b374ffee82a4f2e327bb7c8fd"
+          }
+        },
+        {
           "client_id": "936466283506-k77gm74n7cu2a480ajqpsid4bqfig0bq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -36,7 +44,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "936466283506-3j9stdff1319uhbt2appl993ce9o5k3n.apps.googleusercontent.com",
+              "client_id": "936466283506-ud0njbmt0dntv2r4aidlcc19q6603sbd.apps.googleusercontent.com",
               "client_type": 3
             },
             {
