@@ -114,7 +114,7 @@ class BranchCouponList : AppCompatActivity() {
     val db = Firebase.firestore.collection("PointHistory")
 
     progressBarBranchCouponList.visibility = View.VISIBLE
-    db.whereEqualTo("userID", userID)
+    db.whereEqualTo("userID", "E362AFB5-51F4-474E-99D5-BD2E4A71A606")
       .whereEqualTo("redeem", "redeemed")
       .get()
       .addOnSuccessListener { it ->
@@ -122,13 +122,14 @@ class BranchCouponList : AppCompatActivity() {
         it.forEach {pointHistory ->
           val newPointHistory = pointHistory.toObject(PointHistory::class.java)
           pointHistoryList.add(newPointHistory)
+          updateStoreListHeaders()
+//          updateData()
 //          updateData()
         }
         Log.d(TAG, "Point History Count: ${pointHistoryList.map { ph -> ph.couponID }} ")
         progressBarBranchCouponList.visibility = View.GONE
         swipeRefreshCouponList.isRefreshing = false
-        updateStoreListHeaders()
-        updateData()
+
 //        fetchCoupons()
       }
       .addOnFailureListener {
@@ -168,8 +169,12 @@ class BranchCouponList : AppCompatActivity() {
       Log.d(TAG, "FormatCouponStore[${header}] [${coupons.count()}] \n${coupons.map{it.couponID}}")
 
       coupons.forEach {coupon ->
-        coupon.couponStore = header
-        formattedCouponData.add(AdapterItem(coupon, AllCouponListAdapter.TYPE_COUPON, false))
+        val newCoupon = Coupon(header, coupon.storeID, coupon.couponDetails, coupon.couponID, coupon.couponLabel, coupon.fromDate, coupon.imageURL, coupon.isEnabled, coupon.mainID, coupon.orderBy, coupon.points, coupon.selectedBranches, coupon.selectedStoreName, coupon.untilDate, coupon.fromDateStr, coupon.untilDateStr)
+        if (header == "二代目らーめん世界") {
+          Log.d(TAG,"setting header: $header $newCoupon")
+        }
+        newCoupon.couponStore = header
+        formattedCouponData.add(AdapterItem(newCoupon, AllCouponListAdapter.TYPE_COUPON, false))
       }
 
 //      coupons.forEach {coupon ->
@@ -189,6 +194,8 @@ class BranchCouponList : AppCompatActivity() {
 //
 //        }
 //      }
+
+      updateData()
 
     }
 

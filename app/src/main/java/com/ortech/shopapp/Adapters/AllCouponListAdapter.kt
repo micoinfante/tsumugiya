@@ -142,7 +142,7 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     }
 
     private fun checkRedemption(item: AdapterItem<Coupon>): Boolean {
-      val coupon = item.value?:return false
+      val coupon = item.value!!
       if (pointHistoryList.count() == 0) {
         itemView.setOnClickListener {
           val intent = Intent(itemView.context, CouponDetails::class.java)
@@ -150,8 +150,10 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
           itemView.context.startActivity(intent)
         }
       }
+      Log.d(TAG, "PointHistory ${pointHistoryList.map { it -> it.branchName
+      }} \nCurrentCoupon: ${coupon.couponStore} $coupon")
       pointHistoryList.forEach {pointHistory ->
-        Log.d(TAG, "Cell ${coupon.couponStore} == ${pointHistory.branchName}")
+        Log.d(TAG, "Cell  ${coupon.couponStore} == ${pointHistory.branchName}")
         if (pointHistory.couponID == coupon.couponID && coupon.couponStore == pointHistory.branchName) {
             val today = Date()
             val pointHistoryRedemption = pointHistory.timeStamp?.toDate()
