@@ -114,7 +114,8 @@ class BranchCouponList : AppCompatActivity() {
     val db = Firebase.firestore.collection("PointHistory")
 
     progressBarBranchCouponList.visibility = View.VISIBLE
-    db.whereEqualTo("userID", "E362AFB5-51F4-474E-99D5-BD2E4A71A606")
+//    "E362AFB5-51F4-474E-99D5-BD2E4A71A606"
+    db.whereEqualTo("userID", userID)
       .whereEqualTo("redeem", "redeemed")
       .get()
       .addOnSuccessListener { it ->
@@ -156,6 +157,7 @@ class BranchCouponList : AppCompatActivity() {
     } // couponList
 
     storeCoupons.forEach { storeCoupon ->
+
       val coupons = storeCoupon.value.map { it -> it.couponID }.toString().split(",")
       Log.d(TAG, "CouponStore[${storeCoupon.key}][${storeCoupon.value.count()}] \n${coupons}")
     }

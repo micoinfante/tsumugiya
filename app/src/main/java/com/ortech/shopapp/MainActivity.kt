@@ -214,6 +214,7 @@ class MainActivity : AppCompatActivity() {
               }
 
               val token = task.result?.token
+              Log.d(TAG, "FCM Token: $token")
               val data = hashMapOf("token" to token)
               UserSingleton.instance.fcmToken = token!!
               db.collection("GlobalUsers").document(userUUID).set(data, SetOptions.merge())

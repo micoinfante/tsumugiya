@@ -91,14 +91,14 @@
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/common_google_signin_btn_icon_light_focused" />
+            android:resource="@drawable/app_logo_sekai" />
         <!--
  Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/primary_orange" />
+            android:resource="@color/primary_black" />
 
         <service
             android:name=".NotificationService"

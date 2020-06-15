@@ -86,7 +86,7 @@ class CouponDetails : AppCompatActivity() {
   private fun generateQRCode() {
     val imageView = imageViewCouponDetailQRCode
     val userID = UserSingleton.instance.userID
-    val content = "$userID, ${coupon?.couponID}, ${coupon?.points}, ${coupon?.couponLabel}"
+    val content = "$userID, ${coupon?.couponID}, ${coupon?.points}, ${coupon?.couponLabel}. ${coupon?.couponStore}"
 
     val multiFormatWriter = MultiFormatWriter()
     val hintMap = mapOf(EncodeHintType.MARGIN to 0)

@@ -166,7 +166,7 @@ class RedeemCouponActivity : AppCompatActivity() {
             "couponItem" to dataArray.last(),
             "couponID" to dataArray[1],
             "branchURL" to "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
-            "branchName" to "富山呉羽店",
+            "branchName" to dataArray.last(),
             "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
           )
 
