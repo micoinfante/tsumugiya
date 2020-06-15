@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/homescreen_section"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/homescreen_top_margin"
-    android:background="@color/primary_background">
+    android:background="@color/primary_background"
+    android:minHeight="@dimen/homescreen_section">
 
     <ImageView
         android:id="@+id/imageViewRestaurant"
@@ -17,6 +18,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:maxHeight="@dimen/homescreen_section"
+        android:minHeight="@dimen/homescreen_section"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
