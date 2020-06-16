@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ortech.shopapp.Helpers.NotificationSender
 import com.ortech.shopapp.Models.UserSingleton
 import kotlinx.android.synthetic.main.activity_transfer_points.*
 import java.text.SimpleDateFormat
@@ -20,11 +21,8 @@ import java.util.*
 
 class TransferPointsActivity : AppCompatActivity(), View.OnClickListener {
 
-
   private var transferData: String? = null
-
-
-
+  private var currentUserToken: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -169,16 +167,51 @@ class TransferPointsActivity : AppCompatActivity(), View.OnClickListener {
       "branchName" to "富山呉羽店",
       "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
       )
+    var shouldSendNotification = false
 
-    pointHistoryRef.add(pointHistoryData)
+    getUserToken(userData.first()) { token ->
+      if (token != null) {
+        shouldSendNotification = true
+      }
+      pointHistoryRef.add(pointHistoryData)
+        .addOnSuccessListener {
+          progressBarTransferPoints.visibility = View.INVISIBLE
+
+          if (shouldSendNotification) {
+            val title = this.getString(R.string.notification_transfer_title)
+            val appName = this.getString(R.string.app_name)
+            val body = this.getString(R.string.notification_transfer_body, toTransferPoints.toInt(), appName)
+            if (token != null) {
+              NotificationSender.push(token, title, body)
+            }
+          }
+          clearData()
+          Toast.makeText(baseContext, getString(R.string.transfer_successful, toTransferPoints.toString()), Toast.LENGTH_SHORT).show()
+        }
+        .addOnFailureListener {
+          progressBarTransferPoints.visibility = View.INVISIBLE
+          Toast.makeText(baseContext, "Failed to Transfer ${toTransferPoints.toInt()}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+  }
+
+  private fun getUserToken(userID: String, callback: (String?) -> Unit) {
+    val db = Firebase.firestore
+    db.collection("GlobalUsers")
+      .whereEqualTo("userID", userID)
+      .get()
       .addOnSuccessListener {
-        progressBarTransferPoints.visibility = View.INVISIBLE
-        clearData()
-        Toast.makeText(baseContext, getString(R.string.transfer_successful, toTransferPoints.toString()), Toast.LENGTH_SHORT).show()
+        if (!it.isEmpty) {
+          val token = it.first().data["token"] as String
+          callback(token)
+        } else {
+          callback(null)
+        }
       }
       .addOnFailureListener {
-        progressBarTransferPoints.visibility = View.INVISIBLE
-        Toast.makeText(baseContext, "Failed to Transfer ${toTransferPoints.toInt()}", Toast.LENGTH_SHORT).show()
+        callback(null)
       }
   }
 

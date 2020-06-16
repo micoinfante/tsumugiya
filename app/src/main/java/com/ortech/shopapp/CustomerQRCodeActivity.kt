@@ -94,10 +94,9 @@ class CustomerQRCodeActivity : Fragment(){
 
   private fun setupScanner() {
     btnScanQRCode.setOnClickListener {
-//      val intent = Intent(activity, QRCodeScannerActivity::class.java)
-//      intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_CUSTOMER)
-//      startActivity(intent)
-      NotificationSender.push()
+      val intent = Intent(activity, QRCodeScannerActivity::class.java)
+      intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_CUSTOMER)
+      startActivity(intent)
     }
   }
 

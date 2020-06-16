@@ -32,12 +32,11 @@ class NotificationSender {
       return retrofit
     }
 
-    fun push() {
+    fun push(token: String, title: String, body: String) {
       val requestNotification = RequestNotification.build {
-        token =
-          "fW_m07Sdj-w:APA91bFRuGVplBbpQm6nkqf_j_wSvFWqTk0bizYnePBdF1Od96MbquWdAMpvm4hFCVrZEg-1xjTY3dkzn55fTZ-_v0kV9Jp-q_mNFN3R02V_ol-wzVLjlmqJOPSP8gbjyOHoOhe1gPMl"
+        this.token = token
         notification =
-          NotificationModel(title = "This is from android", body = "Transferred points")
+          NotificationModel(title = title, body = body)
       }
       val apiClient = getClient()?.create(ApiInterface::class.java)
       val responseBodyCall =

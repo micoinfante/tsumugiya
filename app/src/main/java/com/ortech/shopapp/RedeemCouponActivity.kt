@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.ortech.shopapp.Helpers.NotificationSender
 import kotlinx.android.synthetic.main.activity_redeem_coupon.*
 import kotlinx.android.synthetic.main.activity_redeem_coupon.toolbarRedeemPoints
 import kotlinx.android.synthetic.main.activity_transfer_points.*
@@ -163,28 +164,67 @@ class RedeemCouponActivity : AppCompatActivity() {
             "points" to requiredPoints,
             "mainID" to  "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
             "customerEmail" to "",
-            "couponItem" to dataArray.last(),
+            "couponItem" to dataArray[3],
             "couponID" to dataArray[1],
             "branchURL" to "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
             "branchName" to dataArray.last(),
             "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
           )
+          var shouldSendNotification = false
 
-          pointHistoryRef.add(pointHistoryData)
-            .addOnSuccessListener {
-              progressBarRedeemPoints.visibility = View.INVISIBLE
-              clearData()
-              val message = getString(R.string.redeem_successful)
-              Toast.makeText(baseContext, message, Toast.LENGTH_SHORT).show()
+          getUserToken(dataArray.first()) { token ->
+            if (token != null) {
+              shouldSendNotification = true
             }
-            .addOnFailureListener {
-              progressBarRedeemPoints.visibility = View.INVISIBLE
-              Toast.makeText(baseContext, "Failed to redeem coupon", Toast.LENGTH_SHORT).show()
-            }
+
+            pointHistoryRef.add(pointHistoryData)
+              .addOnSuccessListener {
+                progressBarRedeemPoints.visibility = View.INVISIBLE
+
+                if (shouldSendNotification) {
+                  val title = this.getString(R.string.notification_redeem_title)
+                  val appName = this.getString(R.string.app_name)
+                  val body = this.getString(R.string.notification_redeem_body, requiredPoints, appName)
+                  if (token != null) {
+                    NotificationSender.push(token, title, body)
+                  }
+                }
+
+                clearData()
+                val message = getString(R.string.redeem_successful)
+                Toast.makeText(baseContext, message, Toast.LENGTH_SHORT).show()
+              }
+              .addOnFailureListener {
+                progressBarRedeemPoints.visibility = View.INVISIBLE
+                Toast.makeText(baseContext, "Failed to redeem coupon", Toast.LENGTH_SHORT).show()
+              }
+
+          }
+
+
         } else {
           progressBarRedeemPoints.visibility = View.INVISIBLE
           Toast.makeText(baseContext, "Failed to redeem coupon", Toast.LENGTH_SHORT).show()
         }
+      }
+
+  }
+
+  private fun getUserToken(userID: String, callback: (String?) -> Unit) {
+    val db = Firebase.firestore
+    db.collection("GlobalUsers")
+      .whereEqualTo("userID", userID)
+      .get()
+      .addOnSuccessListener {
+        if (!it.isEmpty) {
+          val token = it.first().data["token"] as String
+          callback(token)
+        } else {
+          callback(null)
+        }
+      }
+      .addOnFailureListener {
+        callback(null)
       }
   }
 
