@@ -40,18 +40,19 @@ class WebViewActivity : AppCompatActivity() {
     webView.loadUrl(url)
 
     webView.settings.javaScriptEnabled = true
-    webView.webViewClient =  object : WebViewClient() {
-      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        view?.loadUrl(url)
-        return false
-      }
-
-      override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
-        progressBarWebView.visibility = View.INVISIBLE
-      }
-
-    }
+    webView.loadUrl(url)
+//    webView.webViewClient =  object : WebViewClient() {
+//      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+//        view?.loadUrl(url)
+//        return false
+//      }
+//
+//      override fun onPageFinished(view: WebView?, url: String?) {
+//        super.onPageFinished(view, url)
+//        progressBarWebView.visibility = View.INVISIBLE
+//      }
+//
+//    }
 
   }
 

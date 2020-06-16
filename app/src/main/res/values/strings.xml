@@ -143,5 +143,10 @@
     <string name="check_email" translatable="false">メールアドレスを確認してください。</string>
     <string name="return_to_login" translatable="false">ログイン画面に戻る</string>
 
+    <string name="notification_transfer_title" translatable="false">獲得しました</string>
+    <string name="notification_transfer_body" translatable="false">%d pts を %s から獲得しました。</string>
+    <string name="notification_redeem_title" translatable="false">引き換えました</string>
+    <string name="notification_redeem_body" translatable="false">{%d}pts を %s から引き換えました.</string>
+
 
 </resources>

@@ -1,5 +1,6 @@
 package com.ortech.shopapp.Models
 
+import android.webkit.WebMessage
 import com.google.gson.annotations.SerializedName
 
 data class Banner (
@@ -9,4 +10,11 @@ data class Banner (
   val imageURL: String = "",
   val mainID: String = "",
   val status: String = ""
+)
+
+data class WebsiteInfo (
+  val mainID: String = "",
+  val webLink: String = "",
+  val websub: String = "",
+  val webMessage: String = ""
 )

@@ -19,6 +19,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "FCM_BASE_URL", "\"https://fcm.googleapis.com/\"")
+            buildConfigField("String", "FCM_SERVER_KEY", "\"AAAA2gm9e_I:APA91bE_ot0_kEIw5brVuvwKWhZz3ikwdTinTeGju-HqkkJPpFYjShlZJCn0Q0QsIa1LbBHTc_FQe9fWEYpsdbYI3vJ4bRXyZ5UzQeTYgqCGvOXagFkR7hsIEGQehitr8qQt-s6ddAI2\"")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -84,5 +88,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
 
 }

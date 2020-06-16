@@ -122,21 +122,22 @@ class SettingsActivity: AppCompatActivity(), View.OnClickListener {
           changeNotificationStatus()
         }
         R.id.textViewSettingsPrivacy -> {
-          val intent = Intent(this, WebViewActivity::class.java)
-          intent.putExtra(WebViewActivity.ARG_URL, "https://www.foodconnection.jp/cookie/cookie_share.html")
-          startActivity(intent)
-//          loadURL(Uri.parse("https://www.foodconnection.jp/cookie/cookie_share.html"))
+//          val intent = Intent(this, WebViewActivity::class.java)
+//          intent.putExtra(WebViewActivity.ARG_URL, "https://www.foodconnection.jp/cookie/cookie_share.html")
+//          startActivity(intent)
+          loadURL(Uri.parse("https://www.foodconnection.jp/cookie/cookie_share.html"))
         }
         R.id.textViewSettingsOpinion -> {
-          val intent = Intent(this, WebViewActivity::class.java)
-          intent.putExtra(WebViewActivity.ARG_URL, "https://shop.ra-mensekai.co.jp/opinion.html")
-          startActivity(intent)
+//          val intent = Intent(this, WebViewActivity::class.java)
+//          intent.putExtra(WebViewActivity.ARG_URL, "https://shop.ra-mensekai.co.jp/opinion.html")
+//          startActivity(intent)
+          loadURL(Uri.parse("https://shop.ra-mensekai.co.jp/opinion.html"))
         }
         R.id.textViewSettingsMediaInformation -> {
-          val intent = Intent(this, WebViewActivity::class.java)
-          intent.putExtra(WebViewActivity.ARG_URL, getString(R.string.home_link_notice))
-          startActivity(intent)
-
+//          val intent = Intent(this, WebViewActivity::class.java)
+//          intent.putExtra(WebViewActivity.ARG_URL, getString(R.string.home_link_notice))
+//          startActivity(intent)
+          loadURL(Uri.parse(getString(R.string.home_link_notice)))
         }
         R.id.buttonGoToSignIn -> {
           if (isLoggedIn) {
@@ -157,12 +158,12 @@ class SettingsActivity: AppCompatActivity(), View.OnClickListener {
   }
 
   private fun loadURL(uri: Uri) {
-//    val intent = Intent(Intent.ACTION_VIEW)
-//    intent.data = uri
-//    startActivity(intent)
-    val webView = WebView(this)
-    setContentView(webView)
-    webView.loadUrl(uri.toString())
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.data = uri
+    startActivity(intent)
+//    val webView = WebView(this)
+//    setContentView(webView)
+//    webView.loadUrl(uri.toString())
   }
 
   private fun logoutUser() {

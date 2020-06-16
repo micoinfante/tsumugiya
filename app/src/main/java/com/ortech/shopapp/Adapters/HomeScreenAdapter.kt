@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.ortech.shopapp.*
 import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.Models.UserSingleton
+import com.ortech.shopapp.Models.WebsiteInfo
 import kotlinx.android.synthetic.main.fragment_home_fifth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_fourth_section.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
@@ -27,6 +28,7 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   private val itemCount = 7
   private val points = Pair("current" to 0, "total" to 0)
+  private var websiteData: WebsiteInfo? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
@@ -64,6 +66,11 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
   fun setPointsData() {
     notifyItemChanged(2)
+  }
+
+  fun setWebsiteData(websiteData: WebsiteInfo) {
+    this.websiteData = websiteData
+    notifyDataSetChanged()
   }
 
   @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -109,19 +116,6 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
           buttonCouponItem.setOnClickListener {
             val intent = Intent(itemView.context, BranchCouponList::class.java)
             itemView.context.startActivity(intent)
-//            val activity = itemView.context as AppCompatActivity
-//            val fragment = BranchCouponList()
-//            val transaction =  activity.supportFragmentManager.beginTransaction()
-//            transaction.setCustomAnimations(
-//              R.anim.enter_from_left,
-//              R.anim.exit_to_left,
-//              R.anim.enter_from_left,
-//              R.anim.exit_to_left
-//            )
-//            transaction.add(R.id.container, fragment)
-////            transaction.replace(R.id.container, fragment)
-//            transaction.addToBackStack("BranchCouponList")
-//            transaction.commit()
           }
         }
         TYPE.POINT_HISTORY -> {
@@ -134,18 +128,6 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             .into(homeItemThumbnail)
 
           buttonCouponItem.setOnClickListener {
-//            val activity = itemView.context as AppCompatActivity
-//            val fragment = BranchCouponList()
-//              val transaction =  activity.supportFragmentManager.beginTransaction()
-//              transaction.setCustomAnimations(
-//                R.anim.enter_from_right,
-//                R.anim.exit_to_left,
-//                R.anim.enter_from_left,
-//                R.anim.exit_to_right
-//              )
-//              transaction.replace(R.id.container, fragment)
-//              transaction.addToBackStack(null)
-//              transaction.commit()
             val intent = Intent(itemView.context, PointHistoryActivity::class.java)
             itemView.context.startActivity(intent)
           }
@@ -214,11 +196,6 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         }
 
       }
-
-      itemView.setOnClickListener {
-        Log.d(TAG, "This is ItemView")
-      }
-
 
     }
 
@@ -317,11 +294,21 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private val buttonRedirect = itemView.buttonRedirect
 
     fun bind() {
-      buttonRedirect.setOnClickListener {
-        val intent = Intent(itemView.context, WebViewActivity::class.java)
-        intent.putExtra(WebViewActivity.ARG_URL,  itemView.context.getString(R.string.home_link_notice))
-        itemView.context.startActivity(intent)
+
+      websiteData?.let { websiteInfo ->
+        heading.text = websiteInfo.websub
+        subheading.text = websiteInfo.webMessage
+
+        buttonRedirect.setOnClickListener {
+//          val intent = Intent(itemView.context, WebViewActivity::class.java)
+//          intent.putExtra(WebViewActivity.ARG_URL,  websiteInfo.webLink)
+//          itemView.context.startActivity(intent)
+          val intent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteInfo.webLink))
+          itemView.context.startActivity(intent)
+        }
       }
+
+
 
     }
 
@@ -332,13 +319,13 @@ class HomeScreenAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     fun bind() {
       imageView.setOnClickListener {
-        val intent = Intent(itemView.context, WebViewActivity::class.java)
-        intent.putExtra(WebViewActivity.ARG_URL, "https://store.shopping.yahoo.co.jp/ra-mensekai/")
+//        val intent = Intent(itemView.context, WebViewActivity::class.java)
+//        intent.putExtra(WebViewActivity.ARG_URL, "https://store.shopping.yahoo.co.jp/ra-mensekai/")
+//        itemView.context.startActivity(intent)
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://store.shopping.yahoo.co.jp/ra-mensekai/"))
         itemView.context.startActivity(intent)
       }
-//      Picasso.get()
-//        .load(Uri.parse(category.imageURL))
-//        .into(categoryIcon)
     }
 
   }

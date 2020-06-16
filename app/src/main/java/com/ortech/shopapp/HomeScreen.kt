@@ -18,6 +18,7 @@ import com.ortech.shopapp.Adapters.HeaderListAdapter
 import com.ortech.shopapp.Adapters.HomeScreenAdapter
 import com.ortech.shopapp.Adapters.StoreListAdapter
 import com.ortech.shopapp.Models.UserSingleton
+import com.ortech.shopapp.Models.WebsiteInfo
 import com.ortech.shopapp.Views.HeaderItemDecoration
 import com.ortech.shopapp.Views.TopSpacingDecoration
 import kotlinx.android.synthetic.main.activity_home_screen.*
@@ -29,10 +30,12 @@ class HomeScreen : Fragment() {
   private val mainAdapter = HomeScreenAdapter()
   private var recyclerView: RecyclerView? = null
   private val db = Firebase.firestore
+  private var websiteData: WebsiteInfo? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     getTotalPointsHistory()
+    getWebsiteInfo()
   }
 
   override fun onResume() {
@@ -65,7 +68,11 @@ class HomeScreen : Fragment() {
       startActivity(intent)
     }
 
-    appbarHome.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+    setupAppBar()
+  }
+
+  private fun setupAppBar() {
+    appbarHome.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
       if (verticalOffset == 0) {
         val layoutParams = buttonSettingsDebug.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.topMargin = toolbarHomeScreen.height
@@ -79,11 +86,11 @@ class HomeScreen : Fragment() {
         buttonSettingsDebug.layoutParams = layoutParams
       }
     })
-
   }
 
   private fun notifyUpdatedData() {
     (recyclerView?.adapter as HomeScreenAdapter).setPointsData()
+    this.websiteData?.let { (recyclerView?.adapter as HomeScreenAdapter).setWebsiteData(it) }
   }
 
   private fun getPoints() {
@@ -143,6 +150,22 @@ class HomeScreen : Fragment() {
         }
       }
 
+  }
+
+  private fun getWebsiteInfo() {
+    db.collection("CMSBanner").document("webSiteInfo")
+      .get()
+      .addOnSuccessListener {
+        if (it.exists()) {
+          val data = it.data
+          val webSub = data?.get("websub") as String
+          val webMessage = data["webMessage"] as String
+          Log.d(TAG, "$webSub $webMessage")
+          val websiteData = it.toObject(WebsiteInfo::class.java)
+          this.websiteData = websiteData
+          notifyUpdatedData()
+        }
+      }
   }
 
   private fun isHeader() : (itemPosition: Int) -> Boolean {

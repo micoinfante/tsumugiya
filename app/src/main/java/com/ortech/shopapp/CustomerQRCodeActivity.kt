@@ -29,6 +29,7 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.encoder.QRCode
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.ortech.shopapp.Helpers.NotificationSender
 import com.ortech.shopapp.Models.RequestCode
 import com.ortech.shopapp.Models.UserSingleton
 import kotlinx.android.synthetic.main.activity_customer_qr_code.*
@@ -93,9 +94,10 @@ class CustomerQRCodeActivity : Fragment(){
 
   private fun setupScanner() {
     btnScanQRCode.setOnClickListener {
-      val intent = Intent(activity, QRCodeScannerActivity::class.java)
-      intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_CUSTOMER)
-      startActivity(intent)
+//      val intent = Intent(activity, QRCodeScannerActivity::class.java)
+//      intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_CUSTOMER)
+//      startActivity(intent)
+      NotificationSender.push()
     }
   }
 
