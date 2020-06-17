@@ -22,6 +22,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
+import com.google.zxing.DecodeHintType
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.QRCodeWriter
@@ -55,7 +56,9 @@ class CouponDetails : AppCompatActivity() {
     textViewCouponDetailsTimestamp.text = date.substring(0, date.indexOf("GMT"))
     textViewCouponDetailsPoints.text = getString(R.string.text_label_point, coupon?.points.toString())
     textViewCouponDetailsCurrentPoints.text = UserSingleton.instance.getCurrentPoints().toString()
+
     generateQRCode()
+
     Glide.with(this)
       .load(Uri.parse(coupon?.imageURL))
       .apply(RequestOptions.circleCropTransform())
@@ -86,10 +89,15 @@ class CouponDetails : AppCompatActivity() {
   private fun generateQRCode() {
     val imageView = imageViewCouponDetailQRCode
     val userID = UserSingleton.instance.userID
-    val content = "$userID, ${coupon?.couponID}, ${coupon?.points}, ${coupon?.couponLabel}. ${coupon?.couponStore}"
+    val content = "$userID, ${coupon?.couponID}, ${coupon?.points}, ${coupon?.couponLabel}, ${coupon?.couponStore.toString()}"
 
     val multiFormatWriter = MultiFormatWriter()
-    val hintMap = mapOf(EncodeHintType.MARGIN to 0)
+    // set margin of 8 pixels for better scanning of qrcode
+    // set character set to utf-8 to support chinese characters
+    val hintMap = mapOf(EncodeHintType.MARGIN to 1,
+            EncodeHintType.CHARACTER_SET to "utf-8")
+
+
     val bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, 512, 512, hintMap)
     val qrCode = BarcodeEncoder().createBitmap(bitMatrix)
 
@@ -116,7 +124,7 @@ class CouponDetails : AppCompatActivity() {
   }
 
   companion object {
-
+    const val TAG = "CouponDetails"
     const val ARG_COUPON = "coupon"
   }
 }
