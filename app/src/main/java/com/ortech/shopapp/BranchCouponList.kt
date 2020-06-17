@@ -123,18 +123,15 @@ class BranchCouponList : AppCompatActivity() {
         it.forEach {pointHistory ->
           val newPointHistory = pointHistory.toObject(PointHistory::class.java)
           pointHistoryList.add(newPointHistory)
-          updateStoreListHeaders()
-//          updateData()
-//          updateData()
+
         }
+        updateStoreListHeaders()
         Log.d(TAG, "Point History Count: ${pointHistoryList.map { ph -> ph.couponID }} ")
         progressBarBranchCouponList.visibility = View.GONE
         swipeRefreshCouponList.isRefreshing = false
-
-//        fetchCoupons()
       }
       .addOnFailureListener {
-//        fetchCoupons()
+        Log.w(TAG, it.localizedMessage)
       }
   }
 
