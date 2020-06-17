@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.MenuCategoryAdapter
@@ -72,7 +73,8 @@ class MenuFragment : Fragment() {
   }
 
   private fun getMenuCategory() {
-    db.collection("CMSMenuCategory").get()
+    db.collection("CMSMenuCategory").orderBy("orderBy", Query.Direction.ASCENDING)
+      .get()
       .addOnSuccessListener { result ->
         for (document in result) {
           val newMenuCategory = document.toObject(MenuCategory::class.java)
