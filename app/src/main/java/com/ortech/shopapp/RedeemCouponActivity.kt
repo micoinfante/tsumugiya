@@ -13,9 +13,10 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Helpers.NotificationSender
+import com.ortech.shopapp.Models.StaffAccount
+import com.ortech.shopapp.Models.StaffSingleton
 import kotlinx.android.synthetic.main.activity_redeem_coupon.*
 import kotlinx.android.synthetic.main.activity_redeem_coupon.toolbarRedeemPoints
-import kotlinx.android.synthetic.main.activity_transfer_points.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,10 +24,18 @@ class RedeemCouponActivity : AppCompatActivity() {
 
   private var redeemData: String? = null
   private var userTotalPointsID: String? = null
+  private var currentStaff: StaffAccount? = null
+  private val db = Firebase.firestore
+  override fun onResume() {
+    super.onResume()
+    getCurrentStaff()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_redeem_coupon)
+
+    getCurrentStaff()
 
     setupToolBar()
 
@@ -36,17 +45,17 @@ class RedeemCouponActivity : AppCompatActivity() {
     textViewRequiredPoints.text = dataArray[2].toString()
 
     buttonConfirmRedeem.setOnClickListener {
-      confirmTransfer()
+      confirmRedeem()
     }
   }
 
-  private fun confirmTransfer () {
+  private fun confirmRedeem () {
     val builder = AlertDialog.Builder(this)
     builder.setTitle(getString(R.string.redeem_coupons_customer))
     builder.setMessage(getString(R.string.confirm_submit_details))
     builder.setPositiveButton(getString(R.string.yes), DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
       progressBarRedeemPoints.visibility = View.VISIBLE
-      checkPoints()
+      checkBranch()
       dialog.dismiss()
     }))
 
@@ -57,8 +66,31 @@ class RedeemCouponActivity : AppCompatActivity() {
     builder.show()
   }
 
+  private fun checkBranch() {
+    val staffBranchID = currentStaff?.currentBranchID ?: return
+    val dataArray = redeemData!!.replace(" ", "").split(",")
+    val couponID = dataArray[1]
+    db.collection("CMSCoupon")
+      .whereEqualTo("couponID", couponID)
+      .whereArrayContains("selectedBranch", staffBranchID)
+      .get()
+      .addOnSuccessListener {
+        if (!it.isEmpty) {
+          checkPoints()
+        } else {
+          // staff branch != coupon branch
+          val builder = AlertDialog.Builder(this)
+          builder.setTitle(getString(R.string.redeem_coupons_customer))
+          builder.setMessage(getString(R.string.invalid))
+          builder.setPositiveButton(getString(R.string.yes), DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
+            dialog.dismiss()
+          }))
+          builder.show()
+        }
+      }
+  }
+
   private fun checkPoints() {
-    val db = Firebase.firestore
     val totalPointsRef = db.collection("TotalPoints")
     val dataArray = redeemData!!.replace(" ", "").split(",")
     val requiredPoints = dataArray[2].toInt()
@@ -88,9 +120,9 @@ class RedeemCouponActivity : AppCompatActivity() {
 
   private fun checkIfRedeemed() {
     redeemData?:return
-    val db = Firebase.firestore.collection("PointHistory")
+    val historyRef = db.collection("PointHistory")
     val dataArray = redeemData!!.replace(" ", "").split(",")
-    db.whereEqualTo("couponID", dataArray[1])
+    historyRef.whereEqualTo("couponID", dataArray[1])
       .whereEqualTo("userID", dataArray[0])
       .get()
       .addOnSuccessListener {
@@ -123,7 +155,7 @@ class RedeemCouponActivity : AppCompatActivity() {
     redeemData?:return
     userTotalPointsID?:return
 
-    val db = Firebase.firestore.collection("TotalPoints")
+   db.collection("TotalPoints")
     val dataArray = redeemData!!.replace(" ", "").split(",")
     val requiredPoints = -1 * dataArray[2].toDouble()
 
@@ -141,7 +173,6 @@ class RedeemCouponActivity : AppCompatActivity() {
   }
 
   private fun addPointHistoryData() {
-    val db = Firebase.firestore
     val pointHistoryRef = db.collection("PointHistory")
     val dataArray = redeemData!!.replace(" ", "").split(",")
     val requiredPoints = dataArray[2].toInt()
@@ -211,7 +242,7 @@ class RedeemCouponActivity : AppCompatActivity() {
   }
 
   private fun getUserToken(userID: String, callback: (String?) -> Unit) {
-    val db = Firebase.firestore
+
     db.collection("GlobalUsers")
       .whereEqualTo("userID", userID)
       .get()
@@ -263,8 +294,13 @@ class RedeemCouponActivity : AppCompatActivity() {
     textViewRequiredPoints.text = ""
   }
 
+  private fun getCurrentStaff() {
+    currentStaff = StaffSingleton.instance.currentStaff
+  }
+
   companion object {
     const val TAG = "RedeemCouponActivity"
     const val ARGS_REDEEM = "redeem"
   }
+
 }

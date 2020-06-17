@@ -12,6 +12,7 @@ import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -20,11 +21,15 @@ import com.google.firebase.ktx.Firebase
 import com.google.zxing.qrcode.encoder.QRCode
 import com.ortech.shopapp.Helpers.PreferenceHelper
 import com.ortech.shopapp.Models.GlobalUser
+import com.ortech.shopapp.Models.StaffAccount
+import com.ortech.shopapp.Models.StaffSingleton
 import com.ortech.shopapp.Models.UserSingleton
 import java.util.*
 import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
+
+  private val db = Firebase.firestore
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -41,6 +46,7 @@ class MainActivity : AppCompatActivity() {
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
     if (Firebase.auth.currentUser != null) {
+      getStaffAccountDetails()
       val qrIntent = Intent(baseContext, QRCodeScannerActivity::class.java)
       qrIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
       qrIntent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
@@ -64,6 +70,20 @@ class MainActivity : AppCompatActivity() {
       updateFCMToken()
       startActivity(intent)
     }
+  }
+
+  private fun getStaffAccountDetails() {
+    val staffID = FirebaseAuth.getInstance().currentUser?.uid ?: return
+    db.collection("CMSStaff")
+      .whereEqualTo("userID", staffID)
+      .get()
+      .addOnSuccessListener { it ->
+        if (it.documents.count() != 0) {
+          val staffData = it.documents.first().toObject(StaffAccount::class.java)
+          StaffSingleton.instance.currentStaff = staffData
+        }
+      }
+
   }
 
   private fun checkUUID() {
@@ -139,7 +159,7 @@ class MainActivity : AppCompatActivity() {
 
   private fun getUserDetails(userID: String) {
     // userID is document path/reference, userID field in document is random generated unique string
-    val db = Firebase.firestore
+
     db.collection("GlobalUsers").document(userID).get()
       .addOnSuccessListener { documentSnapshot ->
       if (documentSnapshot.exists()) {
@@ -182,7 +202,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun createTotalPointsData(userID: String) {
-    val db = Firebase.firestore
+
     db.collection("TotalPoints").add(
       hashMapOf(
         "userID" to userID,
@@ -199,7 +219,7 @@ class MainActivity : AppCompatActivity() {
 
 
   private fun updateFCMToken() {
-    val db = Firebase.firestore
+
     val sharedPreferences = getSharedPreferences(
       UserSingleton.instance.userID, Context.MODE_PRIVATE) ?: return
     sharedPreferences.getString(UserSingleton.instance.userID, null)

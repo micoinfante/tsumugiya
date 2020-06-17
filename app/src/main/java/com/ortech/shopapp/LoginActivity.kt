@@ -2,7 +2,6 @@ package com.ortech.shopapp
 
 import android.content.Context
 import android.content.DialogInterface
-import com.ortech.shopapp.Models.UserSingleton
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -29,8 +28,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.ortech.shopapp.Models.GlobalUser
-import com.ortech.shopapp.Models.RequestCode
+import com.ortech.shopapp.Models.*
 import kotlinx.android.synthetic.main.activity_login.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +38,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
   private lateinit var auth: FirebaseAuth
   private var callbackManager: CallbackManager? = null
+  val db = Firebase.firestore
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -112,11 +111,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
   private fun loginStaffAccount(email: String, password: String) {
     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
       if (task.isSuccessful) {
-        Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT)
-          .show()
-              val intent = Intent(baseContext, QRCodeScannerActivity::class.java)
-          intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
-          startActivity(intent)
+        getStaffAccountDetails()
       } else {
         Log.d(TAG, task.exception.toString())
         loginCustomerAccount(email, password)
@@ -127,9 +122,28 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
       }
   }
 
+  private fun getStaffAccountDetails() {
+    val staffID = FirebaseAuth.getInstance().currentUser?.uid ?: return
+    db.collection("CMSStaff")
+      .whereEqualTo("userID", staffID)
+      .get()
+      .addOnSuccessListener {
+        if (it.documents.count() != 0) {
+          val staffData = it.documents.first().toObject(StaffAccount::class.java)
+          StaffSingleton.instance.currentStaff = staffData
+          Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT)
+            .show()
+          val intent = Intent(baseContext, QRCodeScannerActivity::class.java)
+          intent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
+          startActivity(intent)
+        }
+      }
+
+  }
+
   private fun loginCustomerAccount(email: String, password: String) {
     startLoading()
-    val db = Firebase.firestore
+
     db.collection("GlobalUsers")
       .whereEqualTo("email", email)
       .whereEqualTo("password", password)
@@ -290,9 +304,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
   }
 
   private fun updateUserInfo(type: LoginType) {
-    // replace singleton
-    // replace userID
-    // replace preference
     var userID = ""
     if (type != LoginType.Email) {
       userID = FirebaseAuth.getInstance().currentUser?.uid ?:return ?: return
@@ -302,9 +313,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
     UserSingleton.instance.userID = userID
     UserSingleton.instance.email = Firebase.auth.currentUser?.email
 
-    val db = Firebase.firestore.collection("GlobalUsers")
+    val userRef = db.collection("GlobalUsers")
 
-    db.whereEqualTo("userID", userID).get()
+    userRef.whereEqualTo("userID", userID).get()
       .addOnSuccessListener {
         if (it.count() != 0) {
           // get total points and set to singleton
@@ -358,7 +369,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
 
   private fun getTotalPointsHistory() {
     val userID = UserSingleton.instance.userID
-    val db = Firebase.firestore
     db.collection("TotalPoints").whereEqualTo("userID", userID)
       .get()
       .addOnSuccessListener { querySnapshot ->
@@ -395,7 +405,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
   }
 
   private fun createTotalPointsData(userID: String) {
-    val db = Firebase.firestore
     db.collection("TotalPoints").add(
       hashMapOf(
         "userID" to userID,
