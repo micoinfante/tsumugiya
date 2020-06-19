@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80000000"
+    android:clickable="true"
+    android:filterTouchesWhenObscured="true"
     tools:context=".CountDownAlert">
 
     <androidx.cardview.widget.CardView

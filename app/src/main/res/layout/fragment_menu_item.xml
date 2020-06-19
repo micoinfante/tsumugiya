@@ -8,8 +8,10 @@
     tools:context=".MenuItemFragment">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewMenuCategory"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#FFFFFF">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -17,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/imageViewMenuCategory"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
@@ -40,7 +42,7 @@
                 android:layout_marginLeft="8dp"
                 android:text="TextView"
                 android:textColor="#000000"
-                android:textSize="18sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageViewMenuCategory"

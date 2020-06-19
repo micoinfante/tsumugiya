@@ -11,6 +11,7 @@ import com.ortech.shopapp.Adapters.BranchDetailsAdapter
 import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.Views.HeaderItemDecoration
 import kotlinx.android.synthetic.main.fragment_branch_details.*
+import kotlinx.android.synthetic.main.fragment_store_tab_details.*
 
 const val ARGS_BRANCH = "branch"
 
@@ -37,12 +38,10 @@ class BranchDetails : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setup()
-    setupToolBar()
   }
 
   private fun setup() {
     branch?.let {
-      textViewBranchDetailsTitle.text = it.branch
       val adapter = BranchDetailsAdapter(it)
       val recyclerView = recyclerViewBranchDetails
       recyclerView.apply {
@@ -61,12 +60,6 @@ class BranchDetails : Fragment() {
     }
   }
 
-  private fun setupToolBar() {
-    val toolbar = toolbarBranchDetails
-    toolbar.setNavigationOnClickListener {
-      activity?.supportFragmentManager?.popBackStack()
-    }
-  }
 
   companion object {
     const val TAG = "BranchList"

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
@@ -20,10 +21,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
 import com.google.zxing.qrcode.encoder.QRCode
 import com.ortech.shopapp.Helpers.PreferenceHelper
-import com.ortech.shopapp.Models.GlobalUser
-import com.ortech.shopapp.Models.StaffAccount
-import com.ortech.shopapp.Models.StaffSingleton
-import com.ortech.shopapp.Models.UserSingleton
+import com.ortech.shopapp.Models.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -45,12 +43,18 @@ class MainActivity : AppCompatActivity() {
       .setContentText("This is a test content")
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
+    syncCMSSettings()
+
     if (Firebase.auth.currentUser != null) {
       getStaffAccountDetails()
-      val qrIntent = Intent(baseContext, QRCodeScannerActivity::class.java)
-      qrIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-      qrIntent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
-      startActivity(qrIntent)
+
+      Handler().postDelayed({
+        val qrIntent = Intent(baseContext, QRCodeScannerActivity::class.java)
+        qrIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        qrIntent.putExtra(QRCodeScannerActivity.ARGS_TYPE, QRCodeScannerActivity.TYPE_STAFF)
+        startActivity(qrIntent)
+      }, SPLASH_DISPLAY_LENGTH.toLong())
+
     } else {
       val intent = Intent(this, BottomNavigationActivity::class.java)
 
@@ -58,17 +62,26 @@ class MainActivity : AppCompatActivity() {
       val fbUID = checkFacebookLoggedInUser()
       val googleUID = checkGoogleLoggedInUser()
 
-      if (emailUID != null) {
-        getUserDetails(emailUID)
-      } else if (fbUID != null) {
-        getUserDetails(fbUID)
-      } else if (googleUID != null) {
-        getUserDetails(googleUID)
-      } else {
-        checkUUID()
+      when {
+        emailUID != null -> {
+          getUserDetails(emailUID)
+        }
+        fbUID != null -> {
+          getUserDetails(fbUID)
+        }
+        googleUID != null -> {
+          getUserDetails(googleUID)
+        }
+        else -> {
+          checkUUID()
+        }
       }
       updateFCMToken()
-      startActivity(intent)
+
+      Handler().postDelayed({
+        startActivity(intent)
+      }, SPLASH_DISPLAY_LENGTH.toLong())
+
     }
   }
 
@@ -245,12 +258,36 @@ class MainActivity : AppCompatActivity() {
 
   }
 
+  private fun syncCMSSettings() {
+    // Coupon Scan time limit
+    db.collection("CMSBanner")
+      .document("QRScanTimelimit")
+      .get()
+      .addOnSuccessListener {
+        if (it.exists()) {
+          CMSSettings.instance.setCurrentCouponTimeLimit(it.data?.get("second") as Number)
+        }
+      }
+
+    // Customer scan qr code
+
+    db.collection("CMSBanner")
+      .document("timelimit")
+      .get()
+      .addOnSuccessListener {
+        if (it.exists()) {
+          CMSSettings.instance.setCurrentQRCodeTimeLimit(it.data?.get("second") as Number)
+        }
+      }
+
+  }
+
 
 
 
   companion object {
     const val TAG = "MainActivity"
-
+    const val SPLASH_DISPLAY_LENGTH = 1000
   }
 
 }

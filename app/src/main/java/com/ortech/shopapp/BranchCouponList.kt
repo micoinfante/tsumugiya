@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.AllCouponListAdapter
@@ -53,12 +54,9 @@ class BranchCouponList : AppCompatActivity() {
         it, R.color.primary_orange)
     }?.let { swipeRefreshCouponList.setProgressBackgroundColorSchemeColor(it) }
 
-//    swipeRefreshCouponList.setColorSchemeColors(ContextCompat.getColor(
-//      this.context!!, R.color.primary_orange))
     swipeRefreshCouponList.setColorSchemeColors(Color.WHITE)
 
     swipeRefreshCouponList.setOnRefreshListener {
-//      fetchCoupons()
       formattedCouponData.clear()
       pointHistoryList.clear()
       updateData()
@@ -89,10 +87,11 @@ class BranchCouponList : AppCompatActivity() {
     couponBranchListAdapter.updateTransactionData(pointHistoryList)
   }
 
-
   private fun fetchCoupons() {
 
-    db.collection("CMSCoupon").get()
+    db.collection("CMSCoupon")
+      .whereGreaterThanOrEqualTo("untilDate", Timestamp(Date()))
+      .get()
       .addOnSuccessListener {querySnapshot ->
         Log.d(TAG, querySnapshot.size().toString())
         for (queryDocumentSnapshot in querySnapshot) {
@@ -114,7 +113,6 @@ class BranchCouponList : AppCompatActivity() {
     val db = Firebase.firestore.collection("PointHistory")
 
     progressBarBranchCouponList.visibility = View.VISIBLE
-//    "E362AFB5-51F4-474E-99D5-BD2E4A71A606"
     db.whereEqualTo("userID", userID)
       .whereEqualTo("redeem", "redeemed")
       .get()
@@ -153,14 +151,6 @@ class BranchCouponList : AppCompatActivity() {
       }
     } // couponList
 
-    storeCoupons.forEach { storeCoupon ->
-
-      val coupons = storeCoupon.value.map { it -> it.couponID }.toString().split(",")
-      Log.d(TAG, "CouponStore[${storeCoupon.key}][${storeCoupon.value.count()}] \n${coupons}")
-    }
-
-    Log.d(TAG, "Total Stores Headers: ${storeCoupons.keys.count()} ${storeCoupons.keys}")
-
     for ((header, coupons) in storeCoupons) {
       val newCouponHeader = Coupon(header)
       val newAdapterItem = AdapterItem(newCouponHeader, AllCouponListAdapter.TYPE_HEADER)
@@ -176,30 +166,9 @@ class BranchCouponList : AppCompatActivity() {
         formattedCouponData.add(AdapterItem(newCoupon, AllCouponListAdapter.TYPE_COUPON, false))
       }
 
-//      coupons.forEach {coupon ->
-//        pointHistoryList.forEach { redeemedCoupon ->
-//
-//          if (redeemedCoupon.couponID == coupon.couponID && redeemedCoupon.branchName == newCouponHeader.couponStore) {
-//            Log.d(TAG, "${redeemedCoupon.couponID} == ${coupon.couponID}")
-//            val validDate = redeemedCoupon.timeStamp?.toDate()
-//            if (Date() >= validDate) {
-//              formattedCouponData.add(AdapterItem(coupon, AllCouponListAdapter.TYPE_COUPON,true))
-//            } else {
-//              formattedCouponData.add(AdapterItem(coupon, AllCouponListAdapter.TYPE_COUPON, false))
-//            }
-//          } else {
-//            formattedCouponData.add(AdapterItem(coupon, AllCouponListAdapter.TYPE_COUPON, false))
-//          }
-//
-//        }
-//      }
-
       updateData()
 
     }
-
-    Log.d(TAG, "Formatted Data count: ${formattedCouponData.count()} $formattedCouponData")
-//    updateData()
   }
 
   private fun incrementDay(date: Date): Date {

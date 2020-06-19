@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.ortech.shopapp.CountDownAlert
 import com.ortech.shopapp.CouponDetails
 import com.ortech.shopapp.Models.AdapterItem
+import com.ortech.shopapp.Models.CMSSettings
 import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Models.PointHistory
 import com.ortech.shopapp.R
@@ -136,7 +137,6 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       Glide.with(itemView)
         .load(Uri.parse(coupon.imageURL))
         .circleCrop()
-        .placeholder(R.drawable.app_logo_sekai)
         .into(couponThumbnail)
 
     }
@@ -160,7 +160,6 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
             val couponAvailability = pointHistoryRedemption?.let { incrementDay(it) }
 
-            Log.d(TAG, "$today > $couponAvailability")
             if (today > couponAvailability) {
               timerShade.visibility = View.INVISIBLE
             } else {
@@ -217,7 +216,7 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private fun incrementDay(date: Date): Date {
       val cal = Calendar.getInstance(Locale.getDefault())
       cal.time = date
-      cal.add(Calendar.DATE, 1)
+      cal.add(Calendar.MILLISECOND, CMSSettings.instance.currentCouponTimeLimit().toInt())
       return cal.time
     }
 

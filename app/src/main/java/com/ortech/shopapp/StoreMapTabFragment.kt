@@ -1,8 +1,11 @@
 package com.ortech.shopapp
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -13,20 +16,23 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.commit
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Models.Branch
+import kotlinx.android.synthetic.main.custom_marker_info_window.*
+import kotlinx.android.synthetic.main.custom_marker_info_window.view.*
 import kotlinx.android.synthetic.main.fragment_map_pin.view.*
 
 
 
-class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
+class StoreMapTabFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener{
 
   private var mMap: GoogleMap? = null
   private var mapView: MapView? = null
@@ -100,6 +106,8 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
     Log.d(TAG, "MapReady")
     if (p0 != null) {
       mMap = p0
+      mMap!!.setOnMarkerClickListener(this)
+      setupCustomInfoWindow()
       setupMap()
 
     }
@@ -109,6 +117,42 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   private fun setupMap() {
 //    mMap?.isMyLocationEnabled ?: return = true
 
+  }
+
+  private fun setupCustomInfoWindow () {
+
+    val customView = layoutInflater.inflate(R.layout.custom_marker_info_window, null)
+    mMap!!.setInfoWindowAdapter(CustomInfoWindow(this.context!!))
+    mMap!!.setOnInfoWindowClickListener(this)
+//    mMap!!.setInfoWindowAdapter(object: GoogleMap.InfoWindowAdapter {
+//
+//      override fun getInfoContents(p0: Marker?): View {
+//        val title = customView.textViewInfoWindowTitle
+//        val image = customView.imageViewInfoWindowImage
+//        val branch = branches[p0!!.tag as Int]
+//
+//        Glide.with(customView)
+//          .load(Uri.parse(branch.branchURLImages))
+//          .centerCrop()
+//          .into(image)
+//        title.text = branch.branch
+//        return customView
+//      }
+//
+//      override fun getInfoWindow(p0: Marker?): View {
+//        val title = customView.textViewInfoWindowTitle
+//        val image = customView.imageViewInfoWindowImage
+//        val branch = branches[p0!!.tag as Int]
+//
+//        Glide.with(context!!)
+//          .load(Uri.parse(branch.branchURLImages))
+//          .centerCrop()
+//          .into(image)
+//        title.text = branch.branch
+//        return customView
+//      }
+//
+//    })
   }
 
   private fun getMarkerIcon(context: Context, url: String, listener: (BitmapDescriptor) -> Unit) {
@@ -160,11 +204,47 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
       val options = MarkerOptions()
         .position(position)
         .icon(it)
-      mMap?.addMarker(options)
+
+      val marker = mMap?.addMarker(options)
+      if (marker != null) {
+        marker.tag = this.branches.count()
+      }
       mMap?.moveCamera(CameraUpdateFactory.newLatLng(position))
       this.branches.add(branch)
     }
   }
+
+  override fun onMarkerClick(p0: Marker?): Boolean {
+    p0?.showInfoWindow()
+
+    return false
+  }
+
+  override fun onInfoWindowClick(p0: Marker?) {
+        val tag = p0?.tag
+    val branch = this.branches[tag as Int]
+
+    if (branch.latitude == 0.toDouble() || branch.longitude == 0.toDouble()) {
+      val uri = Uri.parse("https://www.google.com.ph/maps/search/${branch.location}")
+      val intent = Intent(Intent.ACTION_VIEW, uri)
+      intent.setPackage("com.google.android.apps.maps")
+      activity?.baseContext?.startActivity(intent)
+    } else {
+      val geoUri = Uri.parse("geo:${branch.latitude},${branch.longitude}")
+      var intent = Intent(Intent.ACTION_VIEW, geoUri)
+      intent.setPackage("com.google.android.apps.maps")
+      if (activity?.baseContext?.packageManager?.let { intent.resolveActivity(it) } !== null) {
+        activity?.baseContext?.startActivity(intent)
+      } else {
+        val uri = Uri.parse("http://maps.google.com/maps?saddr=${branch.latitude},${branch.longitude}")
+        intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+        activity?.baseContext?.startActivity(intent)
+      }
+    }
+  }
+
+
 
   override fun onDestroyView() {
     super.onDestroyView()
@@ -187,4 +267,60 @@ class StoreMapTabFragment : Fragment(), OnMapReadyCallback{
   companion object {
    const val TAG = "StoreMapTabFragment"
   }
+
+  inner class CustomInfoWindow(private var context: Context): GoogleMap.InfoWindowAdapter {
+
+    private lateinit var customView: View
+
+
+    override fun getInfoContents(p0: Marker?): View {
+      val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+      val view = inflater.inflate(R.layout.custom_marker_info_window, null)
+      val title = view.textViewInfoWindowTitle
+      val image = view.imageViewInfoWindowImage
+      val branch = branches[p0!!.tag as Int]
+
+      Log.d("MapTab", "Loading ${branch.branchURLImages}")
+
+      Glide.with(context)
+        .load(Uri.parse(branch.branchURLImages))
+        .centerCrop()
+        .listener(object: RequestListener<Drawable>{
+          override fun onLoadFailed(
+            e: GlideException?,
+            model: Any?,
+            target: Target<Drawable>?,
+            isFirstResource: Boolean
+          ): Boolean {
+            Log.d("MapTab", "Loading Failed ${branch.branchURLImages}")
+            return false
+          }
+
+          override fun onResourceReady(
+            resource: Drawable?,
+            model: Any?,
+            target: Target<Drawable>?,
+            dataSource: DataSource?,
+            isFirstResource: Boolean
+          ): Boolean {
+            Log.d("MapTab", "Loading Success ${branch.branchURLImages}")
+            image.setImageDrawable(resource)
+
+            return false
+          }
+
+        })
+        .into(image)
+
+      title.text = branch.branch
+      return view
+    }
+
+    override fun getInfoWindow(p0: Marker?): View? {
+      return null
+    }
+
+  }
+
+
 }

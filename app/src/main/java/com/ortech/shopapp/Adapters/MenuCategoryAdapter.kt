@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ortech.shopapp.BranchCouponList
 import com.ortech.shopapp.MenuItemDetails
 import com.ortech.shopapp.MenuListFragment
@@ -87,8 +88,12 @@ class MenuCategoryAdapter (private val type: MenuType = MenuType.Category): Recy
 
     fun bind(category: MenuCategory){
       categoryLabel.text = category.categoryLabel
-      Picasso.get()
-        .load(Uri.parse(category.imageURL))
+//      Picasso.get()
+//        .load(Uri.parse(category.imageURL))
+//        .into(categoryIcon)
+
+      Glide.with(itemView)
+        .load(category.imageURL)
         .into(categoryIcon)
 
       itemView.setOnClickListener {
@@ -117,9 +122,13 @@ class MenuCategoryAdapter (private val type: MenuType = MenuType.Category): Recy
 
     fun bind(list: MenuList) {
       menuLabel.text = list.menuLabel
-      Picasso.get()
-        .load(Uri.parse(list.imageURL))
-        .into(menuImage)
+//      Picasso.get()
+//        .load(Uri.parse(list.imageURL))
+//        .into(menuImage
+      Glide.with(itemView)
+          .load(list.imageURL)
+          .into(menuImage)
+
       itemView.setOnClickListener {
         val activity = itemView.context as AppCompatActivity
         val fragment = MenuItemDetails.newInstance(list)

@@ -98,6 +98,7 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
           uri = Uri.parse("https://www.google.com.ph/maps/search/${branch.location}")
           val intent = Intent(Intent.ACTION_VIEW, uri)
           intent.setPackage("com.google.android.apps.maps")
+          itemView.context.startActivity(intent)
         } else {
           val geoUri = Uri.parse("geo:${branch.latitude},${branch.longitude}")
           var intent = Intent(Intent.ACTION_VIEW, geoUri)
@@ -115,7 +116,6 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
 
       }
       buttonUseCoupon.setOnClickListener {
-
 
         val builder = AlertDialog.Builder(itemView.context)
         builder.setTitle(branch.branch)

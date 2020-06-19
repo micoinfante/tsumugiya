@@ -37,10 +37,10 @@ class WebViewActivity : AppCompatActivity() {
       webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
-    webView.loadUrl(url)
+    webView.loadUrl(url!!)
 
     webView.settings.javaScriptEnabled = true
-    webView.loadUrl(url)
+    webView.loadUrl(url!!)
 //    webView.webViewClient =  object : WebViewClient() {
 //      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
 //        view?.loadUrl(url)

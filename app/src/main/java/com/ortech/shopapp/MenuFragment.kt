@@ -73,7 +73,8 @@ class MenuFragment : Fragment() {
   }
 
   private fun getMenuCategory() {
-    db.collection("CMSMenuCategory").orderBy("orderBy", Query.Direction.ASCENDING)
+    db.collection("CMSMenuCategory")
+      .orderBy("orderBy", Query.Direction.DESCENDING)
       .get()
       .addOnSuccessListener { result ->
         for (document in result) {

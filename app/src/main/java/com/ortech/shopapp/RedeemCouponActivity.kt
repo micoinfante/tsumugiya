@@ -26,6 +26,7 @@ class RedeemCouponActivity : AppCompatActivity() {
   private var userTotalPointsID: String? = null
   private var currentStaff: StaffAccount? = null
   private val db = Firebase.firestore
+
   override fun onResume() {
     super.onResume()
     getCurrentStaff()
@@ -83,6 +84,7 @@ class RedeemCouponActivity : AppCompatActivity() {
           builder.setTitle(getString(R.string.redeem_coupons_customer))
           builder.setMessage(getString(R.string.invalid))
           builder.setPositiveButton(getString(R.string.yes), DialogInterface.OnClickListener(function = { dialog: DialogInterface, _: Int ->
+            progressBarRedeemPoints.visibility = View.INVISIBLE
             dialog.dismiss()
           }))
           builder.show()

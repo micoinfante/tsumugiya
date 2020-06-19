@@ -17,7 +17,9 @@ companion object {
     var currentUUID = defaultUUID
     sharedPreferences.getString(res.getString(R.string.preference_UUID_key), defaultUUID)
       .let { userUUID ->
-        Log.d("Firebase Token UUID", userUUID)
+        if (userUUID != null) {
+          Log.d("Firebase Token UUID", userUUID)
+        }
         if (userUUID != null) {
           currentUUID = userUUID
         } else {

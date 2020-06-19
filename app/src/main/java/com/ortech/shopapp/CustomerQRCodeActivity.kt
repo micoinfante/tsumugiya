@@ -1,23 +1,21 @@
 package com.ortech.shopapp
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.firebase.Timestamp
@@ -26,10 +24,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
-import com.google.zxing.qrcode.QRCodeWriter
-import com.google.zxing.qrcode.encoder.QRCode
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.ortech.shopapp.Helpers.NotificationSender
 import com.ortech.shopapp.Models.RequestCode
 import com.ortech.shopapp.Models.UserSingleton
 import kotlinx.android.synthetic.main.activity_customer_qr_code.*
@@ -38,12 +33,20 @@ import java.util.*
 
 class CustomerQRCodeActivity : Fragment(){
 
-  private var handler = Handler()
-  private var runnable = Runnable { Log.d(TAG, "Add action to back") }
+  private var handler: Handler? = null
+  private var runnable: Runnable? = null
+
+
+  override fun onResume() {
+    super.onResume()
+    Log.d(TAG, "onResume")
+    startHandler()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     getTotalPoints()
+    Log.d(TAG, "onCreate")
     startHandler()
   }
 
@@ -52,33 +55,48 @@ class CustomerQRCodeActivity : Fragment(){
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
+    Log.d(TAG, "onCreateView")
     return inflater.inflate(R.layout.activity_customer_qr_code, container, false)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    Log.d(TAG, "onViewCreated")
     generateQRCode()
     setupScanner()
     setupCameraPermission()
 
-    view.setOnTouchListener { v, event ->
-      when (event?.action) {
-        MotionEvent.ACTION_MOVE -> {
+//    Log.d(TAG, "${view.isInTouchMode}")
+
+    customerQRCodeContainer.setOnTouchListener(object: View.OnTouchListener {
+      override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+        if (p1?.action == MotionEvent.ACTION_MOVE) {
+
+          Log.d(TAG, "move")
           stopHandler()
           startHandler()
         }
+        return true
       }
+    })
 
-      v?.onTouchEvent(event) ?: true
-    }
   }
 
   private fun stopHandler() {
-    handler.removeCallbacks(runnable)
+    runnable?.let { handler?.removeCallbacks(it) }
   }
 
   private fun startHandler() {
-    handler.postDelayed(runnable, 10000)
+    if (runnable == null) {
+     runnable =  Runnable {
+        val parentActivity = activity as BottomNavigationActivity
+        parentActivity.navView.selectedItemId = R.id.navigation_home
+      }
+    }
+    if (handler == null) {
+      handler = Handler(Looper.myLooper()!!)
+    }
+    handler?.postDelayed(runnable!!, 8000)
   }
 
   private fun generateQRCode() {
@@ -132,7 +150,6 @@ class CustomerQRCodeActivity : Fragment(){
         RequestCode.CAMERA -> {
 
         if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
           Log.i(TAG, "Permission has been denied by user")
         } else {
           Log.i(TAG, "Permission has been granted by user")
@@ -143,6 +160,13 @@ class CustomerQRCodeActivity : Fragment(){
 
   override fun onDestroy() {
     super.onDestroy()
+    Log.d(TAG, "onDestroy")
+    stopHandler()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    Log.d(TAG, "onPause")
     stopHandler()
   }
 
@@ -181,23 +205,16 @@ class CustomerQRCodeActivity : Fragment(){
 
   }
 
-  private fun getUUID() : String? {
-    val sharedPreferences = activity?.getSharedPreferences(getString(R.string.preference_UUID_key),
-      Context.MODE_PRIVATE) ?: return null
-    val currentUUID = sharedPreferences.getString(getString(R.string.preference_UUID_key), null)
-    Log.d(TAG, "current Stored UUID: $currentUUID")
-    return if (currentUUID.isNullOrEmpty()) {
-      null
-    } else {
-      currentUUID
-    }
+  override fun onAttach(context: Context) {
+    super.onAttach(context)
+    Log.d(TAG, "onAttached")
   }
+
 
 
   companion object {
     const val TAG = "CustomerQRCode"
   }
-
 
 }
 

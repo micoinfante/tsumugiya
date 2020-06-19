@@ -3,6 +3,6 @@
     android:shape="rectangle" android:padding="10dp">
     <!-- you can use any color you want I used here gray color-->
     <solid android:color="@color/primary_background"/>
-    <corners android:radius="25dp"/>
+    <corners android:radius="@dimen/home_button_corner_radius"/>
     <stroke android:width="3dp" android:color="@color/accent_white"/>
 </shape>

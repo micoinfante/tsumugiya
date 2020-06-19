@@ -27,7 +27,6 @@ class StoreListFragment : Fragment() {
   private var phone: String? = null
   private var storeHours: String? = null
 
-  private var test = "Test"
   private var db = Firebase.firestore
   private var stores = arrayListOf<Branch>()
   private lateinit var storeListAdapter: StoreListAdapter
@@ -41,11 +40,11 @@ class StoreListFragment : Fragment() {
       addItemDecoration(topSpacing)
       storeListRecyclerView.adapter = storeListAdapter
     }
-    getBranches()
 
   }
 
   private fun getBranches() {
+    stores.clear()
     db.collection("CMSBranches").get()
       .addOnSuccessListener { result ->
         for (document in result) {
@@ -71,6 +70,13 @@ class StoreListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setup()
+
+      getBranches()
+  }
+
+  override fun onResume() {
+    super.onResume()
+      getBranches()
   }
 
   fun getStores() : ArrayList<Branch> {

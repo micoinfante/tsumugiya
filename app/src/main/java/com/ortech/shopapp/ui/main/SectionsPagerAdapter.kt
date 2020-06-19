@@ -20,15 +20,9 @@ private val TAB_TITLES = arrayOf<String>("店舗一覧", "地図から探す")
 class SectionsPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm) {
 
-    init {
-//        TAB_TITLES.plus(Resources.getSystem().getString(R.string.tab_text_1))
-//        TAB_TITLES.plus(Resources.getSystem().getString(R.string.tab_text_2))
-    }
 
     override fun getItem(position: Int): Fragment {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-//        return PlaceholderFragment.newInstance(position + 1)
+
         return if (position == 1) {
             StoreMapTabFragment()
         } else {
@@ -41,7 +35,6 @@ class SectionsPagerAdapter(fm: FragmentManager) :
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
         return 2
     }
 

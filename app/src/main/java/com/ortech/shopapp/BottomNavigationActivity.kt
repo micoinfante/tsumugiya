@@ -7,6 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -19,18 +20,19 @@ import com.ortech.shopapp.ui.dashboard.DashboardFragment
 import com.ortech.shopapp.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.activity_bottom_navigation.*
 
-class BottomNavigationActivity : AppCompatActivity() {
+class BottomNavigationActivity : AppCompatActivity(){
 
   private val homeScreenTab = HomeScreen()
   private val customerTab = CustomerQRCodeActivity()
   private val storeTab = StoreTabListActivity()
   private val menuTab= MenuFragment()
   private val instagramTab = InstagramFragment()
+  lateinit var navView: BottomNavigationView
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_bottom_navigation)
-    val navView: BottomNavigationView = findViewById(R.id.nav_view)
+    navView = findViewById(R.id.nav_view)
 
     val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
     ActivityCompat.requestPermissions(this, permissions,0)
@@ -75,10 +77,15 @@ class BottomNavigationActivity : AppCompatActivity() {
     val currentFragments = supportFragmentManager.fragments
     if (currentFragments.contains(fragmentToSelect)) {
       // Show the fragment that we want to be selected.
+      if (fragmentToSelect is CustomerQRCodeActivity) {
+        fragmentToSelect.onResume()
+      }
       fragmentTransaction.show(fragmentToSelect)
     } else {
       // The fragment to be selected does not (yet) exist in the fragment manager, add it.
-      fragmentTransaction.add(R.id.container, fragmentToSelect)
+        fragmentTransaction.add(R.id.container, fragmentToSelect)
+
+
     }
     // Iterate through all cached fragments.
     for (cachedFragment in currentFragments) {
@@ -97,5 +104,7 @@ class BottomNavigationActivity : AppCompatActivity() {
   override fun onBackPressed() {
     return
   }
+
+
 
 }

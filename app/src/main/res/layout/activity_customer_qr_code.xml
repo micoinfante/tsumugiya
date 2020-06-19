@@ -41,15 +41,16 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
+
+
         android:layout_height="match_parent"
-
-
         android:background="@color/primary_background"
         android:minHeight="700dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/customerQRCodeContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="700dp"
@@ -231,7 +232,7 @@
                 android:gravity="start|left"
                 android:text="@string/qr_code_title"
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/home_button_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -249,6 +250,7 @@
         android:layout_marginBottom="66dp"
         android:background="@drawable/plain_rounded_button"
         android:minWidth="160dp"
+        android:padding="8dp"
         android:text="@string/collect_points"
         android:textColor="@color/accent_white"
         android:textSize="20sp" />

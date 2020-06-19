@@ -14,6 +14,7 @@ import com.ortech.shopapp.BranchCouponList
 import com.ortech.shopapp.BranchDetails
 import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.R
+import com.ortech.shopapp.StoreTabDetails
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_store_item.view.*
 
@@ -73,7 +74,7 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
       itemView.setOnClickListener {
         val activity = itemView.context as AppCompatActivity
-        val fragment = BranchDetails.newInstance(branch)
+        val fragment = StoreTabDetails.newInstance(branch)
         val transaction =  activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(
           R.anim.enter_from_right,

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.AttributeSet
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -42,6 +43,10 @@ class CouponDetails : AppCompatActivity() {
 
 
   private var coupon: Coupon? = null
+  private var handler: Handler? = Handler()
+  private var runnable = Runnable {
+    finish()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -75,8 +80,9 @@ class CouponDetails : AppCompatActivity() {
         }
 
       })
-  }
 
+    startHandler()
+  }
 
 
   private fun setupToolBar() {
@@ -84,6 +90,14 @@ class CouponDetails : AppCompatActivity() {
     toolbar.setNavigationOnClickListener {
       finish()
     }
+  }
+
+  private fun stopHandler() {
+    handler?.removeCallbacks(runnable)
+  }
+
+  private fun startHandler() {
+    handler?.postDelayed(runnable, 8000)
   }
 
   private fun generateQRCode() {
@@ -121,6 +135,21 @@ class CouponDetails : AppCompatActivity() {
         }
       }
 
+  }
+
+  override fun onResume() {
+    super.onResume()
+    startHandler()
+  }
+
+  override fun onPause() {
+    super.onPause()
+    stopHandler()
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    stopHandler()
   }
 
   companion object {
