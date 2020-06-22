@@ -1,5 +1,6 @@
 package com.ortech.shopapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ortech.shopapp.Adapters.BranchDetailsAdapter
 import com.ortech.shopapp.Adapters.MenuItemDetailsAdapter
+import com.ortech.shopapp.Adapters.StoreOfferingItemAdapter
 import com.ortech.shopapp.Models.MenuList
 import com.ortech.shopapp.Views.HeaderItemDecoration
 import kotlinx.android.synthetic.main.fragment_branch_details.*
@@ -52,7 +54,9 @@ class MenuItemDetails : Fragment() {
 
     // add action to floating action button
     textViewFloatingButton.setOnClickListener {
-
+      val intent = Intent(this.context, StoreOfferingItemActivity::class.java)
+      intent.putExtra(StoreOfferingItemActivity.ARG_MENU_ITEM, menuItem)
+      startActivity(intent)
     }
 
   }

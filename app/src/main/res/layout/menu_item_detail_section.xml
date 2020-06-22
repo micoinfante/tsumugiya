@@ -59,4 +59,5 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textViewMenuItemDescription"
         app:layout_constraintTop_toBottomOf="@+id/textViewMenuItemPrice" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
