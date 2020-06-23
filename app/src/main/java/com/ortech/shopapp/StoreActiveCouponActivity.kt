@@ -3,15 +3,11 @@ package com.ortech.shopapp
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.DocumentChange
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.AllCouponListAdapter
@@ -22,10 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-/**
- * A simple [Fragment] subclass.
- */
-class BranchCouponList : AppCompatActivity() {
+class StoreActiveCouponActivity: AppCompatActivity() {
   private lateinit var couponBranchListAdapter: AllCouponListAdapter
   private val db = Firebase.firestore
   private var couponList = ArrayList<Coupon>()
@@ -33,14 +26,11 @@ class BranchCouponList : AppCompatActivity() {
   private var storeCoupons = HashMap<String, ArrayList<Coupon>>()
   private var formattedCouponData: ArrayList<AdapterItem<Coupon>> = arrayListOf()
   private var currentBranch: Branch? = null
-  private var couponListener: ListenerRegistration? = null
-  private var redeemedCouponListener: ListenerRegistration? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.fragment_branch_coupon_list)
 
-    currentBranch = intent.getSerializableExtra(ARG_BRANCH) as Branch
     setup()
   }
 
@@ -60,18 +50,17 @@ class BranchCouponList : AppCompatActivity() {
 
     swipeRefreshCouponList.setColorSchemeColors(Color.WHITE)
 
-
-    // for Swipe refresh
     swipeRefreshCouponList.setOnRefreshListener {
       formattedCouponData.clear()
       pointHistoryList.clear()
       updateData()
       removeAdapterData()
       branchCouponListRecyclerView.removeAllViewsInLayout()
-      fetchCoupons()
+      fetchRedeemedCoupons()
     }
 
     fetchCoupons()
+
     setupToolBar()
 
   }
@@ -93,61 +82,24 @@ class BranchCouponList : AppCompatActivity() {
   }
 
   private fun fetchCoupons() {
-    couponList.clear()
-    var query: Query = db.collection("CMSCoupon")
+    val branchID = this.currentBranch?.branchID ?: return
+    db.collection("CMSCoupon")
       .whereGreaterThanOrEqualTo("untilDate", Timestamp(Date()))
+      .whereArrayContains("selectedBranches", branchID)
+      .get()
+      .addOnSuccessListener {querySnapshot ->
+        Log.d(TAG, querySnapshot.size().toString())
+        for (queryDocumentSnapshot in querySnapshot) {
+          val newCoupon = queryDocumentSnapshot.toObject(Coupon::class.java)
+          Log.d(TAG, "new coupon : $newCoupon.id")
+          couponList.add(newCoupon)
 
-    if (currentBranch != null) {
-      currentBranch?.branchID?.let {branchID ->
-        query = db.collection("CMSCoupon")
-          .whereGreaterThanOrEqualTo("untilDate", Timestamp(Date()))
-          .whereArrayContains("selectedBranches", branchID)
+        }
+        fetchRedeemedCoupons()
       }
-
-    }
-      couponListener = query.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-        if (firebaseFirestoreException != null) {
-          Log.e(TAG, "Can't get branch coupons ${firebaseFirestoreException.toString()}")
-        } else {
-          querySnapshot?.documentChanges?.forEach {documentChange ->
-            when(documentChange.type) {
-              DocumentChange.Type.ADDED -> {
-                val newCoupon = documentChange.document.toObject(Coupon::class.java)
-                couponList.add(newCoupon)
-              }
-              DocumentChange.Type.MODIFIED -> {
-                val modifiedCoupon = documentChange.document.toObject(Coupon::class.java)
-                val index = couponList.indexOfFirst {
-                  it.couponID == modifiedCoupon.couponID
-                }
-                couponList[index] = modifiedCoupon
-              }
-              DocumentChange.Type.REMOVED -> {
-                val removedCoupon = documentChange.document.toObject(Coupon::class.java)
-                val index = couponList.indexOfFirst {
-                  it.couponID == removedCoupon.couponID
-                }
-                couponList.removeAt(index)
-              }
-            } // END: Document type check
-            fetchRedeemedCoupons()
-          } // END: Document loop
-        } // END: Else
-      } // END: Query
-
-//      .addOnSuccessListener {querySnapshot ->
-//        Log.d(TAG, querySnapshot.size().toString())
-//        for (queryDocumentSnapshot in querySnapshot) {
-//          val newCoupon = queryDocumentSnapshot.toObject(Coupon::class.java)
-//          Log.d(TAG, "new coupon : $newCoupon.id")
-//          couponList.add(newCoupon)
-//
-//        }
-//        fetchRedeemedCoupons()
-//      }
-//      .addOnFailureListener {
-//        Log.e(TAG, "Can't get branch coupons ${it.toString()}")
-//      }
+      .addOnFailureListener {
+        Log.e(TAG, "Can't get branch coupons ${it.toString()}")
+      }
   }
 
 
@@ -158,55 +110,22 @@ class BranchCouponList : AppCompatActivity() {
     progressBarBranchCouponList.visibility = View.VISIBLE
     db.whereEqualTo("userID", userID)
       .whereEqualTo("redeem", "redeemed")
-      .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-        if (firebaseFirestoreException != null) {
+      .get()
+      .addOnSuccessListener { it ->
+        Log.d(TAG, "Point History Count: ${it.count()} ")
+        it.forEach {pointHistory ->
+          val newPointHistory = pointHistory.toObject(PointHistory::class.java)
+          pointHistoryList.add(newPointHistory)
 
-        } else {
-          querySnapshot?.documentChanges?.forEach { pointHistory ->
-            when(pointHistory.type) {
-              DocumentChange.Type.ADDED -> {
-                val newRedeemedCoupon = pointHistory.document.toObject(PointHistory::class.java)
-                pointHistoryList.add(newRedeemedCoupon)
-              }
-              DocumentChange.Type.MODIFIED -> {
-                val modifiedRedeemedCoupon = pointHistory.document.toObject(PointHistory::class.java)
-                val index = pointHistoryList.indexOfFirst {
-                  it.couponID == modifiedRedeemedCoupon.couponID
-                }
-                pointHistoryList[index] = modifiedRedeemedCoupon
-              }
-              DocumentChange.Type.REMOVED -> {
-                val removedRedeemedCoupon = pointHistory.document.toObject(PointHistory::class.java)
-                val index = pointHistoryList.indexOfFirst {
-                  it.couponID == removedRedeemedCoupon.couponID
-                }
-                pointHistoryList.removeAt(index)
-              }
-            } // END: Document change type check
-          }  // END: Document loop
-        } // END: else check
+        }
         updateStoreListHeaders()
         Log.d(TAG, "Point History Count: ${pointHistoryList.map { ph -> ph.couponID }} ")
         progressBarBranchCouponList.visibility = View.GONE
         swipeRefreshCouponList.isRefreshing = false
-      } // END: Snapshot listener
-
-//      .get()
-//      .addOnSuccessListener { it ->
-//        Log.d(TAG, "Point History Count: ${it.count()} ")
-//        it.forEach {pointHistory ->
-//          val newPointHistory = pointHistory.toObject(PointHistory::class.java)
-//          pointHistoryList.add(newPointHistory)
-//
-//        }
-//        updateStoreListHeaders()
-//        Log.d(TAG, "Point History Count: ${pointHistoryList.map { ph -> ph.couponID }} ")
-//        progressBarBranchCouponList.visibility = View.GONE
-//        swipeRefreshCouponList.isRefreshing = false
-//      }
-//      .addOnFailureListener {
-//        Log.w(TAG, it.localizedMessage)
-//      }
+      }
+      .addOnFailureListener {
+        Log.w(TAG, it.localizedMessage)
+      }
   }
 
   private fun updateStoreListHeaders() {
@@ -247,12 +166,6 @@ class BranchCouponList : AppCompatActivity() {
     }
   }
 
-  override fun onDestroy() {
-    super.onDestroy()
-    couponListener?.remove()
-    redeemedCouponListener?.remove()
-  }
-
   private fun incrementDay(date: Date): Date {
     val cal = Calendar.getInstance(Locale.getDefault())
     cal.time = date
@@ -262,9 +175,7 @@ class BranchCouponList : AppCompatActivity() {
 
 
   companion object {
-    const val TAG = "BranchCouponList"
-    const val ARG_BRANCH = "branch"
+    const val TAG = "StoreActiveCopon"
   }
 
 }
-
