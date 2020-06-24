@@ -135,6 +135,7 @@ class BranchCouponList : AppCompatActivity() {
         } // END: Else
       } // END: Query
 
+
 //      .addOnSuccessListener {querySnapshot ->
 //        Log.d(TAG, querySnapshot.size().toString())
 //        for (queryDocumentSnapshot in querySnapshot) {
