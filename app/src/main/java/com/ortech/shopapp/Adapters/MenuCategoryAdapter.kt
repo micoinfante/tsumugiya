@@ -94,6 +94,7 @@ class MenuCategoryAdapter (private val type: MenuType = MenuType.Category): Recy
 
       Glide.with(itemView)
         .load(category.imageURL)
+        .circleCrop()
         .into(categoryIcon)
 
       itemView.setOnClickListener {
@@ -126,8 +127,9 @@ class MenuCategoryAdapter (private val type: MenuType = MenuType.Category): Recy
 //        .load(Uri.parse(list.imageURL))
 //        .into(menuImage
       Glide.with(itemView)
-          .load(list.imageURL)
-          .into(menuImage)
+        .load(list.imageURL)
+        .circleCrop()
+        .into(menuImage)
 
       itemView.setOnClickListener {
         val activity = itemView.context as AppCompatActivity

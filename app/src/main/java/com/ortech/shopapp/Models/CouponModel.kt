@@ -18,7 +18,7 @@ data class Coupon (
   val mainID: String? = "",
   val orderBy: String? = "",
   val points: String? = "",
-  val selectedBranches: ArrayList<String>? = ArrayList(),
+  val selectedBranch: ArrayList<String>? = ArrayList(),
   val selectedStoreName: ArrayList<String>? = ArrayList(),
   val untilDate: Timestamp? = null,
   val fromDateStr: String? = "",
@@ -59,7 +59,7 @@ data class Coupon (
     parcel.writeString(mainID)
     parcel.writeString(orderBy)
     parcel.writeString(points)
-    parcel.writeStringList(selectedBranches)
+    parcel.writeStringList(selectedBranch)
     parcel.writeStringList(selectedStoreName)
     parcel.writeParcelable(untilDate, flags)
     parcel.writeString(fromDateStr)

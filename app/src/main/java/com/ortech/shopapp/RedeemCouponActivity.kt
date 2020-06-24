@@ -3,6 +3,7 @@ package com.ortech.shopapp
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -13,6 +14,8 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Helpers.NotificationSender
+import com.ortech.shopapp.Models.Branch
+import com.ortech.shopapp.Models.Coupon
 import com.ortech.shopapp.Models.StaffAccount
 import com.ortech.shopapp.Models.StaffSingleton
 import kotlinx.android.synthetic.main.activity_redeem_coupon.*
@@ -26,6 +29,7 @@ class RedeemCouponActivity : AppCompatActivity() {
   private var userTotalPointsID: String? = null
   private var currentStaff: StaffAccount? = null
   private val db = Firebase.firestore
+  private var branch: Branch? = null
 
   override fun onResume() {
     super.onResume()
@@ -69,17 +73,32 @@ class RedeemCouponActivity : AppCompatActivity() {
 
   private fun checkBranch() {
     val staffBranchID = currentStaff?.currentBranchID ?: return
+    val staffBranchName = currentStaff?.branch
     val dataArray = redeemData!!.replace(" ", "").split(",")
     val couponID = dataArray[1]
+    //      .whereArrayContains("selectedBranch", staffBranchID)
     db.collection("CMSCoupon")
       .whereEqualTo("couponID", couponID)
-      .whereArrayContains("selectedBranch", staffBranchID)
       .get()
       .addOnSuccessListener {
-        if (!it.isEmpty) {
+        val coupon =  it.documents.first().toObject(Coupon::class.java)
+        val selectedBranchArray = coupon?.selectedBranch
+        val selectedStoreName = coupon?.selectedStoreName
+        var checkedByID = false
+        var checkedByName = false
+
+        Log.d(TAG, "staffBranchID=$staffBranchID, branch=$staffBranchName")
+        selectedBranchArray?.let { branchNames->
+          checkedByID = branchNames.contains(staffBranchID)
+       }
+
+        selectedStoreName?.let { storeNames ->
+          checkedByName = storeNames.contains(staffBranchName)
+        }
+
+        if (checkedByName || checkedByID) {
           checkPoints()
         } else {
-          // staff branch != coupon branch
           val builder = AlertDialog.Builder(this)
           builder.setTitle(getString(R.string.redeem_coupons_customer))
           builder.setMessage(getString(R.string.invalid))
@@ -89,6 +108,7 @@ class RedeemCouponActivity : AppCompatActivity() {
           }))
           builder.show()
         }
+
       }
   }
 
@@ -157,11 +177,12 @@ class RedeemCouponActivity : AppCompatActivity() {
     redeemData?:return
     userTotalPointsID?:return
 
-   db.collection("TotalPoints")
+   val totalPointsRef = db.collection("TotalPoints")
     val dataArray = redeemData!!.replace(" ", "").split(",")
+    Log.d(TAG, "Data $dataArray")
     val requiredPoints = -1 * dataArray[2].toDouble()
 
-    db.document(userTotalPointsID!!)
+    totalPointsRef.document(userTotalPointsID!!)
       .set(hashMapOf(
         "totalPoints" to FieldValue.increment(requiredPoints)
       ), SetOptions.merge())
@@ -184,13 +205,14 @@ class RedeemCouponActivity : AppCompatActivity() {
       .get()
       .addOnSuccessListener {
         if (it.count() != 0) {
-
+          val staffBranch = currentStaff?.branch ?: ""
+          val branchURL = branch?.branchURLImages ?: "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0"
           val pointHistoryData = hashMapOf(
             "userID" to dataArray.first(),
             "transfer" to "",
             "timeStamp" to Timestamp(Date()),
             "storeURL" to "",
-            "storeName" to "",
+            "storeName" to staffBranch,
             "storeID" to "",
             "staffEmail" to staffEmail,
             "redeem" to "redeemed",
@@ -199,7 +221,7 @@ class RedeemCouponActivity : AppCompatActivity() {
             "customerEmail" to "",
             "couponItem" to dataArray[3],
             "couponID" to dataArray[1],
-            "branchURL" to "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
+            "branchURL" to branchURL,
             "branchName" to dataArray.last(),
             "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
           )
@@ -261,6 +283,19 @@ class RedeemCouponActivity : AppCompatActivity() {
       }
   }
 
+  private fun getStaffBranchDetails() {
+    val branchID = currentStaff?.currentBranchID ?: return
+
+    db.collection("CMSBranches")
+      .whereEqualTo("branchID", branchID)
+      .get()
+      .addOnSuccessListener {
+        if (it.count() != 0) {
+          this.branch = it.first().toObject(Branch::class.java)
+        }
+      }
+  }
+
   private fun invalidPoints() {
     val builder = AlertDialog.Builder(this)
     builder.setTitle(getString(R.string.redeem_coupons_customer))
@@ -273,6 +308,7 @@ class RedeemCouponActivity : AppCompatActivity() {
   }
 
   private fun alreadyRedeemed() {
+    Log.d(TAG, "Already redeemed")
     val builder = AlertDialog.Builder(this)
     builder.setTitle(getString(R.string.redeem_coupons_customer))
     builder.setMessage(getString(R.string.invalid)) // already redeemed = invalid
@@ -298,6 +334,7 @@ class RedeemCouponActivity : AppCompatActivity() {
 
   private fun getCurrentStaff() {
     currentStaff = StaffSingleton.instance.currentStaff
+    getStaffBranchDetails()
   }
 
   companion object {

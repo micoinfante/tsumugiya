@@ -162,6 +162,11 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
             if (today > couponAvailability) {
               timerShade.visibility = View.INVISIBLE
+              itemView.setOnClickListener {
+                val intent = Intent(itemView.context, CouponDetails::class.java)
+                intent.putExtra(CouponDetails.ARG_COUPON, coupon as Parcelable)
+                itemView.context.startActivity(intent)
+              }
             } else {
               val diff = (couponAvailability?.time ?: Date().time) - Date().time
               val remainingTime = Date(diff)

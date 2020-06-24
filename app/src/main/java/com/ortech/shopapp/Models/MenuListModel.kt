@@ -12,8 +12,8 @@ data class MenuList (
   val menuLabel: String = "",
   val menuListID: String = "",
   val menuPrice: String = "",
-  val selectedBranches: List<String> = ArrayList(),
-  val selectedStores: List<String> = ArrayList()
+  val selectedBranch: List<String> = ArrayList(),
+  val selectedStore: List<String> = ArrayList()
 ): Serializable {
 
 }

@@ -10,11 +10,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
-import com.ortech.shopapp.BranchCouponList
-import com.ortech.shopapp.BranchDetails
+import com.ortech.shopapp.*
 import com.ortech.shopapp.Models.Branch
-import com.ortech.shopapp.R
-import com.ortech.shopapp.StoreTabDetails
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_store_item.view.*
 
@@ -75,16 +72,18 @@ class StoreListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
       itemView.setOnClickListener {
         val activity = itemView.context as AppCompatActivity
         val fragment = StoreTabDetails.newInstance(branch)
-        val transaction =  activity.supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(
-          R.anim.enter_from_right,
-          R.anim.exit_to_left,
-          R.anim.enter_from_left,
-          R.anim.exit_to_right
-        )
-        transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        val parentActivity = activity as BottomNavigationActivity
+        parentActivity.selectContentFragment(fragment, true)
+//        val transaction =  activity.supportFragmentManager.beginTransaction()
+//        transaction.setCustomAnimations(
+//          R.anim.enter_from_right,
+//          R.anim.exit_to_left,
+//          R.anim.enter_from_left,
+//          R.anim.exit_to_right
+//        )
+//        transaction.replace(R.id.container, fragment)
+//        transaction.addToBackStack(null)
+//        transaction.commit()
       }
     }
   }

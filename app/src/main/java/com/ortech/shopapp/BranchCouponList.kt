@@ -26,6 +26,7 @@ import kotlin.collections.HashMap
  * A simple [Fragment] subclass.
  */
 class BranchCouponList : AppCompatActivity() {
+
   private lateinit var couponBranchListAdapter: AllCouponListAdapter
   private val db = Firebase.firestore
   private var couponList = ArrayList<Coupon>()
@@ -35,12 +36,16 @@ class BranchCouponList : AppCompatActivity() {
   private var currentBranch: Branch? = null
   private var couponListener: ListenerRegistration? = null
   private var redeemedCouponListener: ListenerRegistration? = null
+  private var toCheckBranchID = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.fragment_branch_coupon_list)
 
-    currentBranch = intent.getSerializableExtra(ARG_BRANCH) as Branch
+   val data = intent.getSerializableExtra(ARG_BRANCH)
+    if (data != null) {
+      currentBranch = data as Branch
+    }
     setup()
   }
 
@@ -99,56 +104,99 @@ class BranchCouponList : AppCompatActivity() {
 
     if (currentBranch != null) {
       currentBranch?.branchID?.let {branchID ->
+        Log.d(TAG, "current branch: $branchID")
         query = db.collection("CMSCoupon")
           .whereGreaterThanOrEqualTo("untilDate", Timestamp(Date()))
-          .whereArrayContains("selectedBranches", branchID)
+//          .whereArrayContains("selectedBranch", branchID)
+        querySpecificBranchCoupons(query)
+        toCheckBranchID = true
       }
 
+    } else {
+      toCheckBranchID = false
+      queryAllBranchCoupons(query)
     }
-      couponListener = query.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-        if (firebaseFirestoreException != null) {
-          Log.e(TAG, "Can't get branch coupons ${firebaseFirestoreException.toString()}")
-        } else {
-          querySnapshot?.documentChanges?.forEach {documentChange ->
-            when(documentChange.type) {
-              DocumentChange.Type.ADDED -> {
-                val newCoupon = documentChange.document.toObject(Coupon::class.java)
-                couponList.add(newCoupon)
-              }
-              DocumentChange.Type.MODIFIED -> {
-                val modifiedCoupon = documentChange.document.toObject(Coupon::class.java)
-                val index = couponList.indexOfFirst {
-                  it.couponID == modifiedCoupon.couponID
-                }
-                couponList[index] = modifiedCoupon
-              }
-              DocumentChange.Type.REMOVED -> {
-                val removedCoupon = documentChange.document.toObject(Coupon::class.java)
-                val index = couponList.indexOfFirst {
-                  it.couponID == removedCoupon.couponID
-                }
-                couponList.removeAt(index)
-              }
-            } // END: Document type check
-            fetchRedeemedCoupons()
-          } // END: Document loop
-        } // END: Else
-      } // END: Query
+  }
 
+  private fun queryAllBranchCoupons(query: Query) {
+    couponListener = query.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+      if (firebaseFirestoreException != null) {
+        Log.e(TAG, "Can't get branch coupons ${firebaseFirestoreException.toString()}")
+      } else {
+        Log.d(TAG, "Branch coupons ${querySnapshot!!.count()}")
+        querySnapshot?.documentChanges?.forEach {documentChange ->
+          val newCoupon: Coupon?
+          when(documentChange.type) {
+            DocumentChange.Type.ADDED -> {
+              newCoupon = documentChange.document.toObject(Coupon::class.java)
+              couponList.add(newCoupon)
+            }
+            DocumentChange.Type.MODIFIED -> {
+              newCoupon = documentChange.document.toObject(Coupon::class.java)
+              val index = couponList.indexOfFirst {
+                it.couponID == newCoupon.couponID
+              }
+              couponList[index] = newCoupon
+            }
+            DocumentChange.Type.REMOVED -> {
+              newCoupon = documentChange.document.toObject(Coupon::class.java)
+              val index = couponList.indexOfFirst {
+                it.couponID == newCoupon.couponID
+              }
+              couponList.removeAt(index)
+            }
+          } // END: Document type check
+          fetchRedeemedCoupons()
+        } // END: Document loop
+      } // END: Else
+    } // END: Query
+  }
 
-//      .addOnSuccessListener {querySnapshot ->
-//        Log.d(TAG, querySnapshot.size().toString())
-//        for (queryDocumentSnapshot in querySnapshot) {
-//          val newCoupon = queryDocumentSnapshot.toObject(Coupon::class.java)
-//          Log.d(TAG, "new coupon : $newCoupon.id")
-//          couponList.add(newCoupon)
-//
-//        }
-//        fetchRedeemedCoupons()
-//      }
-//      .addOnFailureListener {
-//        Log.e(TAG, "Can't get branch coupons ${it.toString()}")
-//      }
+  private fun querySpecificBranchCoupons(query: Query) {
+    couponListener = query.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+      if (firebaseFirestoreException != null) {
+        Log.e(TAG, "Can't get branch coupons ${firebaseFirestoreException.toString()}")
+      } else {
+        Log.d(TAG, "Branch[${currentBranch!!.branch}] coupons ${querySnapshot!!.count()}")
+
+        querySnapshot?.documentChanges?.forEach {documentChange ->
+          val newCoupon: Coupon?
+          when(documentChange.type) {
+            DocumentChange.Type.ADDED -> {
+              newCoupon = documentChange.document.toObject(Coupon::class.java)
+              newCoupon.selectedStoreName?.let {
+                if (it.contains(currentBranch?.branch ?: "")) {
+                  couponList.add(newCoupon)
+                }
+              }
+            }
+            DocumentChange.Type.MODIFIED -> {
+              newCoupon = documentChange.document.toObject(Coupon::class.java)
+              newCoupon.selectedStoreName?.let {
+                if (it.contains(currentBranch?.branch ?: "")) {
+                  val index = couponList.indexOfFirst {currentCoupon ->
+                    currentCoupon.couponID == newCoupon.couponID
+                  }
+                  couponList[index] = newCoupon
+                }
+              }
+            }
+            DocumentChange.Type.REMOVED -> {
+              newCoupon = documentChange.document.toObject(Coupon::class.java)
+              newCoupon.selectedStoreName?.let {
+                if (it.contains(currentBranch?.branch ?: "")) {
+                  val index = couponList.indexOfFirst {
+                    it.couponID == newCoupon.couponID
+                  }
+                  couponList.removeAt(index)
+                }
+              }
+            }
+          } // END: Document type check
+          fetchRedeemedCoupons()
+        } // END: Document loop
+      } // END: Else
+    } // END: Query
   }
 
 
@@ -161,7 +209,7 @@ class BranchCouponList : AppCompatActivity() {
       .whereEqualTo("redeem", "redeemed")
       .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
         if (firebaseFirestoreException != null) {
-
+          updateStoreListHeaders()
         } else {
           querySnapshot?.documentChanges?.forEach { pointHistory ->
             when(pointHistory.type) {
@@ -211,41 +259,59 @@ class BranchCouponList : AppCompatActivity() {
   }
 
   private fun updateStoreListHeaders() {
+
     formattedCouponData.clear()
-    this.couponList.map { it ->
-      it.selectedStoreName?.forEach { storeName ->
-        val currentCoupons = this.storeCoupons[storeName]
-        if (currentCoupons != null) {
-          // if hashmap value of currentCoupons doesn't have the coupon being parse, add it
-          // else just continue
-          // to avoid duplicate items
-          if (!currentCoupons.map { it -> it.couponID }.contains(it.couponID)) {
-            currentCoupons.add(it)
+      this.couponList.map { it ->
+        it.selectedStoreName?.forEach { storeName ->
+          val currentCoupons = this.storeCoupons[storeName]
+          if (currentCoupons != null) {
+            // if hashmap value of currentCoupons doesn't have the coupon being parse, add it
+            // else just continue
+            // to avoid duplicate items
+            if (!currentCoupons.map { it -> it.couponID }.contains(it.couponID)) {
+              currentCoupons.add(it)
+            }
+          } else {
+            this.storeCoupons[storeName] = arrayListOf(it)
           }
-        } else {
-          this.storeCoupons[storeName] = arrayListOf(it)
+        }
+      } // couponList
+
+    if (toCheckBranchID) {
+      Log.d(TAG, "Current coupon[${couponList.count()}] $couponList")
+      for ((header, coupons) in storeCoupons) {
+        Log.d(TAG, "Format $header == ${currentBranch!!.branch}")
+        if (header == currentBranch!!.branch) {
+//          val newCouponHeader = Coupon(header)
+//          val newAdapterItem = AdapterItem(newCouponHeader, AllCouponListAdapter.TYPE_HEADER)
+//          formattedCouponData.add(newAdapterItem)
+          Log.d(TAG, "SelectedCouponStore[${header}] [${coupons.count()}] \n${coupons.map{it.couponID}}")
+
+          coupons.forEach {coupon ->
+            val newCoupon = Coupon(header, coupon.storeID, coupon.couponDetails, coupon.couponID, coupon.couponLabel, coupon.fromDate, coupon.imageURL, coupon.isEnabled, coupon.mainID, coupon.orderBy, coupon.points, coupon.selectedBranch, coupon.selectedStoreName, coupon.untilDate, coupon.fromDateStr, coupon.untilDateStr)
+            newCoupon.couponStore = header
+            formattedCouponData.add(AdapterItem(newCoupon, AllCouponListAdapter.TYPE_COUPON, false))
+          }
         }
       }
-    } // couponList
 
-    for ((header, coupons) in storeCoupons) {
-      val newCouponHeader = Coupon(header)
-      val newAdapterItem = AdapterItem(newCouponHeader, AllCouponListAdapter.TYPE_HEADER)
-      formattedCouponData.add(newAdapterItem)
-      Log.d(TAG, "FormatCouponStore[${header}] [${coupons.count()}] \n${coupons.map{it.couponID}}")
+    } else {
+      for ((header, coupons) in storeCoupons) {
+        val newCouponHeader = Coupon(header)
+        val newAdapterItem = AdapterItem(newCouponHeader, AllCouponListAdapter.TYPE_HEADER)
+        formattedCouponData.add(newAdapterItem)
+        Log.d(TAG, "FormatCouponStore[${header}] [${coupons.count()}] \n${coupons.map{it.couponID}}")
 
-      coupons.forEach {coupon ->
-        val newCoupon = Coupon(header, coupon.storeID, coupon.couponDetails, coupon.couponID, coupon.couponLabel, coupon.fromDate, coupon.imageURL, coupon.isEnabled, coupon.mainID, coupon.orderBy, coupon.points, coupon.selectedBranches, coupon.selectedStoreName, coupon.untilDate, coupon.fromDateStr, coupon.untilDateStr)
-        if (header == "二代目らーめん世界") {
-          Log.d(TAG,"setting header: $header $newCoupon")
+        coupons.forEach {coupon ->
+          val newCoupon = Coupon(header, coupon.storeID, coupon.couponDetails, coupon.couponID, coupon.couponLabel, coupon.fromDate, coupon.imageURL, coupon.isEnabled, coupon.mainID, coupon.orderBy, coupon.points, coupon.selectedBranch, coupon.selectedStoreName, coupon.untilDate, coupon.fromDateStr, coupon.untilDateStr)
+          newCoupon.couponStore = header
+          formattedCouponData.add(AdapterItem(newCoupon, AllCouponListAdapter.TYPE_COUPON, false))
         }
-        newCoupon.couponStore = header
-        formattedCouponData.add(AdapterItem(newCoupon, AllCouponListAdapter.TYPE_COUPON, false))
       }
-
-      updateData()
 
     }
+    updateData()
+    
   }
 
   override fun onDestroy() {

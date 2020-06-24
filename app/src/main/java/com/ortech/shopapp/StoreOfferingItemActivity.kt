@@ -30,10 +30,9 @@ class StoreOfferingItemActivity : AppCompatActivity() {
   }
 
   private fun setup() {
-    adapter = StoreOfferingItemAdapter()
     recyclerViewStoreOfferingItem.apply {
       layoutManager = LinearLayoutManager(this.context)
-      recyclerViewStoreOfferingItem.adapter = this.adapter
+      recyclerViewStoreOfferingItem.adapter = StoreOfferingItemAdapter()
     }
     getStores()
   }
@@ -48,25 +47,25 @@ class StoreOfferingItemActivity : AppCompatActivity() {
 
   private fun getStores() {
     menuItem?.let { it->
-      it.selectedBranches?.forEach { branchID ->
-        db.collection("CMSBranch")
-          .whereEqualTo("branchID", branchID)
-          .get()
-          .addOnSuccessListener{ queryDocument ->
-            if (queryDocument.count() != 0) {
-              val branch = queryDocument.documents.first().toObject(Branch::class.java)
-              if (branch != null) {
-                selectedBranchList.add(branch)
-                dataSetUpdated()
+      it.selectedBranch.forEach { branchID ->
+          db.collection("CMSBranches")
+            .whereEqualTo("branchID", branchID)
+            .get()
+            .addOnSuccessListener{ queryDocument ->
+              if (queryDocument.count() != 0) {
+                val branch = queryDocument.documents.first().toObject(Branch::class.java)
+                if (branch != null) {
+                  selectedBranchList.add(branch)
+                  dataSetUpdated()
+                }
               }
             }
-          }
       }
     }
   }
 
   private fun dataSetUpdated() {
-    adapter.updateDataSet(this.selectedBranchList)
+   (recyclerViewStoreOfferingItem.adapter as StoreOfferingItemAdapter).updateDataSet(this.selectedBranchList)
   }
 
 

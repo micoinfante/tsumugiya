@@ -71,8 +71,17 @@ class BottomNavigationActivity : AppCompatActivity(){
     selectContentFragment(fragment)
   }
 
-  private fun selectContentFragment(fragmentToSelect: Fragment) {
+   fun selectContentFragment(fragmentToSelect: Fragment, useAnimations: Boolean = false) {
     val fragmentTransaction = supportFragmentManager.beginTransaction()
+
+    if (useAnimations) {
+      fragmentTransaction.setCustomAnimations(
+        R.anim.enter_from_right,
+        R.anim.exit_to_left,
+        R.anim.enter_from_left,
+        R.anim.exit_to_right
+      )
+    }
 
     val currentFragments = supportFragmentManager.fragments
     if (currentFragments.contains(fragmentToSelect)) {

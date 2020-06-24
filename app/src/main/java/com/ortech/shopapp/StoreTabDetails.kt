@@ -46,7 +46,12 @@ class StoreTabDetails : Fragment() {
       toolbar.title = it.branch
     }
     toolbar.setNavigationOnClickListener {
-      activity?.supportFragmentManager?.popBackStack()
+//      activity?.supportFragmentManager?.popBackStack()
+      val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+      fragmentTransaction?.remove(this)
+      val parentActivity = activity as BottomNavigationActivity
+      parentActivity.selectContentFragment(StoreTabListActivity())
+//      Log.d(TAG, "Pop from backstack")
     }
 
   }

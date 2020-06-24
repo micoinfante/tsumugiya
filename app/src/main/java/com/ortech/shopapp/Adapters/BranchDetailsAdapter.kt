@@ -12,9 +12,11 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.ortech.shopapp.BranchCouponList
 import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.Models.UserSingleton
 import com.ortech.shopapp.R
+import com.ortech.shopapp.StoreOfferingItemActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_transfer_points.*
 import kotlinx.android.synthetic.main.branch_details_section.view.*
@@ -22,7 +24,9 @@ import kotlinx.android.synthetic.main.fragment_branch_details.view.*
 import kotlinx.android.synthetic.main.fragment_home_screen_header.view.*
 
 class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
   private var itemCount = 2
+  private var couponsAvailable = false
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
     val inflater = LayoutInflater.from(parent.context)
@@ -49,6 +53,11 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
     }
   }
 
+  fun couponsAvailable(status: Boolean) {
+    couponsAvailable = status
+    notifyDataSetChanged()
+  }
+
   inner class BranchHeaderHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView = itemView.imageViewHeader
 
@@ -60,6 +69,7 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
     }
 
   }
+
 
   inner class BranchDetailsHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val location = itemView.textViewBranchDetailsLocation
@@ -116,15 +126,24 @@ class BranchDetailsAdapter(private val branch: Branch): RecyclerView.Adapter<Rec
 
       }
       buttonUseCoupon.setOnClickListener {
-
-        val builder = AlertDialog.Builder(itemView.context)
-        builder.setTitle(branch.branch)
-        builder.setMessage(res.getString(R.string.no_coupon_available))
-        builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
-          dialog.dismiss()
-        }))
-        builder.show()
+        if (couponsAvailable) {
+          val intent = Intent(itemView.context, BranchCouponList::class.java)
+          intent.putExtra(BranchCouponList.ARG_BRANCH, branch)
+          itemView.context.startActivity(intent)
+        } else {
+          noAvailableCouponsMessage()
+        }
       }
+    }
+
+    private fun noAvailableCouponsMessage() {
+      val builder = AlertDialog.Builder(itemView.context)
+      builder.setTitle(branch.branch)
+      builder.setMessage(res.getString(R.string.no_coupon_available))
+      builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
+        dialog.dismiss()
+      }))
+      builder.show()
     }
 
   }

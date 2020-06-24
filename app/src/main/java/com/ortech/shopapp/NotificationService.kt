@@ -50,26 +50,20 @@ class NotificationService : FirebaseMessagingService() {
   override fun onNewToken(p0: String) {
     Log.d("Notification Token", "Refreshed Token: $p0")
     val db = Firebase.firestore
-    val sharedPreferences = getSharedPreferences(
-      UserSingleton.instance.userID, Context.MODE_PRIVATE) ?: return
-    sharedPreferences.getString(UserSingleton.instance.userID, null)
-      .let { userUUID ->
-        if (userUUID != null) {
-          UserSingleton.instance.setCurrentUserID(userUUID)
-          FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener{task ->
-              if (!task.isSuccessful) {
-                Log.w("Firebase Instance", "getInstanceId failed", task.exception)
-              }
-
-              val token = task.result?.token
-              val data = hashMapOf("token" to token)
-              UserSingleton.instance.fcmToken = token!!
-              db.collection("GlobalUsers").document(userUUID).set(data, SetOptions.merge())
-            }
-
+    val userUUID = UserSingleton.instance.userID
+    UserSingleton.instance.setCurrentUserID(userUUID)
+    FirebaseInstanceId.getInstance().instanceId
+      .addOnCompleteListener{task ->
+        if (!task.isSuccessful) {
+          Log.w("Firebase Instance", "getInstanceId failed", task.exception)
         }
+
+        val token = task.result?.token
+        val data = hashMapOf("token" to token)
+        UserSingleton.instance.fcmToken = token!!
+        db.collection("GlobalUsers").document(userUUID).set(data, SetOptions.merge())
       }
+
 
   }
 
