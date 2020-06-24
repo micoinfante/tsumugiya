@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ortech.shopapp.Adapters.PointHistoryAdapter
@@ -41,7 +42,7 @@ class PointHistoryActivity : AppCompatActivity() {
   private fun getPointHistory() {
     db.collection("PointHistory")
       .whereEqualTo("userID", UserSingleton.instance.userID)
-      .orderBy("timeStamp")
+      .orderBy("timeStamp", Query.Direction.DESCENDING)
       .get()
       .addOnSuccessListener { querySnapshot ->
         if (querySnapshot.count() == 0) {
