@@ -57,6 +57,7 @@ class PointHistoryActivity : AppCompatActivity() {
         }
       }
       .addOnFailureListener {
+        Log.d(TAG, it.localizedMessage)
         Toast.makeText(this.baseContext,it.localizedMessage,Toast.LENGTH_SHORT)
           .show()
       }

@@ -1,6 +1,7 @@
 package com.ortech.shopapp
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -35,6 +36,7 @@ import kotlinx.android.synthetic.main.activity_customer_qr_code.*
 import kotlinx.android.synthetic.main.fragment_branch_coupon_item.*
 import kotlinx.android.synthetic.main.fragment_branch_coupon_list.*
 import kotlinx.android.synthetic.main.fragment_coupon_details.*
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,6 +82,12 @@ class CouponDetails : AppCompatActivity() {
         }
 
       })
+
+    buttonCouponNotOffered.setOnClickListener {
+      val intent = Intent(baseContext, StoreCouponNotOffered::class.java)
+      intent.putExtra(StoreCouponNotOffered.ARG_COUPON, coupon as Serializable)
+      startActivity(intent)
+    }
 
     startHandler()
   }

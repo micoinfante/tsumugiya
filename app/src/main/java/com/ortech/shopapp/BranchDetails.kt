@@ -69,13 +69,34 @@ class BranchDetails : Fragment() {
       .whereGreaterThanOrEqualTo("untilDate", Timestamp(Date()))
       .get()
       .addOnSuccessListener { it ->
-        val selectedBranchesArray = it.documents.map {
-          it["selectedBranch"] as ArrayList<String>
-        }.flatten()
+//        val _selectedBranchesArray = it.documents.map {
+//          it["selectedBranch"] as ArrayList<String>
+//        }
+//        val selectedBranchesArray = _selectedBranchesArray.flatten()
+//
+//        val _selectedStoreNameArray = it.documents.map {
+//          it["selectedStoreName"] as ArrayList<String>
+//        }
+//
+//        val selectedStoreNameArray = _selectedStoreNameArray.flatten()
 
-        val selectedStoreNameArray = it.documents.map {
-          it["selectedStoreName"] as ArrayList<String>
-        }.flatten()
+        val branchArray: ArrayList<String> = arrayListOf()
+        val storeNameArray: ArrayList<String> = arrayListOf()
+
+        it.documents.forEach { coupon ->
+          val arr = coupon["selectedBranch"] as? ArrayList<String>
+          val storeArr = coupon["selectedStoreName"] as? ArrayList<String>
+          if (arr != null) {
+            branchArray.add(arr.toString())
+          }
+
+          if (storeArr != null) {
+            storeNameArray.add(storeArr.toString())
+          }
+        }
+        val selectedBranchesArray = branchArray
+        val selectedStoreNameArray = storeNameArray
+
 
         Log.d(TAG, "SelectedBranches: ${selectedBranchesArray.toString()} " +
                 "contains? ${branch?.branchID ?: ""}")

@@ -9,7 +9,7 @@ import com.ortech.shopapp.Models.Branch
 import com.ortech.shopapp.OfferedMenu
 import com.ortech.shopapp.StoreMapTabFragment
 
-private val TAB_TITLES = arrayOf<String>("ストア", "メニュー")
+private val TAB_TITLES = arrayOf<String>("店舗説明", "メニュー")
 
 class StoreTabDetailsPagerAdapter(fm: FragmentManager, branch: Branch): FragmentPagerAdapter(fm){
 

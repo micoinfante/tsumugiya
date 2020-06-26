@@ -240,22 +240,6 @@ class BranchCouponList : AppCompatActivity() {
         swipeRefreshCouponList.isRefreshing = false
       } // END: Snapshot listener
 
-//      .get()
-//      .addOnSuccessListener { it ->
-//        Log.d(TAG, "Point History Count: ${it.count()} ")
-//        it.forEach {pointHistory ->
-//          val newPointHistory = pointHistory.toObject(PointHistory::class.java)
-//          pointHistoryList.add(newPointHistory)
-//
-//        }
-//        updateStoreListHeaders()
-//        Log.d(TAG, "Point History Count: ${pointHistoryList.map { ph -> ph.couponID }} ")
-//        progressBarBranchCouponList.visibility = View.GONE
-//        swipeRefreshCouponList.isRefreshing = false
-//      }
-//      .addOnFailureListener {
-//        Log.w(TAG, it.localizedMessage)
-//      }
   }
 
   private fun updateStoreListHeaders() {

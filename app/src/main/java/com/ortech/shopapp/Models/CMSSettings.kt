@@ -36,7 +36,7 @@ class CMSSettings private constructor() {
 
   companion object {
     const val DEFAULT_COUPON_TIME_LIMIT = 86400
-    const val DEFAULT_QRCODE_TIME_LIMIT = 43200
+    const val DEFAULT_QRCODE_TIME_LIMIT = 86400
     val instance: CMSSettings by lazy {HOLDER.INSTANCE}
   }
 

@@ -200,6 +200,7 @@ class RedeemCouponActivity : AppCompatActivity() {
     val dataArray = redeemData!!.replace(" ", "").split(",")
     val requiredPoints = dataArray[2].toInt()
     val staffEmail = Firebase.auth.currentUser?.email ?: "error staff email"
+    val branchID = currentStaff?.currentBranchID ?: "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
 
     db.collection("CMSCoupon").whereEqualTo("couponID", dataArray[1])
       .get()
@@ -223,7 +224,7 @@ class RedeemCouponActivity : AppCompatActivity() {
             "couponID" to dataArray[1],
             "branchURL" to branchURL,
             "branchName" to dataArray.last(),
-            "branchID" to "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N"
+            "branchID" to branchID
           )
           var shouldSendNotification = false
 

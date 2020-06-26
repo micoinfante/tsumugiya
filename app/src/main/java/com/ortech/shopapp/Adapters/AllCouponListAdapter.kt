@@ -221,7 +221,7 @@ class AllCouponListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private fun incrementDay(date: Date): Date {
       val cal = Calendar.getInstance(Locale.getDefault())
       cal.time = date
-      cal.add(Calendar.MILLISECOND, CMSSettings.instance.currentCouponTimeLimit().toInt())
+      cal.add(Calendar.SECOND, CMSSettings.instance.currentCouponTimeLimit().toInt())
       return cal.time
     }
 

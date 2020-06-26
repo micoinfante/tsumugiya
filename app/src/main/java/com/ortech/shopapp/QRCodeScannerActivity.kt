@@ -1,26 +1,31 @@
 package com.ortech.shopapp
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.zxing.integration.android.IntentIntegrator
-import com.ortech.shopapp.Models.PointHistory
-import com.ortech.shopapp.Models.TotalPoints
-import com.ortech.shopapp.Models.UserSingleton
+import com.ortech.shopapp.Helpers.NotificationSender
+import com.ortech.shopapp.Models.*
 import github.nisrulz.qreader.QRDataListener
 import github.nisrulz.qreader.QREader
 import kotlinx.android.synthetic.main.activity_qr_code_scanner.*
+import kotlinx.android.synthetic.main.activity_redeem_coupon.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -119,10 +124,8 @@ class QRCodeScannerActivity : AppCompatActivity() {
 
   private fun checkTransaction(data: String) {
     if (userType == TYPE_CUSTOMER) {
-      if (data.split(",").size > 4) {
         hasScanned = true
         transferPointsByCustomer(data)
-      }
     } else {
       processQRCodeOfCustomer(data)
     }
@@ -145,76 +148,38 @@ class QRCodeScannerActivity : AppCompatActivity() {
     val intent = Intent(baseContext, TransferPointsActivity::class.java)
     intent.putExtra(TransferPointsActivity.ARGS_TRANSFER, data)
     startActivity(intent)
-//    val dataArray = data.replace(" ", "").split(",")
-//    Log.d(TAG, "Trying to transfer points $dataArray.toString()")
-//    progressbarQRScanner.visibility = View.VISIBLE
-//    val pointHistory = PointHistory(
-//      "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N","富山呉羽店",
-//      "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
-//      "","","","qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-//      100, "","rhuet.transit@gmail.com",
-//      "","","", Timestamp(Date()),"transferred",
-//      dataArray.first()
-//    )
-//
-//
-//
-//    val totalPoints = TotalPoints(Timestamp(Date()),
-//       UserSingleton.instance.toString(),
-//      100, 100, "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-//      "ラーメン世界", UserSingleton.instance.getCurrentPoints()+100,
-//        UserSingleton.instance.userID
-//      )
-//
-//
-//    val db = Firebase.firestore
-//
-//    db.collection("PointHistory").add(pointHistory)
-//      .addOnCompleteListener {
-//        if (it.isSuccessful) {
-//          Log.d(TAG, "Transferred 100points to ${UserSingleton.instance.userID}")
-//        }
-//        if (it.isComplete) {
-//          progressbarQRScanner.visibility = View.INVISIBLE
-//          closeActivity()
-//        }
-//      }
-//      .addOnFailureListener {
-//        Log.d(TAG, "Failed to transfer points to ${UserSingleton.instance.userID} - ${it.localizedMessage}")
-//      }
   }
 
   private fun transferPointsByCustomer(data: String) {
+    runOnUiThread {
+      progressbarQRScanner.visibility = View.VISIBLE
+    }
+//    qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP,2020-06-30,
+//    tDiF8oBOe9iGVueS0iN7JZ5yrgEBib1CovFm1Fu4,二代目らーめん世界   ,
+//    32,https://apps.apple.com/us/app/%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%E4%B8%96%E7%95%8C/id1503125317?ls=1
+    Log.d(TAG, "Transferring point customer")
     val dataArray = data.replace(" ", "").split(",")
-    val branchID = dataArray[0]
-    val storeName = dataArray[1]
-    val couponID: String = dataArray[2]
-    val branchName: String = dataArray[3]
+    val expirationDate = dataArray[1]
+
+    val expiry = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(expirationDate)
+    expiry?.let {
+      if (it < Date()) {
+        expiredQRCodeMessage()
+        runOnUiThread {
+          progressbarQRScanner.visibility = View.INVISIBLE
+        }
+        return
+      }
+    }
+
+    checkIfAlreadyRedeemed(data)
+
+  }
+
+  private fun addTotalPointHistory(data: String) {
+    val dataArray = data.replace(" ", "").split(",")
     val points = dataArray[4].toDouble()
-
-    Log.d(TAG, "Trying to transfer points $dataArray.toString()")
-
-
-//    val pointHistory = PointHistory(
-//      "ajV1krKOREHPusipuEmMQ8hqY8ZKfPLThdbObj1N",branchName,
-//      "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0",
-//      "","","","qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-//      point, "","rhuet.transit@gmail.com",
-//      "",storeName,"", Timestamp(Date()),"transferred",
-//      dataArray.first()
-//    )
-
-
-
-//    val totalPoints = TotalPoints(Timestamp(Date()),
-//      UserSingleton.instance.toString(),
-//      100, 100, "qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP",
-//      storeName, FieldValue.increment(points),
-//      UserSingleton.instance.userID
-//    )
-
     val db = Firebase.firestore.collection("TotalPoints")
-
 
     db.whereEqualTo("userID", UserSingleton.instance.userID)
       .get()
@@ -246,26 +211,11 @@ class QRCodeScannerActivity : AppCompatActivity() {
             .set(totalPoints, SetOptions.merge())
             .addOnCompleteListener {
               if (it.isComplete || it.isSuccessful) {
-                runOnUiThread {
-                  val message = getString(R.string.earn_points_successful, points.toString())
-                  Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
-                }
-                Handler().post(Runnable {
-                  progressbarQRScanner.visibility = View.INVISIBLE
-                  //do your stuff here
-                  this.finish()
-                })
+                getBranchDetails(data)
 
-//                runOnUiThread (
-//                  Runnable(){
-//                    Log.d(TAG, "Successfully transferred $points")
-//                    this@QRCodeScannerActivity.finish();
-//                  }
-//                )
               }
             }
             .addOnFailureListener {
-              Toast.makeText(baseContext, "Failed to transfer points", Toast.LENGTH_SHORT).show()
               progressbarQRScanner.visibility = View.INVISIBLE
               closeActivity()
             }
@@ -276,7 +226,126 @@ class QRCodeScannerActivity : AppCompatActivity() {
         Log.d(TAG, "Failed to transfer points to ${UserSingleton.instance.userID} - ${it.localizedMessage}")
       }
 
+  }
 
+  private fun checkIfAlreadyRedeemed(data: String) {
+    val db = Firebase.firestore
+    val pointHistoryRef = db.collection("PointHistory")
+    val dataArray = data.replace(" ", "").split(",")
+    val mainID = dataArray[0]
+    val expirationDate = dataArray[1]
+    val branchID = dataArray[2]
+    val storeName = dataArray[3]
+    val points = dataArray[4].toDouble()
+
+    pointHistoryRef
+      .whereEqualTo("userID", UserSingleton.instance.userID)
+      .whereEqualTo("storeName", expirationDate)
+      .whereEqualTo("branchID", branchID)
+      .orderBy("timeStamp", Query.Direction.DESCENDING)
+      .limit(1)
+      .get()
+      .addOnSuccessListener {
+        if (it.isEmpty) {
+//          Log.d(TAG, "D1CFA807-DE57-43F3-9254-794415DF1E08 Not Yet redeemed")
+          addTotalPointHistory(data)
+        } else {
+//          Log.d(TAG, "D1CFA807-DE57-43F3-9254-794415DF1E08 Already redeemed")
+          val pointLog = it.first().toObject(PointHistory::class.java)
+          val timestamp = pointLog.timeStamp ?: Timestamp(Date())
+          val availability = incrementDate(timestamp.toDate())
+
+          val check = Date(availability.time)
+
+          if (check > Date()) {
+            alreadyRedeemedMessage()
+            progressbarQRScanner.visibility = View.INVISIBLE
+          } else {
+            addTotalPointHistory(data)
+
+          }
+        }
+      }
+      .addOnFailureListener {
+        progressbarQRScanner.visibility = View.INVISIBLE
+        Log.d(TAG, it.localizedMessage)
+      }
+
+  }
+
+  // When customer scans a QRCode add a log
+  // this will be use for checking if the customer scanned the qrcode already
+  private fun addPointHistoryOfCustomer(data: String, branchURL: String?) {
+    //    qORS5giJWx101ituzXveVZPqQENAh1hEriCRyeTP,2020-06-30,
+//    tDiF8oBOe9iGVueS0iN7JZ5yrgEBib1CovFm1Fu4,二代目らーめん世界   ,
+//    32,https://apps.apple.com/us/app/%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3%E4%B8%96%E7%95%8C/id1503125317?ls=1
+
+    val dataArray = data.replace(" ", "").split(",")
+    val mainID = dataArray[0]
+    val expirationDate = dataArray[1]
+    val branchID = dataArray[2]
+    val branchName = dataArray[3]
+    val points = dataArray[4].toDouble()
+
+    val db = Firebase.firestore.collection("PointHistory")
+
+    val imageURL = branchURL ?: "https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/branch%2FC2LMuNu1beIqvZWyXwohZDewkdCtLtiTRLqTiCRK?alt=media&token=87bc9e3c-85b4-4178-8a14-5321d12d76a0"
+    val pointHistoryData = hashMapOf(
+      "userID" to UserSingleton.instance.userID,
+      "timeStamp" to Timestamp(Date()),
+      "storeURL" to imageURL,
+      "storeName" to expirationDate,
+      "storeID" to mainID,
+            "staffEmail" to "",
+            "transfer" to "transferred",
+            "points" to points,
+            "mainID" to mainID,
+            "customerEmail" to "",
+            "branchURL" to imageURL,
+            "branchName" to branchName,
+            "branchID" to branchID
+          )
+
+    db.add(pointHistoryData).addOnSuccessListener {
+        hasScanned = false
+      progressbarQRScanner.visibility = View.INVISIBLE
+      val title = this.getString(R.string.notification_transfer_title)
+      val appName = this.getString(R.string.app_name)
+      val body = this.getString(R.string.notification_transfer_body, points.toInt(), appName)
+       NotificationSender.push(UserSingleton.instance.fcmToken, title, body)
+      closeActivity()
+    }
+      .addOnFailureListener {
+        progressbarQRScanner.visibility = View.INVISIBLE
+        Toast.makeText(baseContext, "Failed to transfer points", Toast.LENGTH_SHORT).show()
+      }
+
+
+  }
+
+  private fun getBranchDetails(data: String) {
+    val dataArray = data.replace(" ", "").split(",")
+    val mainID = dataArray[0]
+    val expirationDate = dataArray[1]
+    val branchID = dataArray[2]
+    val branchName = dataArray[3]
+    val points = dataArray[4].toDouble()
+
+    val db = Firebase.firestore
+
+    db.collection("CMSBranches")
+      .whereEqualTo("branchID", branchID)
+      .get()
+      .addOnSuccessListener {
+        if (it.count() != 0) {
+          val branch = it.first().toObject(Branch::class.java)
+          val imageURL = branch.branchURLImages
+          addPointHistoryOfCustomer(data, imageURL)
+        }
+      }
+      .addOnFailureListener {
+        progressbarQRScanner.visibility = View.INVISIBLE
+      }
   }
 
   private fun redeemCouponOfCustomer(data: String) {
@@ -285,8 +354,33 @@ class QRCodeScannerActivity : AppCompatActivity() {
     startActivity(intent)
   }
 
-  private fun processQRCodeByStaff(data: String) {
+  private fun expiredQRCodeMessage() {
+    val builder = AlertDialog.Builder(this)
+    builder.setTitle(getString(R.string.transfer))
+    builder.setMessage("ポイントを獲得するには24時間お待ちください")
+    builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
+      hasScanned = false
+      dialog.dismiss()
+    }))
+    builder.show()
+  }
 
+  private fun alreadyRedeemedMessage() {
+    val builder = AlertDialog.Builder(this)
+    builder.setTitle(getString(R.string.transfer))
+    builder.setMessage(getString(R.string.invalid)) // already redeemed = invalid
+    builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = { dialog: DialogInterface, which: Int ->
+      hasScanned = false
+      dialog.dismiss()
+    }))
+    builder.show()
+  }
+
+  private fun incrementDate(date: Date): Date {
+    val cal = Calendar.getInstance(Locale.getDefault())
+    cal.time = date
+    cal.add(Calendar.SECOND, CMSSettings.instance.currentQRCodeTimeLimit().toInt())
+    return cal.time
   }
 
   companion object {
