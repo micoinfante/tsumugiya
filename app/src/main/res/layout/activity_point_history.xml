@@ -11,7 +11,8 @@
         android:id="@+id/appbar"
 
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@color/colorPrimaryDark">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -34,6 +35,7 @@
                 android:layout_marginLeft="26dp"
                 android:gravity="bottom|start"
                 android:text="@string/homescreen_point_history_title"
+                android:textColor="@color/accent_white"
                 android:textSize="40sp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>

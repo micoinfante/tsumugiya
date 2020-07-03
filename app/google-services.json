@@ -1,57 +1,41 @@
 {
   "project_info": {
-    "project_number": "936466283506",
-    "firebase_url": "https://sakura-dbms.firebaseio.com",
-    "project_id": "sakura-dbms",
-    "storage_bucket": "sakura-dbms.appspot.com"
+    "project_number": "605706833221",
+    "firebase_url": "https://tsumugiya-886e1.firebaseio.com",
+    "project_id": "tsumugiya-886e1",
+    "storage_bucket": "tsumugiya-886e1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936466283506:android:23744554d7c6dc03f2496b",
+        "mobilesdk_app_id": "1:605706833221:android:5516c1981a2170533d022c",
         "android_client_info": {
-          "package_name": "com.ortech.shopapp"
+          "package_name": "com.ortech.tsumugiya"
         }
       },
       "oauth_client": [
         {
-          "client_id": "936466283506-673nc4v34qndquk7kvupsad8hc8vkfp0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ortech.shopapp",
-            "certificate_hash": "0abcd93b392f859b374ffee82a4f2e327bb7c8fd"
-          }
-        },
-        {
-          "client_id": "936466283506-k77gm74n7cu2a480ajqpsid4bqfig0bq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ortech.shopapp",
-            "certificate_hash": "e10d88409be13b6a994adddf8268f93c9e6f533d"
-          }
-        },
-        {
-          "client_id": "936466283506-3j9stdff1319uhbt2appl993ce9o5k3n.apps.googleusercontent.com",
+          "client_id": "605706833221-qu1dj1hhdb9a6a2f7mfe228nn4pp7gou.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBuibo1ch85oNDZJyhyi-8K2Nq9CXCtJsg"
+          "current_key": "AIzaSyBfKMHJ7WKz-u7DCzuWCi8YZvgd1uvH1PE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "936466283506-ud0njbmt0dntv2r4aidlcc19q6603sbd.apps.googleusercontent.com",
+              "client_id": "605706833221-qu1dj1hhdb9a6a2f7mfe228nn4pp7gou.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "936466283506-qaeqclm2n6kahoi2ivvj75qu9nmuvvc0.apps.googleusercontent.com",
+              "client_id": "605706833221-5fcb2t1nntqcui01v7lu7gkoq03n428m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "or.global.sakura"
+                "bundle_id": "com.nowThisIsCoding.Tsumugiya"
               }
             }
           ]

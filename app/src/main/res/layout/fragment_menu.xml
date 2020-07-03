@@ -16,17 +16,17 @@
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
         app:contentScrim="?attr/colorPrimary"
-        app:layout_scrollFlags="enterAlways"
 
+        app:layout_scrollFlags="enterAlways"
         app:toolbarId="@+id/toolbarMenu">
 
 
       <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbarMenu"
           android:layout_width="match_parent"
-          android:layout_height="?attr/actionBarSize"
-          />
+          android:layout_height="?attr/actionBarSize" />
 
       <TextView
           android:id="@+id/textView31"
@@ -35,6 +35,7 @@
           android:layout_marginLeft="26sp"
           android:gravity="bottom|start"
           android:text="@string/tab_menu"
+          android:textColor="#FFFFFF"
           android:textSize="40sp"
           android:textStyle="bold" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>

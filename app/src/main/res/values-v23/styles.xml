@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SekaiActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primary_black</item>
+        <item name="actionMenuTextColor">@color/primary_black</item>
+        <item name="android:textColorPrimary">@color/primary_black</item>
+        <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
+        <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+<!--        <item name="android:statusBarColor">@color/accent_white</item>-->
+<!--        <item name="android:windowLightStatusBar">false</item>-->
+        <!--        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>-->
+    </style>
+</resources>

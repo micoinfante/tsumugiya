@@ -7,43 +7,38 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.ortech.shopapp.HomeScreen"
+        android:name="com.ortech.tsumugiya.HomeScreen"
         android:label="@string/title_home"
         tools:layout="@layout/activity_home_screen" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.ortech.shopapp.ui.home.HomeFragment"
+        android:name="com.ortech.tsumugiya.ui.home.HomeFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.ortech.shopapp.ui.notifications.NotificationsFragment"
+        android:name="com.ortech.tsumugiya.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_store_list"
-        android:name="com.ortech.shopapp.StoreListFragment"
+        android:name="com.ortech.tsumugiya.StoreListFragment"
         android:label="list" />
     <activity
         android:id="@+id/navigation_customer_qr"
-        android:name="com.ortech.shopapp.CustomerQRCodeActivity"
+        android:name="com.ortech.tsumugiya.CustomerQRCodeActivity"
         android:label="activity_customer_qr_code"
         tools:layout="@layout/activity_customer_qr_code" />
     <activity
         android:id="@+id/navigation_store_tabs"
-        android:name="com.ortech.shopapp.StoreTabListActivity"
+        android:name="com.ortech.tsumugiya.StoreTabListActivity"
         android:label="activity_store_tab_list"
         tools:layout="@layout/activity_store_tab_list" />
     <fragment
         android:id="@+id/navigation_menu_category"
-        android:name="com.ortech.shopapp.MenuFragment"
+        android:name="com.ortech.tsumugiya.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" />
-    <fragment
-        android:id="@+id/navigation_instagram"
-        android:name="com.ortech.shopapp.InstagramFragment"
-        android:label="fragment_instagram"
-        tools:layout="@layout/fragment_instagram" />
 </navigation>

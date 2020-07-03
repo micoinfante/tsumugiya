@@ -17,23 +17,24 @@
             android:id="@+id/toolbarStoreTabDetails"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFFFFF"
+            android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_action_back"
             app:subtitleTextAppearance="@style/tabBarMenuTheme"
-            app:subtitleTextColor="#050404"
+            app:subtitleTextColor="#FFFFFF"
             app:titleTextAppearance="@style/toolbarMenuTheme"
-            app:titleTextColor="#000000" />
+            app:titleTextColor="#FFFFFF" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/storeTabDetailsTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="@color/colorPrimaryDark"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabRippleColor="#FFFFFF"
-            app:tabSelectedTextColor="@color/primary_orange"
+            app:tabSelectedTextColor="@color/accent_white"
             app:tabTextAppearance="@style/tabBarMenuTheme"
-            app:tabTextColor="#000000" />
+            app:tabTextColor="#FFFFFF" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

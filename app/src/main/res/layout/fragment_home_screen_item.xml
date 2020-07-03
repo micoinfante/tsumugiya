@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/homescreen_section"
+    android:layout_marginTop="1dp"
     android:background="@color/accent_white"
     tools:context=".HomeScreenFragment">
 
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/homescreen_top_margin"
-        app:cardBackgroundColor="@color/primary_background">
+        app:cardBackgroundColor="@color/accent_white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/primary_black"
                 android:textSize="@dimen/text_subtitle"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
                 android:background="@drawable/home_screen_item_button_corners"
                 android:padding="@dimen/home_button_coupon_padding"
                 android:text="Button"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/primary_black"
                 android:textSize="@dimen/text_body"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +68,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/primary_black"
                 android:textSize="@dimen/text_header"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"

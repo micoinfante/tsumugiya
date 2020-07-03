@@ -13,7 +13,8 @@
         android:id="@+id/appbarHome"
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarCouponList"
@@ -26,7 +27,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="@color/colorPrimaryDark"
 
             app:collapsedTitleTextAppearance="@style/toolbarMenuTheme"
             app:contentScrim="?attr/colorPrimary"
@@ -44,6 +45,7 @@
                 android:layout_marginLeft="24dp"
                 android:gravity="bottom"
                 android:text="全支店クーポン"
+                android:textColor="#FFFFFF"
                 android:textSize="30dp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>

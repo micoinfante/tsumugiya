@@ -3,8 +3,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/primary_lightgray</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/accent_white</item>
+        <item name="colorAccent">@color/primary_orange</item>
         <item name="android:textColor">@color/primary_black</item>
         <item name="actionMenuTextColor">@color/primary_black</item>
         <item name="android:textColorPrimary">@color/primary_black</item>
@@ -15,32 +15,32 @@
 
     <style name="SekaiActionBar" parent="Theme.AppCompat.Light.NoActionBar">
 
-        <item name="colorPrimary">@color/accent_white</item>
-        <item name="colorPrimaryDark">@color/accent_white</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/primary_black</item>
-        <item name="actionMenuTextColor">@color/primary_black</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/primary_orange</item>
+        <item name="android:textColor">@color/accent_white</item>
+        <item name="actionMenuTextColor">@color/accent_white</item>
         <item name="android:textColorPrimary">@color/primary_black</item>
         <item name="titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
         <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
-<!--        <item name="android:statusBarColor">@color/</item>-->
-        <item name="android:windowLightStatusBar">true</item>
+<!--        <item name="android:statusBarColor">@color/accent_white</item>-->
+<!--        <item name="android:windowLightStatusBar">false</item>-->
 <!--        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>-->
     </style>
 
     <style name="ExpandedAppBar" parent="TextAppearance.AppCompat.Medium">
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/primary_black</item>
-        <item name="android:textColorPrimary">@color/primary_black</item>
-        <item name="actionMenuTextColor">@color/primary_black</item>
+        <item name="android:textColor">@color/accent_white</item>
+        <item name="android:textColorPrimary">@color/accent_white</item>
+        <item name="actionMenuTextColor">@color/accent_white</item>
         <item name="android:textStyle">bold</item>
 
     </style>
 
     <style name="toolbarMenuTheme" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:colorBackground">@color/accent_white</item>
-        <item name="android:textColor">@color/primary_black</item>
+        <item name="android:textColor">@color/accent_white</item>
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -51,8 +51,8 @@
     </style>
 
     <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@color/primary_black</item>
-        <item name="actionMenuTextColor">@color/primary_black</item>
+        <item name="android:textColorPrimary">@color/accent_white</item>
+        <item name="actionMenuTextColor">@color/accent_white</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -60,15 +60,15 @@
 
 
     <style name="AppTheme.ActionBar.TitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="titleTextColor">@color/primary_black</item>
-        <item name="android:textColorPrimary">@color/primary_black</item>
-        <item name="android:textColor">@color/primary_black</item>
+        <item name="titleTextColor">@color/accent_white</item>
+        <item name="android:textColorPrimary">@color/accent_white</item>
+        <item name="android:textColor">@color/accent_white</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:titleTextStyle">@color/primary_black</item>
-        <item name="android:textColorPrimary">@color/primary_black</item>
-        <item name="titleTextStyle">@color/primary_black</item>
+        <item name="android:titleTextStyle">@color/accent_white</item>
+        <item name="android:textColorPrimary">@color/accent_white</item>
+        <item name="titleTextStyle">@color/accent_white</item>
         <item name="backgroundColor">@color/primary_lightgray</item>
         <item name="android:background">@color/primary_lightgray</item>
     </style>

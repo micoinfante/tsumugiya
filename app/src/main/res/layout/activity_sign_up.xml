@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent_white"
+    android:theme="@style/Theme.AppCompat"
     tools:context=".SignUpActivity">
 
     <ImageView
@@ -51,11 +52,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:importantForAutofill="no"
         android:background="@drawable/textfield_rectangle"
         android:cursorVisible="true"
         android:ems="10"
         android:hint="@string/user_email"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minWidth="300dp"
         android:textSize="16sp"
@@ -69,7 +70,6 @@
         style="@style/Base.Widget.MaterialComponents.TextInputEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:importantForAutofill="no"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
@@ -79,6 +79,7 @@
         android:cursorVisible="true"
         android:ems="10"
         android:hint="@string/user_password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:minWidth="300dp"
         android:textSize="16sp"
@@ -132,6 +133,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBarSignUp"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

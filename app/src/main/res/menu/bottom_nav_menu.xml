@@ -23,9 +23,4 @@
         android:icon="@drawable/tab_ramen"
         android:title="@string/tab_menu"
         app:showAsAction="withText" />
-    <item
-        android:id="@+id/navigation_instagram"
-        android:icon="@drawable/tab_insta"
-        android:title="@string/tab_insta"
-        tools:ignore="DuplicateIds" />
 </menu>

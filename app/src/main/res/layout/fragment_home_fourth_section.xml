@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/homescreen_section"
-    android:layout_marginTop="@dimen/homescreen_top_margin"
-    android:background="@color/primary_background">
+    android:layout_marginTop="1dp"
+    android:background="@color/accent_white">
 
     <TextView
         android:id="@+id/textViewSubHeading"
@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="@string/homescreen_information_subtitle2"
-        android:textColor="@color/accent_white"
+        android:textColor="@color/primary_black"
         android:textSize="@dimen/text_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -28,7 +28,7 @@
         android:layout_marginTop="14dp"
         android:gravity="center"
         android:text="@string/homescreen_information_title"
-        android:textColor="@color/accent_white"
+        android:textColor="@color/primary_black"
         android:textSize="@dimen/text_title"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:text="@string/homescreen_information_subtitle1"
-        android:textColor="@color/accent_white"
+        android:textColor="@color/primary_black"
         android:textSize="@dimen/text_body"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -59,7 +59,7 @@
         android:padding="@dimen/home_button_padding"
         android:text="@string/homescreen_information_button_title"
         android:textAllCaps="false"
-        android:textColor="@color/accent_white"
+        android:textColor="@color/primary_black"
         android:textSize="@dimen/home_button_title"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

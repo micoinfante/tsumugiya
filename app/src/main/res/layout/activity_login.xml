@@ -87,7 +87,7 @@
         android:gravity="center"
         android:minWidth="200dp"
         android:minHeight="50dp"
-        android:text="@string/options_signup"
+        android:text="@string/options_login"
         android:textColor="@color/accent_white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

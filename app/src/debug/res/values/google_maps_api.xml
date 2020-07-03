@@ -9,7 +9,7 @@
     You can also add your credentials to an existing key, using these values:
 
     Package name:
-    com.ortech.shopapp
+    com.ortech.tsumugiya
 
     SHA-1 certificate fingerprint:
     e1:0d:88:40:9b:e1:3b:6a:99:4a:dd:df:82:68:f9:3c:9e:6f:53:3d
@@ -20,5 +20,5 @@
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCKHa107HWUyySCdnEd_sUz1hmiXKUSz1o</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBNKUNWDsconAT9YleEZld5F4RJ4grB3qM</string>
 </resources>

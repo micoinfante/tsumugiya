@@ -18,9 +18,11 @@
             android:id="@+id/toolbarHistory"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
             app:navigationIcon="@drawable/ic_action_back"
             app:title="@string/settings_title"
-            app:titleTextAppearance="@style/toolbarMenuTheme" />
+            app:titleTextAppearance="@style/toolbarMenuTheme"
+            app:titleTextColor="#FFFFFF" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,7 +67,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColorHighlight="@color/primary_tab_selected"
+                    android:textColorLink="@color/primary_tab_selected" />
 
             </LinearLayout>
 

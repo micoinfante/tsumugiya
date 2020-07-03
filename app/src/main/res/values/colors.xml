@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#d34410</color>
+    <color name="colorPrimaryDark">#082257</color>
+    <color name="colorAccent">#c7a505</color>
     <color name="home_screen_card_background">#555353</color>
     <color name="placeholder_gray">#2d3748</color>
     <color name="primary_black">#191919</color>
@@ -11,8 +11,8 @@
     <color name="primary_background">#2c2a27</color>
     <color name="primary_text">#FFFFFF</color>
     <color name="primary_lightgray">#d3d3d3</color>
-    <color name="primary_tab_selected">#d34410</color>
-    <color name="primary_orange">#d34410</color>
+    <color name="primary_tab_selected">#c7a505</color>
+    <color name="primary_orange">#c7a505</color>
     <color name="primary_green">#008000</color>
     <color name="primary_red">#990000</color>
 </resources>

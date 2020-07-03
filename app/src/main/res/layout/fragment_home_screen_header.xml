@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/homescreen_section"
+    android:layout_height="155dp"
     android:background="@color/accent_white"
     tools:context=".HomeScreenHeaderFragment">
 
@@ -12,6 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFFFFF"
-        android:scaleType="centerCrop"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        android:scaleType="fitXY"
+        tools:src="@drawable/tsumugiya_banner" />
 </FrameLayout>

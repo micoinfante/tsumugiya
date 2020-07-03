@@ -17,6 +17,7 @@
             android:id="@+id/toolbarStoreOffering"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimaryDark"
             app:navigationIcon="@drawable/ic_action_back"></androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>

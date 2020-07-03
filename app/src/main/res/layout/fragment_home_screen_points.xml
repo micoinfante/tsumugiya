@@ -9,8 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/homescreen_top_margin"
-        app:cardBackgroundColor="@color/primary_background">
+        app:cardBackgroundColor="@color/accent_white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,12 +25,14 @@
                 android:minHeight="25dp"
                 android:minLines="2"
                 android:text="@string/homescreen_point_section_welcome"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/primary_black"
                 android:textSize="@dimen/text_title"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:letterSpacing="0.05"
+                />
 
             <TextView
                 android:id="@+id/textViewCurrentPoints"
@@ -40,7 +41,7 @@
                 android:gravity="center|center_horizontal|center_vertical"
                 android:minHeight="50dp"
                 android:text="0"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/primary_black"
                 android:textSize="@dimen/home_current_points_text"
                 android:textStyle="bold"
                 app:autoSizeMinTextSize="50sp"
@@ -68,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="TextView"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/primary_black"
                     android:textSize="@dimen/text_header"
                     android:textStyle="bold"
                     tools:text="Bronze" />
@@ -87,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="TextView"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/primary_black"
                     android:textSize="@dimen/text_body"
                     android:textStyle="bold"
                     tools:text="lorem ipsum 1940pt" />

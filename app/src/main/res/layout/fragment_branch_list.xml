@@ -16,8 +16,9 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
+            android:background="@color/colorPrimaryDark"
 
+            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags=""
             app:toolbarId="@+id/toolbarMenuCategory">
 
@@ -35,6 +36,7 @@
                 android:layout_marginLeft="26dp"
                 android:gravity="bottom|start"
                 android:text="@string/tab_menu"
+                android:textColor="#FFFFFF"
                 android:textSize="30sp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>

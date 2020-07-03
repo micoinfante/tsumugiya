@@ -12,26 +12,25 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp"
         tools:elevation="0dp">
 
-            <androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarHomeScreen"
             android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:background="?attr/colorPrimary"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginLeft="8dp"
+            android:background="@color/colorPrimaryDark"
             android:minHeight="?attr/actionBarSize"
-                android:theme="@style/AppTheme.PopupOverlay"
-            app:collapseIcon="@drawable/nav_app_logo_25dp"
+            android:theme="@style/AppTheme.PopupOverlay"
+            app:collapseIcon="@mipmap/ic_nav"
             app:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="@drawable/nav_app_logo_25dp"
-            app:title="@string/app_name"
-            app:titleTextAppearance="@style/toolbarMenuTheme"
+            app:navigationIcon="@mipmap/ic_nav"
             tools:titleTextAppearance="@style/toolbarMenuTheme" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
 <!--    <androidx.cardview.widget.CardView-->
@@ -78,7 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:background="@color/primary_black"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ImageView
         android:id="@+id/buttonSettingsDebug"
@@ -87,9 +87,10 @@
         android:layout_gravity="end|top"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/accent_white"
+        android:background="@color/colorPrimaryDark"
         android:contentDescription="@string/tab_home"
         android:padding="8dp"
+        android:tint="#FFFFFF"
         app:srcCompat="@drawable/settings" />
 
 

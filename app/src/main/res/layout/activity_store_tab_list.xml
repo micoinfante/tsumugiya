@@ -11,11 +11,12 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:theme="@style/AppTheme.AppBarOverlay">
+
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarStoreListTab"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:id="@+id/collapsingToolbarStoreListTab"
-            >
+            android:background="@color/colorPrimaryDark">
 
             <TextView
                 android:id="@+id/textViewStoreListTab"
@@ -24,6 +25,7 @@
                 android:layout_marginLeft="26dp"
                 android:gravity="bottom|left"
                 android:text="@string/tab_store"
+                android:textColor="@color/accent_white"
                 android:textSize="40sp"
                 android:textStyle="bold" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -32,11 +34,12 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="@color/colorPrimaryDark"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabRippleColor="#FFFFFF"
-            app:tabSelectedTextColor="@color/primary_orange"
+            app:tabSelectedTextColor="@color/accent_white"
             app:tabTextAppearance="@style/tabBarMenuTheme"
-            app:tabTextColor="#000000" />
+            app:tabTextColor="@color/primary_lightgray" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

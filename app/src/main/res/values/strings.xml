@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">ラーメン世界</string>
+    <string name="app_name">Tsumugiya</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_tab" translatable="false">TabActivity</string>
     <string name="tab_text_1" translatable="false">店舗一覧</string>
@@ -13,8 +13,8 @@
     <string name="title_home" translatable="false">Home</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
-    <string name="facebook_app_id" translatable="false">268338784167344</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb268338784167344</string>
+    <string name="facebook_app_id" translatable="false">270652877382683</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb270652877382683</string>
 
     <string name="home_second" translatable="false">Home Second</string>
     <string name="title_activity_store_tab_list" translatable="false">StoreTabListActivity</string>
@@ -25,9 +25,9 @@
     <string name="instagram_domain" translatable="false">instagram.com</string>
     <string name="instagram_url" translatable="false">https://www.instagram.com/explore/tags/ramensekai</string>
 
-    <string name="homescreen_weblink" translatable="false">https://www.google.com</string>
+    <string name="homescreen_weblink" translatable="false">https://transit-emenu.com/</string>
     <!--    welcome guest, current point-->
-    <string name="homescreen_point_section_welcome" translatable="false">ようこそ ゲスト さま \n現在のポイント
+    <string name="homescreen_point_section_welcome" translatable="false">ようこそ  ゲスト  さま \n現在のポイント
 </string>
     <string name="homescreen_point_section_welcome_loggedin" translatable="false">ようこそ  %s  さま \n現在のポイント
 </string>
@@ -36,7 +36,8 @@
     <string name="homescreen_notice_title" translatable="false">クーポン</string>
     <!--    Use coupons Get points for discount coupons! \ N-->
     <!--    The bonito bowl of bonito is even more delicious-->
-    <string name="homescreen_notice_subtitle" translatable="false">お得なクーポンをポイントを使ってGET!\nかつ庵のかつ丼をさらに美味く</string>
+<!--    \nかつ庵のかつ丼をさらに美味く-->
+    <string name="homescreen_notice_subtitle" translatable="false">お得なクーポンをポイントを使ってGET!</string>
     <!--    use coupon-->
     <string name="homescreen_notice_button_title" translatable="false">クーポンを使う</string>
 
@@ -46,7 +47,8 @@
     <string name="homescreen_information_subtitle2" translatable="false">「うま辛極担々麺」 4月25日土から</string>
     <string name="homescreen_information_button_title" translatable="false">詳しく</string>
     <string name="homescreen_point_history_title" translatable="false">ポイント履歴</string>
-    <string name="homescreen_point_history_subtitle" translatable="false">あなたのトランザクションのリアルタイム追跡。</string>
+<!--    あなたのトランザクションのリアルタイム追跡。-->
+    <string name="homescreen_point_history_subtitle" translatable="false">Real time tracking of your transaction.</string>
 
     <string name="preference_UUID_key" translatable="false">Preference_UUID</string>
     <string name="preference_UUID_key_google" translatable="false">Preference_UUID_google</string>
@@ -63,12 +65,12 @@
     <string name="header_title_morning_loggedin" translatable="false">Good Morning! %s</string>
     <string name="header_title_afternoon_loggedin" translatable="false">Have a great Noon! %s</string>
     <string name="header_title_night_loggedin" translatable="false">Have a great Night! %s</string>
-    <string name="header_image_url" translatable="false" tools:ignore="TypographyDashes">https://firebasestorage.googleapis.com/v0/b/sakura-dbms.appspot.com/o/store%2Fbanner1.jpg?alt=media&amp;token=a22384ce-dd82-4eaa-820a-f0f90e27280d</string>
-    <string name="home_link_notice" translatable="false" tools:ignore="TypographyDashes">https://shop.ra-mensekai.co.jp/news.html</string>
+    <string name="header_image_url" translatable="false" tools:ignore="TypographyDashes">https://firebasestorage.googleapis.com/v0/b/tsumugiya-886e1.appspot.com/o/store%2Fpage_bg_typ11.jpg?alt=media&amp;token=a2c057ec-667c-4bce-99cb-e5c95ddeb6cc</string>
+    <string name="home_link_notice" translatable="false" tools:ignore="TypographyDashes">https://transit-emenu.com/</string>
 
     <string name="tab_home">Home</string>
     <string name="tab_point">Points</string>
-    <string name="tab_store">Stores</string>
+    <string name="tab_store">Store</string>
     <string name="tab_menu">Menu</string>
     <string name="tab_insta">Instagram</string>
 

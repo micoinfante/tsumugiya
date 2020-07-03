@@ -25,7 +25,8 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarWebView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/textViewWebViewDone"
@@ -36,7 +37,7 @@
                 android:gravity="bottom|start|left"
                 android:minWidth="50dp"
                 android:text="完了"
-                android:textColor="#1E88E5"
+                android:textColor="@color/accent_white"
                 android:textSize="20sp" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

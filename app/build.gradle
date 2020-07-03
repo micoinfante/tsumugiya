@@ -8,11 +8,11 @@ android {
     compileSdkVersion 30
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.ortech.shopapp"
+        applicationId "com.ortech.tsumugiya"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
-        versionName "1.6"
+        versionName "1.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
@@ -21,11 +21,11 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "FCM_BASE_URL", "\"https://fcm.googleapis.com/\"")
-            buildConfigField("String", "FCM_SERVER_KEY", "\"AAAA2gm9e_I:APA91bE_ot0_kEIw5brVuvwKWhZz3ikwdTinTeGju-HqkkJPpFYjShlZJCn0Q0QsIa1LbBHTc_FQe9fWEYpsdbYI3vJ4bRXyZ5UzQeTYgqCGvOXagFkR7hsIEGQehitr8qQt-s6ddAI2\"")
+            buildConfigField("String", "FCM_SERVER_KEY", "\"AAAAjQbwzUU:APA91bFmg8cAy9o_EgPd_HrYPoYDnsmqbqQ_skuoO1Z396Hk3sFJS9vzSOHdWEyCXsdyws3abQNgEb3kGOZjPlKxjkANQ7LzmS0zeq4uTBLCdm35wMCN0-zqOxjVWPB7uFI6KtGjsk3C\"")
         }
         release {
             buildConfigField("String", "FCM_BASE_URL", "\"https://fcm.googleapis.com/\"")
-            buildConfigField("String", "FCM_SERVER_KEY", "\"AAAA2gm9e_I:APA91bE_ot0_kEIw5brVuvwKWhZz3ikwdTinTeGju-HqkkJPpFYjShlZJCn0Q0QsIa1LbBHTc_FQe9fWEYpsdbYI3vJ4bRXyZ5UzQeTYgqCGvOXagFkR7hsIEGQehitr8qQt-s6ddAI2\"")
+            buildConfigField("String", "FCM_SERVER_KEY", "\"AAAAjQbwzUU:APA91bFmg8cAy9o_EgPd_HrYPoYDnsmqbqQ_skuoO1Z396Hk3sFJS9vzSOHdWEyCXsdyws3abQNgEb3kGOZjPlKxjkANQ7LzmS0zeq4uTBLCdm35wMCN0-zqOxjVWPB7uFI6KtGjsk3C\"")
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
